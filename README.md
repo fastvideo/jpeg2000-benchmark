@@ -166,8 +166,10 @@ What follows from this for a particular task is in the
 
 The full tables, including every search point, the quality check, energy per
 frame and the stage breakdown, are in `results/<date>/summary.txt`. The same
-data in machine-readable form is in `results.json`. The raw logs of every run,
-together with the command line, are there too.
+data in machine-readable form is in `results.json`. The raw output of every
+single launch, together with its command line, is in `logs.zip` next to them:
+438 files, one per launch, so that any row of any table can be traced back to
+the run that produced it.
 
 ## How to reproduce
 
@@ -237,7 +239,7 @@ and 16 bits, and that is a separate piece of work.
 | `bench/bench.py`                | the whole cycle: preparation, measurements, tables |
 | `bench/nvj2k_bench.cpp`         | the benchmark harness for nvJPEG2000               |
 | `bench/README.md`               | run options and workflow                           |
-| `results/<date>/`               | tables, machine-readable data, raw logs            |
+| `results/<date>/`               | tables, machine-readable data, raw logs in `logs.zip` |
 | `results/2026-08-19/article.md` | snapshot of the article these results belong to    |
 
 The article snapshot is not edited by hand: there is one author's text — the
