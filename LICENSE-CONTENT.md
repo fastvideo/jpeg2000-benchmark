@@ -8,7 +8,7 @@ covered separately by `LICENSE` (MIT); third-party software by neither, see
 
 ## Measurement data and this README - CC BY 4.0
 
-Everything under `results/` **except `results/<date>/article.md`** - summary
+Everything under `results/` **except `results/<date>/jpeg2000-gpu-benchmark-rtx4090.md`** - summary
 tables, machine-readable data and raw logs - together with `README.md`, is
 published under the **Creative Commons Attribution 4.0 International licence
 (CC BY 4.0)**.
@@ -21,7 +21,7 @@ exists to be forked, and a fork normally rewrites the README for itself.
 
 ## Article snapshot - CC BY-ND 4.0
 
-The file `results/<date>/article.md` - a frozen, dated copy of the published
+The file `results/<date>/jpeg2000-gpu-benchmark-rtx4090.md` - a frozen, dated copy of the published
 article - is published under **CC BY-ND 4.0**: attribution, no derivatives.
 
 <https://creativecommons.org/licenses/by-nd/4.0/>

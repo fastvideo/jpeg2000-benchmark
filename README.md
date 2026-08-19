@@ -90,7 +90,7 @@ walk-through of the method — why there are four modes, where the boundaries
 run, how quality is matched and how the check is computed — is in the
 [article](https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm). It is also
 kept here, next to the results of each run:
-`results/2026-08-19/article.md`.
+`results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`.
 
 ## Results
 
@@ -240,7 +240,7 @@ and 16 bits, and that is a separate piece of work.
 | `bench/nvj2k_bench.cpp`         | the benchmark harness for nvJPEG2000               |
 | `bench/README.md`               | run options and workflow                           |
 | `results/<date>/`               | tables, machine-readable data, raw logs in `logs.zip` |
-| `results/2026-08-19/article.md` | snapshot of the article these results belong to    |
+| `results/<date>/<article>.md`   | snapshot of the article these results belong to    |
 
 The article snapshot is not edited by hand: there is one author's text — the
 article on the site — and here lies a dated copy tied to its own measurement
@@ -267,9 +267,10 @@ Toolkit.
 
 - Article with the full walk-through of the method:
   https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm
+  (the English version is on its way; this link will be replaced by it)
 - Product page: https://www.fastcompression.com/products/gpu-jpeg2000.htm
-- Source images: https://www.fastvideo.ru/img/test_j2k/2k_wild.ppm and
-  https://www.fastvideo.ru/img/test_j2k/4k_wild.ppm
+- Source images: https://www.fastcompression.com/img/test_j2k/2k_wild.ppm and
+  https://www.fastcompression.com/img/test_j2k/4k_wild.ppm
 - Fastvideo SDK demo build:
   https://www.fastcompression.com/download/demo/fvSDK-0.22.0.0-Win64-CUDA-12.6-Demo-Exp-2027-04-18.7z
 - nvJPEG2000, separate download from the NVIDIA site: https://developer.nvidia.com/nvjpeg2000-downloads
@@ -283,11 +284,12 @@ file `LICENSE-CONTENT.md`:
 - **code** — the script and the benchmark harness — MIT, file `LICENSE`. Take
   it, change it, publish your own results;
 - **the measurement results and this README** — everything under `results/`
-  except `article.md`, plus the README itself — CC BY 4.0. Move them into your
+  except the article snapshot, plus the README itself — CC BY 4.0. Move them into your
   own materials, rebuild them, compute on top of them. The README is here on
   purpose: the repository exists to be forked, and a fork almost always edits
   the README for itself;
-- **the article snapshot** — `results/2026-08-19/article.md` — CC BY-ND 4.0.
+- **the article snapshot** — `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md` —
+  CC BY-ND 4.0.
   Reprinting it in full and quoting it are allowed; rewriting and translating
   it are by agreement.
 
