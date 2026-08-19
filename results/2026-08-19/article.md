@@ -1,6 +1,6 @@
 # JPEG2000 on GPU: the codec from Fastvideo SDK and the nvJPEG2000 library
 
-Measurement run of 19 August 2026 on an NVIDIA GeForce RTX 4090. The data behind this text is in [`results/2026-08-19/`](../../results/2026-08-19/): tables, machine-readable results and the raw logs of every launch.
+Measurement run of 19 August 2026 on an NVIDIA GeForce RTX 4090. The data behind this text is in [`results/2026-08-19/`](../../results/2026-08-19/): tables, machine-readable results and the raw logs of every launch in `logs.zip`.
 
 The original of this article is published at [www.fastvideo.ru/blog/jpeg2000-benchmarks.htm](https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm). This copy is a snapshot: it is fixed to the run above and is not updated when the article changes.
 
