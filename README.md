@@ -259,7 +259,7 @@ decoded images, so that the opinion is yours and not ours retold:
 
 This is the JPEG2000 module from Fastvideo SDK — a CUDA library that runs the
 whole camera pipeline on the GPU; it is licensed per platform:
-[fastcompression.com/products/gpu-jpeg2000.htm](https://www.fastcompression.com/products/gpu-jpeg2000.htm). nvJPEG2000 is free and ships separately from the CUDA
+[fastcompression.com/products/gpu-jpeg2000.htm](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=article). nvJPEG2000 is free and ships separately from the CUDA
 Toolkit.
 
 ## Links
