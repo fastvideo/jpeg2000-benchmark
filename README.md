@@ -88,7 +88,7 @@ computed.
 This page has the problem statement and the results. The step-by-step
 walk-through of the method — why there are four modes, where the boundaries
 run, how quality is matched and how the check is computed — is in the
-[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm). It is also
+[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=method). It is also
 kept here, next to the results of each run:
 `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`.
 
@@ -137,10 +137,10 @@ The ratio is FV / NV everywhere: above one means fvJPEG2000 is faster, below
 one means nvJPEG2000 is faster.
 
 The short conclusion. **fvJPEG2000 is faster at encoding** — by one and a half
-to two and a half times in single image mode and by four to seven times in
+to two and a half times in single image mode and by 3.8 to 7.2 times in
 multithreaded mode; the latter mainly because the nvJPEG2000 encoder gains
 almost nothing from multithreading. **nvJPEG2000 is faster at decoding** —
-twice as fast in single image mode and one and a half times as fast in
+up to twice as fast in single image mode and one and a half times as fast in
 multithreaded mode with lossy compression; with lossless compression the
 difference almost disappears.
 
@@ -161,8 +161,7 @@ comparison of decoders is not quietly replaced by a comparison of what the
 encoders produced.
 
 What follows from this for a particular task is in the
-[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm), section
-"What this means in practice".
+[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=practice), section "What this means in practice".
 
 The full tables, including every search point, the quality check, energy per
 frame and the stage breakdown, are in `results/<date>/summary.txt`. The same
