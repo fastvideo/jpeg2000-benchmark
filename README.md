@@ -191,12 +191,7 @@ Other options and the workflow are in `bench/README.md`.
 
 **The Fastvideo side.** The speed reproduces on the demo build of Fastvideo
 SDK. It is freely downloadable:
-<https://www.fastcompression.com/download/demo/fvSDK-0.22.0.0-Win64-CUDA-12.6-Demo-Exp-2027-04-18.7z>
-
-Note that the demo build above is 0.22.0.0 with CUDA 12.6, while the run
-published here was made with 0.23.1.0 and CUDA 13.3 — the versions are stated
-in the test system table, and results from different versions should not be
-mixed in one table.
+<https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z>
 
 The quality check reproduces on the demo version too, even though it puts its
 own watermark on the frame. The technique: the reference for PSNR is not the
@@ -270,7 +265,7 @@ Toolkit.
 - Source images: https://www.fastcompression.com/img/test_j2k/2k_wild.ppm and
   https://www.fastcompression.com/img/test_j2k/4k_wild.ppm
 - Fastvideo SDK demo build:
-  https://www.fastcompression.com/download/demo/fvSDK-0.22.0.0-Win64-CUDA-12.6-Demo-Exp-2027-04-18.7z
+  https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z
 - nvJPEG2000, separate download from the NVIDIA site: https://developer.nvidia.com/nvjpeg2000-downloads
 - This repository: https://github.com/fastvideo/jpeg2000-benchmark
 
