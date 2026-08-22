@@ -2,7 +2,7 @@
 
 Measurement run of 19 August 2026 on an NVIDIA GeForce RTX 4090. The data behind this text is in [`results/2026-08-19/`](../../results/2026-08-19/): tables, machine-readable results and the raw logs of every launch in `logs.zip`.
 
-The original of this article is published at [www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm). This copy is a snapshot: it is fixed to the run above and is not updated when the article changes.
+The original of this article is published at [www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm). This copy is a snapshot: it is fixed to the run above and is not updated when the article changes.
 
 Text of the article: CC BY-ND 4.0. Measurement data and tables: CC BY 4.0. See `LICENSE-CONTENT.md` in the root of the repository.
 
