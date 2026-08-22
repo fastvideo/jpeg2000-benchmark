@@ -88,7 +88,7 @@ computed.
 This page has the problem statement and the results. The step-by-step
 walk-through of the method — why there are four modes, where the boundaries
 run, how quality is matched and how the check is computed — is in the
-[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=method). It is also
+[article](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=method). It is also
 kept here, next to the results of each run:
 `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`.
 
@@ -161,7 +161,7 @@ comparison of decoders is not quietly replaced by a comparison of what the
 encoders produced.
 
 What follows from this for a particular task is in the
-[article](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=practice), section "What this means in practice".
+[article](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=practice), section "What this means in practice".
 
 The full tables, including every search point, the quality check, energy per
 frame and the stage breakdown, are in `results/<date>/summary.txt`. The same
@@ -254,13 +254,13 @@ decoded images, so that the opinion is yours and not ours retold:
 
 This is the JPEG2000 module from Fastvideo SDK — a CUDA library that runs the
 whole camera pipeline on the GPU; it is licensed per platform:
-[fastcompression.com/products/gpu-jpeg2000.htm](https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=article). nvJPEG2000 is free and ships separately from the CUDA
+[fastcompression.com/products/gpu-jpeg2000.htm](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=article). nvJPEG2000 is free and ships separately from the CUDA
 Toolkit.
 
 ## Links
 
 - Article with the full walk-through of the method:
-  https://www.fastcompression.com/blog/jpeg2000-gpu-benchmark.htm
+  https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm
 - Product page: https://www.fastcompression.com/products/gpu-jpeg2000.htm
 - Source images: https://www.fastcompression.com/img/test_j2k/2k_wild.ppm and
   https://www.fastcompression.com/img/test_j2k/4k_wild.ppm
