@@ -1,0 +1,716 @@
+{
+ "environment": {
+  "date": "2026-08-26 11:37",
+  "os": "Windows 11",
+  "python": "3.13.14",
+  "bench_version": "pcrd-2026-08-26.3",
+  "code_block": 32,
+  "levels": 6,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "driver": "610.88",
+  "sdk": "0.23.1.0",
+  "kind": "environment",
+  "at": "2026-08-26T11:37:39"
+ },
+ "ladder": [
+  {
+   "image": "2k",
+   "q": 85,
+   "bytes": 601703,
+   "ratio": 10.338655449615509,
+   "kind": "ladder",
+   "at": "2026-08-26T11:37:39"
+  },
+  {
+   "image": "2k",
+   "q": 86,
+   "bytes": 642479,
+   "ratio": 9.682495458995547,
+   "kind": "ladder",
+   "at": "2026-08-26T11:37:39"
+  },
+  {
+   "image": "2k",
+   "q": 87,
+   "bytes": 687006,
+   "ratio": 9.054942751591689,
+   "kind": "ladder",
+   "at": "2026-08-26T11:37:39"
+  },
+  {
+   "image": "2k",
+   "q": 88,
+   "bytes": 735218,
+   "ratio": 8.461163899686895,
+   "kind": "ladder",
+   "at": "2026-08-26T11:37:40"
+  },
+  {
+   "image": "2k",
+   "q": 100,
+   "bytes": 1928926,
+   "ratio": 3.2250070764767544,
+   "kind": "ladder",
+   "at": "2026-08-26T11:37:40"
+  },
+  {
+   "image": "4k",
+   "q": 85,
+   "bytes": 1275547,
+   "ratio": 19.50786603708056,
+   "kind": "ladder",
+   "at": "2026-08-26T11:38:17"
+  },
+  {
+   "image": "4k",
+   "q": 86,
+   "bytes": 1374548,
+   "ratio": 18.1028236191097,
+   "kind": "ladder",
+   "at": "2026-08-26T11:38:17"
+  },
+  {
+   "image": "4k",
+   "q": 87,
+   "bytes": 1483885,
+   "ratio": 16.768954467495796,
+   "kind": "ladder",
+   "at": "2026-08-26T11:38:17"
+  },
+  {
+   "image": "4k",
+   "q": 88,
+   "bytes": 1605164,
+   "ratio": 15.501967400215804,
+   "kind": "ladder",
+   "at": "2026-08-26T11:38:17"
+  },
+  {
+   "image": "4k",
+   "q": 100,
+   "bytes": 4780816,
+   "ratio": 5.204801858092845,
+   "kind": "ladder",
+   "at": "2026-08-26T11:38:18"
+  }
+ ],
+ "rows": [
+  {
+   "image": "2k",
+   "variant": "q85",
+   "q": 85.0,
+   "cr": null,
+   "target_bytes": 601703,
+   "bytes": 601703,
+   "miss_pct": 0.0,
+   "not_binding": false,
+   "enc_fps": 372.1,
+   "enc_spread_pct": 1.0749798441279226,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 40.41974031193163,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.64
+    ],
+    [
+     "DWT time",
+     0.355
+    ],
+    [
+     "Tier-1 time",
+     2.7649999999999997
+    ],
+    [
+     "Buffers gathering time",
+     0.20500000000000002
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.69
+    ]
+   ],
+   "calib": null,
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:37:48"
+  },
+  {
+   "image": "2k",
+   "variant": "cr-only",
+   "q": null,
+   "cr": 10.230973829775253,
+   "target_bytes": 601703,
+   "bytes": 601832,
+   "miss_pct": 0.02143914855003216,
+   "not_binding": false,
+   "enc_fps": 207.45,
+   "enc_spread_pct": 0.048204386599177786,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 39.250306144043265,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.635
+    ],
+    [
+     "DWT time",
+     0.345
+    ],
+    [
+     "Tier-1 time",
+     3.47
+    ],
+    [
+     "PCRD time",
+     1.515
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.61
+    ]
+   ],
+   "calib": {
+    "cr": 10.230973829775253,
+    "bytes": 601832,
+    "miss": 0.0002143914855003216,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.3387,
+      "bytes": 595436,
+      "miss": -0.01042
+     },
+     {
+      "cr": 10.231,
+      "bytes": 601832,
+      "miss": 0.00021
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:37:55"
+  },
+  {
+   "image": "2k",
+   "variant": "q86+cr",
+   "q": 86.0,
+   "cr": 10.246803959649162,
+   "target_bytes": 601703,
+   "bytes": 601709,
+   "miss_pct": 0.0009971697000014958,
+   "not_binding": false,
+   "enc_fps": 228.4,
+   "enc_spread_pct": 0.08756567425568679,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 40.40396189111583,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.61
+    ],
+    [
+     "DWT time",
+     0.37
+    ],
+    [
+     "Tier-1 time",
+     2.8499999999999996
+    ],
+    [
+     "PCRD time",
+     1.545
+    ],
+    [
+     "Buffers gathering time",
+     0.195
+    ],
+    [
+     "GPU->CPU copy time",
+     0.055
+    ],
+    [
+     "Tier-2 time",
+     0.625
+    ]
+   ],
+   "calib": {
+    "cr": 10.246803959649162,
+    "bytes": 601709,
+    "miss": 9.971697000014957e-06,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.231,
+      "bytes": 602634,
+      "miss": 0.00155
+     },
+     {
+      "cr": 10.2468,
+      "bytes": 601709,
+      "miss": 1e-05
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:02"
+  },
+  {
+   "image": "2k",
+   "variant": "q87+cr",
+   "q": 87.0,
+   "cr": 10.242944196511273,
+   "target_bytes": 601703,
+   "bytes": 601683,
+   "miss_pct": -0.003323899000004986,
+   "not_binding": false,
+   "enc_fps": 227.10000000000002,
+   "enc_spread_pct": 0.17613386173492102,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 40.23063738512691,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.635
+    ],
+    [
+     "DWT time",
+     0.325
+    ],
+    [
+     "Tier-1 time",
+     2.92
+    ],
+    [
+     "PCRD time",
+     1.49
+    ],
+    [
+     "Buffers gathering time",
+     0.195
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.64
+    ]
+   ],
+   "calib": {
+    "cr": 10.242944196511273,
+    "bytes": 601652,
+    "miss": -8.475942450012714e-05,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.231,
+      "bytes": 602407,
+      "miss": 0.00117
+     },
+     {
+      "cr": 10.2429,
+      "bytes": 601652,
+      "miss": -8e-05
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:09"
+  },
+  {
+   "image": "2k",
+   "variant": "q88+cr",
+   "q": 88.0,
+   "cr": 10.230973829775253,
+   "target_bytes": 601703,
+   "bytes": 601986,
+   "miss_pct": 0.04703317085007055,
+   "not_binding": false,
+   "enc_fps": 230.35,
+   "enc_spread_pct": 0.3038853917950895,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 39.978599815197605,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.61
+    ],
+    [
+     "DWT time",
+     0.33999999999999997
+    ],
+    [
+     "Tier-1 time",
+     2.895
+    ],
+    [
+     "PCRD time",
+     1.4449999999999998
+    ],
+    [
+     "Buffers gathering time",
+     0.19
+    ],
+    [
+     "GPU->CPU copy time",
+     0.055
+    ],
+    [
+     "Tier-2 time",
+     0.605
+    ]
+   ],
+   "calib": {
+    "cr": 10.230973829775253,
+    "bytes": 601816,
+    "miss": 0.0001878002935002817,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 10.231,
+      "bytes": 601816,
+      "miss": 0.00019
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:17"
+  },
+  {
+   "image": "4k",
+   "variant": "q85",
+   "q": 85.0,
+   "cr": null,
+   "target_bytes": 1275547,
+   "bytes": 1275547,
+   "miss_pct": 0.0,
+   "not_binding": false,
+   "enc_fps": 194.45,
+   "enc_spread_pct": 0.3599897145795922,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 41.97462340799068,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.72
+    ],
+    [
+     "DWT time",
+     0.525
+    ],
+    [
+     "Tier-1 time",
+     3.37
+    ],
+    [
+     "Buffers gathering time",
+     0.225
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.77
+    ]
+   ],
+   "calib": null,
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:26"
+  },
+  {
+   "image": "4k",
+   "variant": "cr-only",
+   "q": null,
+   "cr": 19.016216359183467,
+   "target_bytes": 1275547,
+   "bytes": 1275537,
+   "miss_pct": -0.0007839773838204315,
+   "not_binding": false,
+   "enc_fps": 126.6,
+   "enc_spread_pct": 0.15797788309636876,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 41.23892139150233,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.715
+    ],
+    [
+     "DWT time",
+     0.51
+    ],
+    [
+     "Tier-1 time",
+     4.54
+    ],
+    [
+     "PCRD time",
+     1.6749999999999998
+    ],
+    [
+     "Buffers gathering time",
+     0.20500000000000002
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.5150000000000001
+    ]
+   ],
+   "calib": {
+    "cr": 19.016216359183467,
+    "bytes": 1275480,
+    "miss": -5.252648471596891e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 19.5079,
+      "bytes": 1241988,
+      "miss": -0.02631
+     },
+     {
+      "cr": 18.9946,
+      "bytes": 1276997,
+      "miss": 0.00114
+     },
+     {
+      "cr": 19.0162,
+      "bytes": 1275480,
+      "miss": -5e-05
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:34"
+  },
+  {
+   "image": "4k",
+   "variant": "q86+cr",
+   "q": 86.0,
+   "cr": 19.016216359183467,
+   "target_bytes": 1275547,
+   "bytes": 1276798,
+   "miss_pct": 0.09807557071593599,
+   "not_binding": false,
+   "enc_fps": 145.05,
+   "enc_spread_pct": 0.3447087211306446,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 42.000213311828986,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.725
+    ],
+    [
+     "DWT time",
+     0.52
+    ],
+    [
+     "Tier-1 time",
+     3.5149999999999997
+    ],
+    [
+     "PCRD time",
+     1.665
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.52
+    ]
+   ],
+   "calib": {
+    "cr": 19.016216359183467,
+    "bytes": 1276798,
+    "miss": 0.00098075570715936,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 19.0162,
+      "bytes": 1276798,
+      "miss": 0.00098
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:41"
+  },
+  {
+   "image": "4k",
+   "variant": "q87+cr",
+   "q": 87.0,
+   "cr": 19.016216359183467,
+   "target_bytes": 1275547,
+   "bytes": 1276532,
+   "miss_pct": 0.07722177230631251,
+   "not_binding": false,
+   "enc_fps": 142.7,
+   "enc_spread_pct": 0.2803083391730944,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 41.88528373808449,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.715
+    ],
+    [
+     "DWT time",
+     0.51
+    ],
+    [
+     "Tier-1 time",
+     3.5700000000000003
+    ],
+    [
+     "PCRD time",
+     1.705
+    ],
+    [
+     "Buffers gathering time",
+     0.175
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.49
+    ]
+   ],
+   "calib": {
+    "cr": 19.016216359183467,
+    "bytes": 1276337,
+    "miss": 0.0006193421332181409,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 19.0162,
+      "bytes": 1276337,
+      "miss": 0.00062
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:49"
+  },
+  {
+   "image": "4k",
+   "variant": "q88+cr",
+   "q": 88.0,
+   "cr": 19.016216359183467,
+   "target_bytes": 1275547,
+   "bytes": 1274694,
+   "miss_pct": -0.06687327083988281,
+   "not_binding": false,
+   "enc_fps": 142.25,
+   "enc_spread_pct": 0.07029876977154498,
+   "enc_runs": 2,
+   "dec_fps": null,
+   "psnr": 41.66549110171596,
+   "psnr_kind": "psnr",
+   "stages": [
+    [
+     "Preprocessing time",
+     0.725
+    ],
+    [
+     "DWT time",
+     0.52
+    ],
+    [
+     "Tier-1 time",
+     3.615
+    ],
+    [
+     "PCRD time",
+     1.7650000000000001
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.495
+    ]
+   ],
+   "calib": {
+    "cr": 19.016216359183467,
+    "bytes": 1274808,
+    "miss": -0.0005793592866432989,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 19.0162,
+      "bytes": 1274808,
+      "miss": -0.00058
+     }
+    ]
+   },
+   "warn": [],
+   "kind": "row",
+   "at": "2026-08-26T11:38:57"
+  }
+ ],
+ "notes": [
+  "без -q кодер работает с качеством 100.0, поэтому строка cr-only это «качество 100.0 плюс -cr»"
+ ],
+ "runs": 88
+}

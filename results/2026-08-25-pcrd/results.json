@@ -1,0 +1,2984 @@
+{
+ "environment": {
+  "date": "2026-08-25 15:32",
+  "os": "Windows 11",
+  "python": "3.13.14",
+  "bench_version": "pcrd-2026-08-25.1",
+  "code_block": 32,
+  "levels": 6,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "driver": "610.88",
+  "power_limit": "450.00 W",
+  "sdk": "0.23.1.0",
+  "gpu_sample": "NVIDIA GeForce RTX 4090"
+ },
+ "rows": [
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q-only",
+   "q": 84.991455078125,
+   "cr": null,
+   "bytes": 601378,
+   "miss_pct": -0.05401335875008102,
+   "enc_fps": 358.5,
+   "enc_spread": 0.05578800557881324,
+   "enc_thr_fps": 1879.3,
+   "enc_point": "8x2",
+   "dec_fps": 134.6,
+   "dec_thr_fps": 1001.9,
+   "psnr": 40.41435426626853,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.66
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     2.76
+    ],
+    [
+     "Buffers gathering time",
+     0.22
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.69
+    ]
+   ],
+   "calib": {
+    "q": 84.991455078125,
+    "bytes": 601378,
+    "miss": -0.0005401335875008102,
+    "steps": 12,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 160814,
+      "miss": -0.7327352531065991
+     },
+     {
+      "q": 90.25,
+      "bytes": 863230,
+      "miss": 0.434644666887152
+     },
+     {
+      "q": 75.375,
+      "bytes": 335972,
+      "miss": -0.4416315025851624
+     },
+     {
+      "q": 82.8125,
+      "bytes": 522827,
+      "miss": -0.13108792876219663
+     },
+     {
+      "q": 86.53125,
+      "bytes": 665663,
+      "miss": 0.10629829002015945
+     },
+     {
+      "q": 84.671875,
+      "bytes": 588964,
+      "miss": -0.021171574680531758
+     },
+     {
+      "q": 85.6015625,
+      "bytes": 625878,
+      "miss": 0.04017762916256026
+     },
+     {
+      "q": 85.13671875,
+      "bytes": 607053,
+      "miss": 0.008891429825013336
+     },
+     {
+      "q": 84.904296875,
+      "bytes": 597828,
+      "miss": -0.00644005431250966
+     },
+     {
+      "q": 85.0205078125,
+      "bytes": 602636,
+      "miss": 0.0015505988835023258
+     },
+     {
+      "q": 84.96240234375,
+      "bytes": 600219,
+      "miss": -0.0024663330580036993
+     },
+     {
+      "q": 84.991455078125,
+      "bytes": 601378,
+      "miss": -0.0005401335875008102
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 10.230252172198536,
+   "bytes": 601905,
+   "miss_pct": 0.03357137990005036,
+   "enc_fps": 194.6,
+   "enc_spread": 0.15416238437820295,
+   "enc_thr_fps": 681.3,
+   "enc_point": "8x1",
+   "dec_fps": 124.9,
+   "dec_thr_fps": 924.6,
+   "psnr": 39.25161394690309,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.65
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     3.7
+    ],
+    [
+     "PCRD time",
+     1.51
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.62
+    ]
+   ],
+   "calib": {
+    "cr": 10.230252172198536,
+    "bytes": 601905,
+    "miss": 0.0003357137990005036,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.338655449615509,
+      "bytes": 595394,
+      "miss": -0.010485239395515728
+     },
+     {
+      "cr": 10.230252172198536,
+      "bytes": 601905,
+      "miss": 0.0003357137990005036
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q85+cr",
+   "q": 85.0,
+   "cr": 10.338655449615509,
+   "bytes": 596869,
+   "miss_pct": -0.8033863883012051,
+   "enc_fps": 218.6,
+   "enc_spread": 0.22872827081427266,
+   "enc_thr_fps": 874.2,
+   "enc_point": "8x1",
+   "dec_fps": 133.9,
+   "dec_thr_fps": 1018.3,
+   "psnr": 40.39130120620854,
+   "psnr_kind": "psnr",
+   "not_binding": true,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     3.03
+    ],
+    [
+     "PCRD time",
+     1.54
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.66
+    ]
+   ],
+   "calib": {
+    "cr": 10.338655449615509,
+    "bytes": 601703,
+    "miss": 0.0,
+    "steps": 1,
+    "not_binding": true
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q90+cr",
+   "q": 90.0,
+   "cr": 10.230973829775253,
+   "bytes": 601844,
+   "miss_pct": 0.02343348795003515,
+   "enc_fps": 211.5,
+   "enc_spread": 0.18912529550827692,
+   "enc_thr_fps": 822.9,
+   "enc_point": "8x1",
+   "dec_fps": 131.5,
+   "dec_thr_fps": 954.1,
+   "psnr": 39.79674401860474,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.35
+    ],
+    [
+     "Tier-1 time",
+     3.22
+    ],
+    [
+     "PCRD time",
+     1.67
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.64
+    ]
+   ],
+   "calib": {
+    "cr": 10.230973829775253,
+    "bytes": 601967,
+    "miss": 0.0004387546680006581,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.338655449615509,
+      "bytes": 595436,
+      "miss": -0.010415437516515623
+     },
+     {
+      "cr": 10.230973829775253,
+      "bytes": 601967,
+      "miss": 0.0004387546680006581
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q95+cr",
+   "q": 95.0,
+   "cr": 10.232004769170565,
+   "bytes": 601967,
+   "miss_pct": 0.043875466800065814,
+   "enc_fps": 201.5,
+   "enc_spread": 0.24813895781637718,
+   "enc_thr_fps": 754.9,
+   "enc_point": "8x1",
+   "dec_fps": 131.3,
+   "dec_thr_fps": 984.7,
+   "psnr": 39.73794620436291,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.68
+    ],
+    [
+     "DWT time",
+     0.38
+    ],
+    [
+     "Tier-1 time",
+     3.41
+    ],
+    [
+     "PCRD time",
+     1.6
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.67
+    ]
+   ],
+   "calib": {
+    "cr": 10.232004769170565,
+    "bytes": 601967,
+    "miss": 0.0004387546680006581,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.338655449615509,
+      "bytes": 595496,
+      "miss": -0.010315720546515474
+     },
+     {
+      "cr": 10.232004769170565,
+      "bytes": 601967,
+      "miss": 0.0004387546680006581
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 10.230973829775253,
+   "bytes": 601781,
+   "miss_pct": 0.012963206100019446,
+   "enc_fps": 196.4,
+   "enc_spread": 0.4073319755600728,
+   "enc_thr_fps": 679.1,
+   "enc_point": "8x1",
+   "dec_fps": 133.8,
+   "dec_thr_fps": 825.9,
+   "psnr": 39.24922958493926,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.37
+    ],
+    [
+     "Tier-1 time",
+     3.72
+    ],
+    [
+     "PCRD time",
+     1.51
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.67
+    ]
+   ],
+   "calib": {
+    "cr": 10.230973829775253,
+    "bytes": 601832,
+    "miss": 0.0002143914855003216,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.338655449615509,
+      "bytes": 595436,
+      "miss": -0.010415437516515623
+     },
+     {
+      "cr": 10.230973829775253,
+      "bytes": 601832,
+      "miss": 0.0002143914855003216
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 10.223740071684821,
+   "bytes": 601800,
+   "miss_pct": 0.016120910150024183,
+   "enc_fps": 156.9,
+   "enc_spread": 1.0834926704907513,
+   "enc_thr_fps": 426.0,
+   "enc_point": "8x1",
+   "dec_fps": 122.7,
+   "dec_thr_fps": 867.3,
+   "psnr": 38.625161226361044,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.68
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     4.94
+    ],
+    [
+     "PCRD time",
+     1.47
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.05
+    ],
+    [
+     "Tier-2 time",
+     0.63
+    ]
+   ],
+   "calib": {
+    "cr": 10.223740071684821,
+    "bytes": 601899,
+    "miss": 0.00032574210200048863,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 10.338655449615509,
+      "bytes": 595015,
+      "miss": -0.011115118256016673
+     },
+     {
+      "cr": 10.223740071684821,
+      "bytes": 601899,
+      "miss": 0.00032574210200048863
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "2k",
+   "target": "q85",
+   "target_bytes": 601703,
+   "variant": "nv q-only",
+   "q": 87.2383,
+   "cr": null,
+   "bytes": 600956,
+   "miss_pct": -0.12414762765018622,
+   "enc_fps": 185.1,
+   "enc_thr_fps": 248.5,
+   "dec_fps": 275.8,
+   "dec_thr_fps": 1581.6,
+   "psnr": 40.58428161001079,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 87.2383
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "q-only",
+   "q": 73.98046875,
+   "cr": null,
+   "bytes": 310824,
+   "miss_pct": -0.06944444444444445,
+   "enc_fps": 403.7,
+   "enc_spread": 0.4211047807778025,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 152.0,
+   "dec_thr_fps": null,
+   "psnr": 36.25419954328501,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.64
+    ],
+    [
+     "DWT time",
+     0.37
+    ],
+    [
+     "Tier-1 time",
+     2.55
+    ],
+    [
+     "Buffers gathering time",
+     0.22
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.53
+    ]
+   ],
+   "calib": {
+    "q": 73.98046875,
+    "bytes": 310824,
+    "miss": -0.0006944444444444445,
+    "steps": 8,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 160814,
+      "miss": -0.48297968106995887
+     },
+     {
+      "q": 90.25,
+      "bytes": 863230,
+      "miss": 1.7753022119341564
+     },
+     {
+      "q": 75.375,
+      "bytes": 335972,
+      "miss": 0.08015689300411523
+     },
+     {
+      "q": 67.9375,
+      "bytes": 226691,
+      "miss": -0.2711837705761317
+     },
+     {
+      "q": 71.65625,
+      "bytes": 274392,
+      "miss": -0.11782407407407407
+     },
+     {
+      "q": 73.515625,
+      "bytes": 303083,
+      "miss": -0.025581918724279836
+     },
+     {
+      "q": 74.4453125,
+      "bytes": 319021,
+      "miss": 0.025659079218106996
+     },
+     {
+      "q": 73.98046875,
+      "bytes": 310824,
+      "miss": -0.0006944444444444445
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 19.438850308641975,
+   "bytes": 311155,
+   "miss_pct": 0.0369727366255144,
+   "enc_fps": 204.5,
+   "enc_spread": 0.44009779951100525,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 129.1,
+   "dec_thr_fps": null,
+   "psnr": 33.77608053261578,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.68
+    ],
+    [
+     "DWT time",
+     0.38
+    ],
+    [
+     "Tier-1 time",
+     3.71
+    ],
+    [
+     "PCRD time",
+     1.45
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.47
+    ]
+   ],
+   "calib": {
+    "cr": 19.438850308641975,
+    "bytes": 311155,
+    "miss": 0.00036972736625514403,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 302313,
+      "miss": -0.028057484567901234
+     },
+     {
+      "cr": 19.438850308641975,
+      "bytes": 311155,
+      "miss": 0.00036972736625514403
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "q85+cr",
+   "q": 85.0,
+   "cr": 19.48489611613607,
+   "bytes": 311104,
+   "miss_pct": 0.0205761316872428,
+   "enc_fps": 231.2,
+   "enc_spread": 0.3027681660899605,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 146.3,
+   "dec_thr_fps": null,
+   "psnr": 35.86706941770012,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.65
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     3.04
+    ],
+    [
+     "PCRD time",
+     1.45
+    ],
+    [
+     "Buffers gathering time",
+     0.19
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.47
+    ]
+   ],
+   "calib": {
+    "cr": 19.48489611613607,
+    "bytes": 311104,
+    "miss": 0.00020576131687242798,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 302706,
+      "miss": -0.02679398148148148
+     },
+     {
+      "cr": 19.46412037037037,
+      "bytes": 311372,
+      "miss": 0.0010673868312757202
+     },
+     {
+      "cr": 19.48489611613607,
+      "bytes": 311104,
+      "miss": 0.00020576131687242798
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "q90+cr",
+   "q": 90.0,
+   "cr": 19.470293209876544,
+   "bytes": 311250,
+   "miss_pct": 0.06751543209876543,
+   "enc_fps": 225.2,
+   "enc_spread": 0.17761989342805384,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 140.6,
+   "dec_thr_fps": null,
+   "psnr": 35.39369992698366,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     3.22
+    ],
+    [
+     "PCRD time",
+     1.45
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.48
+    ]
+   ],
+   "calib": {
+    "cr": 19.470293209876544,
+    "bytes": 311217,
+    "miss": 0.0005690586419753086,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 302802,
+      "miss": -0.02648533950617284
+     },
+     {
+      "cr": 19.470293209876544,
+      "bytes": 311217,
+      "miss": 0.0005690586419753086
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 19.438850308641975,
+   "bytes": 311155,
+   "miss_pct": 0.0369727366255144,
+   "enc_fps": 205.7,
+   "enc_spread": 0.2916869227029766,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 129.1,
+   "dec_thr_fps": null,
+   "psnr": 33.77608053261578,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.66
+    ],
+    [
+     "DWT time",
+     0.38
+    ],
+    [
+     "Tier-1 time",
+     3.7
+    ],
+    [
+     "PCRD time",
+     1.51
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.49
+    ]
+   ],
+   "calib": {
+    "cr": 19.438850308641975,
+    "bytes": 311256,
+    "miss": 0.0006944444444444445,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 302313,
+      "miss": -0.028057484567901234
+     },
+     {
+      "cr": 19.438850308641975,
+      "bytes": 311256,
+      "miss": 0.0006944444444444445
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 19.436175802030213,
+   "bytes": 310972,
+   "miss_pct": -0.021862139917695474,
+   "enc_fps": 137.4,
+   "enc_spread": 0.43668122270741944,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 131.1,
+   "dec_thr_fps": null,
+   "psnr": 33.77978754109584,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.35
+    ],
+    [
+     "Tier-1 time",
+     5.25
+    ],
+    [
+     "PCRD time",
+     1.45
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.04
+    ],
+    [
+     "Tier-2 time",
+     0.46
+    ]
+   ],
+   "calib": {
+    "cr": 19.436175802030213,
+    "bytes": 311009,
+    "miss": -9.96656378600823e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 301795,
+      "miss": -0.02972286522633745
+     },
+     {
+      "cr": 19.40554269547325,
+      "bytes": 311531,
+      "miss": 0.0015785751028806584
+     },
+     {
+      "cr": 19.436175802030213,
+      "bytes": 311009,
+      "miss": -9.96656378600823e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "2k",
+   "target": "cr20",
+   "target_bytes": 311040,
+   "variant": "nv q-only",
+   "q": 57.0742,
+   "cr": null,
+   "bytes": 310219,
+   "miss_pct": -0.2639531893004115,
+   "enc_fps": 214.5,
+   "enc_thr_fps": null,
+   "dec_fps": 319.5,
+   "dec_thr_fps": null,
+   "psnr": 36.29254847774273,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 57.0742
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q-only",
+   "q": 94.869384765625,
+   "cr": null,
+   "bytes": 1243660,
+   "miss_pct": -0.04018775720164609,
+   "enc_fps": 301.6,
+   "enc_spread": 0.19893899204242899,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 115.7,
+   "dec_thr_fps": null,
+   "psnr": 45.52717236017826,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.64
+    ],
+    [
+     "DWT time",
+     0.35
+    ],
+    [
+     "Tier-1 time",
+     3.11
+    ],
+    [
+     "Buffers gathering time",
+     0.22
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     1.06
+    ]
+   ],
+   "calib": {
+    "q": 94.869384765625,
+    "bytes": 1243660,
+    "miss": -0.0004018775720164609,
+    "steps": 12,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 160814,
+      "miss": -0.8707449202674897
+     },
+     {
+      "q": 90.25,
+      "bytes": 863230,
+      "miss": -0.3061744470164609
+     },
+     {
+      "q": 105.125,
+      "bytes": 2863802,
+      "miss": 1.3017955889917696
+     },
+     {
+      "q": 97.6875,
+      "bytes": 1583780,
+      "miss": 0.2729713220164609
+     },
+     {
+      "q": 93.96875,
+      "bytes": 1153574,
+      "miss": -0.07280896347736626
+     },
+     {
+      "q": 95.828125,
+      "bytes": 1349200,
+      "miss": 0.0844264403292181
+     },
+     {
+      "q": 94.8984375,
+      "bytes": 1246723,
+      "miss": 0.0020600244341563785
+     },
+     {
+      "q": 94.43359375,
+      "bytes": 1199025,
+      "miss": -0.03627748842592592
+     },
+     {
+      "q": 94.666015625,
+      "bytes": 1222506,
+      "miss": -0.01740451388888889
+     },
+     {
+      "q": 94.7822265625,
+      "bytes": 1234563,
+      "miss": -0.007713638117283951
+     },
+     {
+      "q": 94.84033203125,
+      "bytes": 1240605,
+      "miss": -0.002857349537037037
+     },
+     {
+      "q": 94.869384765625,
+      "bytes": 1243660,
+      "miss": -0.0004018775720164609
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 4.991837866512346,
+   "bytes": 1244102,
+   "miss_pct": -0.004661779835390946,
+   "enc_fps": 183.4,
+   "enc_spread": 0.21810250817884716,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 110.5,
+   "dec_thr_fps": null,
+   "psnr": 45.110247633629356,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     3.69
+    ],
+    [
+     "PCRD time",
+     1.7
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     0.97
+    ]
+   ],
+   "calib": {
+    "cr": 4.991837866512346,
+    "bytes": 1244246,
+    "miss": 6.912294238683127e-05,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 1242129,
+      "miss": -0.0016324266975308642
+     },
+     {
+      "cr": 4.991837866512346,
+      "bytes": 1244246,
+      "miss": 6.912294238683127e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q90+cr",
+   "q": 90.0,
+   "cr": 5.0,
+   "bytes": 845516,
+   "miss_pct": -32.04121656378601,
+   "enc_fps": 295.2,
+   "enc_spread": 0.16937669376693767,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 123.0,
+   "dec_thr_fps": null,
+   "psnr": 42.80918591016346,
+   "psnr_kind": "psnr",
+   "not_binding": true,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.68
+    ],
+    [
+     "DWT time",
+     0.37
+    ],
+    [
+     "Tier-1 time",
+     3.19
+    ],
+    [
+     "PCRD time",
+     0.16
+    ],
+    [
+     "Buffers gathering time",
+     0.23
+    ],
+    [
+     "GPU->CPU copy time",
+     0.06
+    ],
+    [
+     "Tier-2 time",
+     0.85
+    ]
+   ],
+   "calib": {
+    "cr": 5.0,
+    "bytes": 847549,
+    "miss": -0.31877813143004113,
+    "steps": 1,
+    "not_binding": true
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q95+cr",
+   "q": 95.0,
+   "cr": 5.0,
+   "bytes": 1244754,
+   "miss_pct": 0.04774305555555555,
+   "enc_fps": 189.1,
+   "enc_spread": 0.5817028027498649,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 115.8,
+   "dec_thr_fps": null,
+   "psnr": 45.56953561382735,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.64
+    ],
+    [
+     "DWT time",
+     0.38
+    ],
+    [
+     "Tier-1 time",
+     3.38
+    ],
+    [
+     "PCRD time",
+     1.69
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     1.0
+    ]
+   ],
+   "calib": {
+    "cr": 5.0,
+    "bytes": 1244734,
+    "miss": 0.0004613554526748971,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 1244734,
+      "miss": 0.0004613554526748971
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 4.991837866512346,
+   "bytes": 1244102,
+   "miss_pct": -0.004661779835390946,
+   "enc_fps": 184.3,
+   "enc_spread": 0.3798155181768793,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 110.5,
+   "dec_thr_fps": null,
+   "psnr": 45.110247633629356,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.65
+    ],
+    [
+     "DWT time",
+     0.35
+    ],
+    [
+     "Tier-1 time",
+     3.71
+    ],
+    [
+     "PCRD time",
+     1.61
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     0.97
+    ]
+   ],
+   "calib": {
+    "cr": 4.991837866512346,
+    "bytes": 1244246,
+    "miss": 6.912294238683127e-05,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 1242129,
+      "miss": -0.0016324266975308642
+     },
+     {
+      "cr": 4.991837866512346,
+      "bytes": 1244246,
+      "miss": 6.912294238683127e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q110+cr",
+   "q": 110.0,
+   "cr": 4.990881397890947,
+   "bytes": 1244255,
+   "miss_pct": 0.007635673868312758,
+   "enc_fps": 161.7,
+   "enc_spread": 0.4329004329004435,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 109.0,
+   "dec_thr_fps": null,
+   "psnr": 44.75731595161787,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.67
+    ],
+    [
+     "DWT time",
+     0.37
+    ],
+    [
+     "Tier-1 time",
+     4.4
+    ],
+    [
+     "PCRD time",
+     1.66
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     0.98
+    ]
+   ],
+   "calib": {
+    "cr": 4.990881397890947,
+    "bytes": 1244255,
+    "miss": 7.635673868312758e-05,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 1241891,
+      "miss": -0.0018237204218106997
+     },
+     {
+      "cr": 4.990881397890947,
+      "bytes": 1244255,
+      "miss": 7.635673868312758e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 4.989527070473251,
+   "bytes": 1244125,
+   "miss_pct": -0.0028131430041152265,
+   "enc_fps": 141.0,
+   "enc_spread": 0.5673758865248307,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 103.8,
+   "dec_thr_fps": null,
+   "psnr": 44.523974591786754,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.66
+    ],
+    [
+     "DWT time",
+     0.36
+    ],
+    [
+     "Tier-1 time",
+     5.24
+    ],
+    [
+     "PCRD time",
+     1.74
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.07
+    ],
+    [
+     "Tier-2 time",
+     0.96
+    ]
+   ],
+   "calib": {
+    "cr": 4.989527070473251,
+    "bytes": 1244152,
+    "miss": -6.430041152263374e-06,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 1241554,
+      "miss": -0.002094585905349794
+     },
+     {
+      "cr": 4.989527070473251,
+      "bytes": 1244152,
+      "miss": -6.430041152263374e-06
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "2k",
+   "target": "cr5",
+   "target_bytes": 1244160,
+   "variant": "nv q-only",
+   "q": 97.8972,
+   "cr": null,
+   "bytes": 1245380,
+   "miss_pct": 0.09805812757201646,
+   "enc_fps": 155.8,
+   "enc_thr_fps": null,
+   "dec_fps": 228.2,
+   "dec_thr_fps": null,
+   "psnr": 46.16599734880936,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 97.8972
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q-only",
+   "q": 84.991455078125,
+   "cr": null,
+   "bytes": 1274671,
+   "miss_pct": -0.06867641882266981,
+   "enc_fps": 187.2,
+   "enc_spread": 0.16025641025641635,
+   "enc_thr_fps": 614.3,
+   "enc_point": "8x1",
+   "dec_fps": 91.5,
+   "dec_thr_fps": 343.8,
+   "psnr": 41.9712168406022,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.76
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     3.37
+    ],
+    [
+     "Buffers gathering time",
+     0.24
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.79
+    ]
+   ],
+   "calib": {
+    "q": 84.991455078125,
+    "bytes": 1274671,
+    "miss": -0.0006867641882266981,
+    "steps": 12,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 318267,
+      "miss": -0.7504858699836228
+     },
+     {
+      "q": 90.25,
+      "bytes": 1931032,
+      "miss": 0.5138854154335356
+     },
+     {
+      "q": 75.375,
+      "bytes": 672385,
+      "miss": -0.47286536677989915
+     },
+     {
+      "q": 82.8125,
+      "bytes": 1089110,
+      "miss": -0.1461623915073298
+     },
+     {
+      "q": 86.53125,
+      "bytes": 1430965,
+      "miss": 0.12184419703860383
+     },
+     {
+      "q": 84.671875,
+      "bytes": 1245110,
+      "miss": -0.023861919631342474
+     },
+     {
+      "q": 85.6015625,
+      "bytes": 1333776,
+      "miss": 0.04565021908247991
+     },
+     {
+      "q": 85.13671875,
+      "bytes": 1288525,
+      "miss": 0.01017445848722156
+     },
+     {
+      "q": 84.904296875,
+      "bytes": 1266360,
+      "miss": -0.007202400225158305
+     },
+     {
+      "q": 85.0205078125,
+      "bytes": 1277529,
+      "miss": 0.0015538431747320954
+     },
+     {
+      "q": 84.96240234375,
+      "bytes": 1271882,
+      "miss": -0.0028732771117018817
+     },
+     {
+      "q": 84.991455078125,
+      "bytes": 1274671,
+      "miss": -0.0006867641882266981
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 19.01696009001537,
+   "bytes": 1275480,
+   "miss_pct": -0.005252648471596891,
+   "enc_fps": 120.1,
+   "enc_spread": 0.33305578684430115,
+   "enc_thr_fps": 314.0,
+   "enc_point": "8x1",
+   "dec_fps": 97.0,
+   "dec_thr_fps": 358.4,
+   "psnr": 41.238626540517416,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.72
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.84
+    ],
+    [
+     "PCRD time",
+     1.77
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.53
+    ]
+   ],
+   "calib": {
+    "cr": 19.01696009001537,
+    "bytes": 1275420,
+    "miss": -9.95651277451948e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 19.50786603708056,
+      "bytes": 1242057,
+      "miss": -0.026255402584146253
+     },
+     {
+      "cr": 18.995679160719416,
+      "bytes": 1276976,
+      "miss": 0.0011203036814793966
+     },
+     {
+      "cr": 19.01696009001537,
+      "bytes": 1275420,
+      "miss": -9.95651277451948e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q85+cr",
+   "q": 85.0,
+   "cr": 19.50786603708056,
+   "bytes": 1244668,
+   "miss_pct": -2.4208437634991107,
+   "enc_fps": 144.5,
+   "enc_spread": 0.5536332179930677,
+   "enc_thr_fps": 428.5,
+   "enc_point": "8x1",
+   "dec_fps": 94.4,
+   "dec_thr_fps": 379.4,
+   "psnr": 41.89148430237212,
+   "psnr_kind": "psnr",
+   "not_binding": true,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.77
+    ],
+    [
+     "DWT time",
+     0.53
+    ],
+    [
+     "Tier-1 time",
+     3.46
+    ],
+    [
+     "PCRD time",
+     1.78
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.6
+    ]
+   ],
+   "calib": {
+    "cr": 19.50786603708056,
+    "bytes": 1275547,
+    "miss": 0.0,
+    "steps": 1,
+    "not_binding": true
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q90+cr",
+   "q": 90.0,
+   "cr": 19.00405284943596,
+   "bytes": 1275581,
+   "miss_pct": 0.002665523104989467,
+   "enc_fps": 134.1,
+   "enc_spread": 0.22371364653244696,
+   "enc_thr_fps": 400.0,
+   "enc_point": "8x1",
+   "dec_fps": 94.5,
+   "dec_thr_fps": 387.9,
+   "psnr": 41.497627409468535,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.72
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     3.94
+    ],
+    [
+     "PCRD time",
+     1.85
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.47
+    ]
+   ],
+   "calib": {
+    "cr": 19.00405284943596,
+    "bytes": 1275416,
+    "miss": -0.00010270103728047654,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 19.50786603708056,
+      "bytes": 1241318,
+      "miss": -0.02683476187078955
+     },
+     {
+      "cr": 18.98437709736824,
+      "bytes": 1276869,
+      "miss": 0.0010364181014106105
+     },
+     {
+      "cr": 19.00405284943596,
+      "bytes": 1275416,
+      "miss": -0.00010270103728047654
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q95+cr",
+   "q": 95.0,
+   "cr": 18.99517446776869,
+   "bytes": 1276736,
+   "miss_pct": 0.09321491093624931,
+   "enc_fps": 129.1,
+   "enc_spread": 0.15491866769944898,
+   "enc_thr_fps": 362.2,
+   "enc_point": "8x1",
+   "dec_fps": 95.9,
+   "dec_thr_fps": 387.9,
+   "psnr": 41.51422162795896,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.71
+    ],
+    [
+     "DWT time",
+     0.53
+    ],
+    [
+     "Tier-1 time",
+     4.25
+    ],
+    [
+     "PCRD time",
+     1.81
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.55
+    ]
+   ],
+   "calib": {
+    "cr": 18.99517446776869,
+    "bytes": 1276736,
+    "miss": 0.0009321491093624931,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 19.50786603708056,
+      "bytes": 1242024,
+      "miss": -0.026281273837812327
+     },
+     {
+      "cr": 18.99517446776869,
+      "bytes": 1276736,
+      "miss": 0.0009321491093624931
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 19.016216359183467,
+   "bytes": 1275480,
+   "miss_pct": -0.005252648471596891,
+   "enc_fps": 120.6,
+   "enc_spread": 0.08291873963515284,
+   "enc_thr_fps": 314.5,
+   "enc_point": "8x1",
+   "dec_fps": 92.1,
+   "dec_thr_fps": 363.5,
+   "psnr": 41.238626540517416,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.72
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.86
+    ],
+    [
+     "PCRD time",
+     1.81
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.53
+    ]
+   ],
+   "calib": {
+    "cr": 19.016216359183467,
+    "bytes": 1275480,
+    "miss": -5.252648471596891e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 19.50786603708056,
+      "bytes": 1241988,
+      "miss": -0.026309497023629863
+     },
+     {
+      "cr": 18.99462389364062,
+      "bytes": 1276997,
+      "miss": 0.0011367672065396258
+     },
+     {
+      "cr": 19.016216359183467,
+      "bytes": 1275480,
+      "miss": -5.252648471596891e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 19.007951342167157,
+   "bytes": 1275519,
+   "miss_pct": -0.002195136674697208,
+   "enc_fps": 88.5,
+   "enc_spread": 0.11299435028247945,
+   "enc_thr_fps": 169.8,
+   "enc_point": "8x1",
+   "dec_fps": 90.6,
+   "dec_thr_fps": 354.8,
+   "psnr": 40.66048145908725,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.75
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     7.92
+    ],
+    [
+     "PCRD time",
+     1.87
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.51
+    ]
+   ],
+   "calib": {
+    "cr": 19.007951342167157,
+    "bytes": 1275533,
+    "miss": -1.0975683373486041e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 19.50786603708056,
+      "bytes": 1241455,
+      "miss": -0.026727356969206154
+     },
+     {
+      "cr": 18.986472337800055,
+      "bytes": 1276990,
+      "miss": 0.0011312793648528827
+     },
+     {
+      "cr": 19.007951342167157,
+      "bytes": 1275533,
+      "miss": -1.0975683373486041e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "4k",
+   "target": "q85",
+   "target_bytes": 1275547,
+   "variant": "nv q-only",
+   "q": 87.2383,
+   "cr": null,
+   "bytes": 1279195,
+   "miss_pct": 0.28599494961769345,
+   "enc_fps": 121.3,
+   "enc_thr_fps": 151.3,
+   "dec_fps": 183.5,
+   "dec_thr_fps": 567.7,
+   "psnr": 42.255793509653536,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 87.2383
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "q-only",
+   "q": 84.671875,
+   "cr": null,
+   "bytes": 1245110,
+   "miss_pct": 0.07635673868312758,
+   "enc_fps": 187.5,
+   "enc_spread": 0.10666666666666061,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 95.7,
+   "dec_thr_fps": null,
+   "psnr": 41.8447412768931,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.73
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     3.38
+    ],
+    [
+     "Buffers gathering time",
+     0.23
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.77
+    ]
+   ],
+   "calib": {
+    "q": 84.671875,
+    "bytes": 1245110,
+    "miss": 0.0007635673868312757,
+    "steps": 6,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 318267,
+      "miss": -0.7441912615740741
+     },
+     {
+      "q": 90.25,
+      "bytes": 1931032,
+      "miss": 0.5520769032921811
+     },
+     {
+      "q": 75.375,
+      "bytes": 672385,
+      "miss": -0.45956709747942387
+     },
+     {
+      "q": 82.8125,
+      "bytes": 1089110,
+      "miss": -0.12462223508230452
+     },
+     {
+      "q": 86.53125,
+      "bytes": 1430965,
+      "miss": 0.15014547968106995
+     },
+     {
+      "q": 84.671875,
+      "bytes": 1245110,
+      "miss": 0.0007635673868312757
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 19.47781559191973,
+   "bytes": 1244075,
+   "miss_pct": -0.006831918724279835,
+   "enc_fps": 120.6,
+   "enc_spread": 0.08291873963515284,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 93.3,
+   "dec_thr_fps": null,
+   "psnr": 41.07465116826093,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.74
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.87
+    ],
+    [
+     "PCRD time",
+     1.83
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.51
+    ]
+   ],
+   "calib": {
+    "cr": 19.47781559191973,
+    "bytes": 1244129,
+    "miss": -2.4916409465020575e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 1210009,
+      "miss": -0.027449041923868312
+     },
+     {
+      "cr": 19.451019161522634,
+      "bytes": 1245874,
+      "miss": 0.001377636316872428
+     },
+     {
+      "cr": 19.47781559191973,
+      "bytes": 1244129,
+      "miss": -2.4916409465020575e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "q85+cr",
+   "q": 85.0,
+   "cr": 19.51464223351498,
+   "bytes": 1244260,
+   "miss_pct": 0.008037551440329218,
+   "enc_fps": 138.5,
+   "enc_spread": 0.4332129963898876,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 96.5,
+   "dec_thr_fps": null,
+   "psnr": 41.889834133395155,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.74
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     3.67
+    ],
+    [
+     "PCRD time",
+     1.87
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.57
+    ]
+   ],
+   "calib": {
+    "cr": 19.51464223351498,
+    "bytes": 1244260,
+    "miss": 8.037551440329218e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 1212073,
+      "miss": -0.025790091306584363
+     },
+     {
+      "cr": 19.48419817386831,
+      "bytes": 1246104,
+      "miss": 0.0015625
+     },
+     {
+      "cr": 19.51464223351498,
+      "bytes": 1244260,
+      "miss": 8.037551440329218e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "q90+cr",
+   "q": 90.0,
+   "cr": 19.45384837962963,
+   "bytes": 1244988,
+   "miss_pct": 0.06655092592592593,
+   "enc_fps": 134.3,
+   "enc_spread": 0.3723008190618019,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 92.7,
+   "dec_thr_fps": null,
+   "psnr": 41.37007662295616,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.77
+    ],
+    [
+     "DWT time",
+     0.55
+    ],
+    [
+     "Tier-1 time",
+     3.97
+    ],
+    [
+     "PCRD time",
+     1.93
+    ],
+    [
+     "Buffers gathering time",
+     0.21
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.53
+    ]
+   ],
+   "calib": {
+    "cr": 19.45384837962963,
+    "bytes": 1244988,
+    "miss": 0.0006655092592592592,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 1210185,
+      "miss": -0.027307581018518517
+     },
+     {
+      "cr": 19.45384837962963,
+      "bytes": 1244988,
+      "miss": 0.0006655092592592592
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 19.477065166797757,
+   "bytes": 1244010,
+   "miss_pct": -0.012056327160493827,
+   "enc_fps": 120.9,
+   "enc_spread": 0.16542597187758712,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 94.7,
+   "dec_thr_fps": null,
+   "psnr": 41.073536822079916,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.71
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.82
+    ],
+    [
+     "PCRD time",
+     1.84
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.49
+    ]
+   ],
+   "calib": {
+    "cr": 19.477065166797757,
+    "bytes": 1244129,
+    "miss": -2.4916409465020575e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 1210009,
+      "miss": -0.027449041923868312
+     },
+     {
+      "cr": 19.451019161522634,
+      "bytes": 1245826,
+      "miss": 0.0013390560699588477
+     },
+     {
+      "cr": 19.477065166797757,
+      "bytes": 1244129,
+      "miss": -2.4916409465020575e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 19.46968319031784,
+   "bytes": 1244063,
+   "miss_pct": -0.007796424897119341,
+   "enc_fps": 88.9,
+   "enc_spread": 0.6749156355455503,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 93.0,
+   "dec_thr_fps": null,
+   "psnr": 40.52132069144828,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.73
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     7.92
+    ],
+    [
+     "PCRD time",
+     1.8
+    ],
+    [
+     "Buffers gathering time",
+     0.2
+    ],
+    [
+     "GPU->CPU copy time",
+     0.11
+    ],
+    [
+     "Tier-2 time",
+     1.49
+    ]
+   ],
+   "calib": {
+    "cr": 19.46968319031784,
+    "bytes": 1244084,
+    "miss": -6.108539094650206e-05,
+    "steps": 3,
+    "hist": [
+     {
+      "cr": 20.0,
+      "bytes": 1209664,
+      "miss": -0.027726337448559672
+     },
+     {
+      "cr": 19.445473251028808,
+      "bytes": 1245709,
+      "miss": 0.0012450167181069958
+     },
+     {
+      "cr": 19.46968319031784,
+      "bytes": 1244084,
+      "miss": -6.108539094650206e-05
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "4k",
+   "target": "cr20",
+   "target_bytes": 1244160,
+   "variant": "nv q-only",
+   "q": 86.4648,
+   "cr": null,
+   "bytes": 1242926,
+   "miss_pct": -0.09918338477366255,
+   "enc_fps": 122.4,
+   "enc_thr_fps": null,
+   "dec_fps": 185.6,
+   "dec_thr_fps": null,
+   "psnr": 42.089782701034764,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 86.4648
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "q-only",
+   "q": 100.41845703125,
+   "cr": null,
+   "bytes": 4979016,
+   "miss_pct": 0.04774305555555555,
+   "enc_fps": 130.7,
+   "enc_spread": 0.3825554705432288,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 59.4,
+   "dec_thr_fps": null,
+   "psnr": 49.44918525683083,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.75
+    ],
+    [
+     "DWT time",
+     0.55
+    ],
+    [
+     "Tier-1 time",
+     4.43
+    ],
+    [
+     "Buffers gathering time",
+     0.26
+    ],
+    [
+     "GPU->CPU copy time",
+     0.24
+    ],
+    [
+     "Tier-2 time",
+     3.72
+    ]
+   ],
+   "calib": {
+    "q": 100.41845703125,
+    "bytes": 4979016,
+    "miss": 0.00047743055555555554,
+    "steps": 11,
+    "hist": [
+     {
+      "q": 60.5,
+      "bytes": 318267,
+      "miss": -0.9360478153935186
+     },
+     {
+      "q": 90.25,
+      "bytes": 1931032,
+      "miss": -0.6119807741769547
+     },
+     {
+      "q": 105.125,
+      "bytes": 7881652,
+      "miss": 0.5837295846193415
+     },
+     {
+      "q": 97.6875,
+      "bytes": 3827607,
+      "miss": -0.23088529610339506
+     },
+     {
+      "q": 101.40625,
+      "bytes": 5488514,
+      "miss": 0.10285534014917695
+     },
+     {
+      "q": 99.546875,
+      "bytes": 4576770,
+      "miss": -0.0803493923611111
+     },
+     {
+      "q": 100.4765625,
+      "bytes": 5007897,
+      "miss": 0.006280743634259259
+     },
+     {
+      "q": 100.01171875,
+      "bytes": 4786008,
+      "miss": -0.03830536265432099
+     },
+     {
+      "q": 100.244140625,
+      "bytes": 4895495,
+      "miss": -0.01630517779063786
+     },
+     {
+      "q": 100.3603515625,
+      "bytes": 4950691,
+      "miss": -0.005214160558127572
+     },
+     {
+      "q": 100.41845703125,
+      "bytes": 4979016,
+      "miss": 0.00047743055555555554
+     }
+    ],
+    "integer_scale": false
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "cr-only",
+   "q": null,
+   "cr": 5.0,
+   "bytes": 4773811,
+   "miss_pct": -4.075621302726337,
+   "enc_fps": 122.5,
+   "enc_spread": 0.0,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 60.0,
+   "dec_thr_fps": null,
+   "psnr": 49.24109969918588,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.78
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.87
+    ],
+    [
+     "PCRD time",
+     0.14
+    ],
+    [
+     "Buffers gathering time",
+     0.23
+    ],
+    [
+     "GPU->CPU copy time",
+     0.24
+    ],
+    [
+     "Tier-2 time",
+     3.59
+    ]
+   ],
+   "calib": {
+    "cr": 5.0,
+    "bytes": 4780816,
+    "miss": -0.03934863683127572,
+    "steps": 1,
+    "not_binding": true
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "q100+cr",
+   "q": 100.0,
+   "cr": 5.0,
+   "bytes": 4773911,
+   "miss_pct": -4.073611914866255,
+   "enc_fps": 122.7,
+   "enc_spread": 0.16299918500407728,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 60.1,
+   "dec_thr_fps": null,
+   "psnr": 49.241532217289915,
+   "psnr_kind": "psnr",
+   "not_binding": true,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.78
+    ],
+    [
+     "DWT time",
+     0.54
+    ],
+    [
+     "Tier-1 time",
+     4.86
+    ],
+    [
+     "PCRD time",
+     0.16
+    ],
+    [
+     "Buffers gathering time",
+     0.25
+    ],
+    [
+     "GPU->CPU copy time",
+     0.24
+    ],
+    [
+     "Tier-2 time",
+     3.67
+    ]
+   ],
+   "calib": {
+    "cr": 5.0,
+    "bytes": 4780816,
+    "miss": -0.03934863683127572,
+    "steps": 1,
+    "not_binding": true
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "q110+cr",
+   "q": 110.0,
+   "cr": 5.0,
+   "bytes": 4975241,
+   "miss_pct": -0.02811133616255144,
+   "enc_fps": 89.7,
+   "enc_spread": 0.11148272017836601,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 61.0,
+   "dec_thr_fps": null,
+   "psnr": 49.27364574131044,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.79
+    ],
+    [
+     "DWT time",
+     0.55
+    ],
+    [
+     "Tier-1 time",
+     6.24
+    ],
+    [
+     "PCRD time",
+     1.99
+    ],
+    [
+     "Buffers gathering time",
+     0.22
+    ],
+    [
+     "GPU->CPU copy time",
+     0.25
+    ],
+    [
+     "Tier-2 time",
+     3.51
+    ]
+   ],
+   "calib": {
+    "cr": 5.0,
+    "bytes": 4975241,
+    "miss": -0.0002811133616255144,
+    "steps": 1,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 4975241,
+      "miss": -0.0002811133616255144
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "fv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "q120+cr",
+   "q": 120.0,
+   "cr": 4.993743770897634,
+   "bytes": 4976737,
+   "miss_pct": 0.0019491062242798353,
+   "enc_fps": 78.7,
+   "enc_spread": 0.25412960609911417,
+   "enc_thr_fps": null,
+   "enc_point": "",
+   "dec_fps": 67.2,
+   "dec_thr_fps": null,
+   "psnr": 49.00087057144228,
+   "psnr_kind": "psnr",
+   "not_binding": false,
+   "stages": [
+    [
+     "Preprocessing time",
+     0.78
+    ],
+    [
+     "DWT time",
+     0.55
+    ],
+    [
+     "Tier-1 time",
+     7.96
+    ],
+    [
+     "PCRD time",
+     2.06
+    ],
+    [
+     "Buffers gathering time",
+     0.23
+    ],
+    [
+     "GPU->CPU copy time",
+     0.25
+    ],
+    [
+     "Tier-2 time",
+     3.34
+    ]
+   ],
+   "calib": {
+    "cr": 4.993743770897634,
+    "bytes": 4976625,
+    "miss": -3.0140817901234566e-06,
+    "steps": 2,
+    "hist": [
+     {
+      "cr": 5.0,
+      "bytes": 4970413,
+      "miss": -0.001251245820473251
+     },
+     {
+      "cr": 4.993743770897634,
+      "bytes": 4976625,
+      "miss": -3.0140817901234566e-06
+     }
+    ]
+   },
+   "warn": []
+  },
+  {
+   "codec": "nv",
+   "image": "4k",
+   "target": "cr5",
+   "target_bytes": 4976640,
+   "variant": "nv q-only",
+   "q": 99.5529,
+   "cr": null,
+   "bytes": 4974283,
+   "miss_pct": -0.04736127186213992,
+   "enc_fps": 69.3,
+   "enc_thr_fps": null,
+   "dec_fps": 101.4,
+   "dec_thr_fps": null,
+   "psnr": 51.325327193515974,
+   "psnr_kind": "psnr",
+   "stages": [],
+   "calib": {
+    "q": 99.5529
+   },
+   "warn": []
+  }
+ ],
+ "notes": []
+}

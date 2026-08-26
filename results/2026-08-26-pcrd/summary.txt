@@ -1,0 +1,138 @@
+PCRD mode: encoding speed at a fixed output size, pcrd-2026-08-26.3
+date:          2026-08-26 11:37
+gpu:           NVIDIA GeForce RTX 4090
+driver:        610.88
+os:            Windows 11
+python:        3.13.14
+runs:          88
+
+note: with no -q the encoder works at quality 100, so the cr-only row is
+      in fact "quality 100 plus -cr"
+
+Quality ladder, no rate control
+frame  q          bytes      ratio
+2k     85         601703     10.34:1
+2k     86         642479      9.68:1
+2k     87         687006      9.05:1
+2k     88         735218      8.46:1
+2k     100       1928926      3.23:1
+4k     85        1275547     19.51:1
+4k     86        1374548     18.10:1
+4k     87        1483885     16.77:1
+4k     88        1605164     15.50:1
+4k     100       4780816      5.20:1
+
+frame variant       q        cr      bytes   miss%  enc fps  spread    PSNR
+----------------------------------------------------------------------------
+2k    q85           85.00         -     601703   0.000    372.1     1.1   40.42
+2k    cr-only           -    10.231     601832   0.021    207.4     0.0   39.25
+2k    q86+cr        86.00    10.247     601709   0.001    228.4     0.1   40.40
+2k    q87+cr        87.00    10.243     601683  -0.003    227.1     0.2   40.23
+2k    q88+cr        88.00    10.231     601986   0.047    230.3     0.3   39.98
+4k    q85           85.00         -    1275547   0.000    194.4     0.4   41.97
+4k    cr-only           -    19.016    1275537  -0.001    126.6     0.2   41.24
+4k    q86+cr        86.00    19.016    1276798   0.098    145.1     0.3   42.00
+4k    q87+cr        87.00    19.016    1276532   0.077    142.7     0.3   41.89
+4k    q88+cr        88.00    19.016    1274694  -0.067    142.2     0.1   41.67
+
+How many times slower than the reference (reference = quality 85 only)
+   2k   cr-only    1.79 times   (PSNR 39.25 against 40.42)
+   2k   q86+cr     1.63 times   (PSNR 40.40 against 40.42)
+   2k   q87+cr     1.64 times   (PSNR 40.23 against 40.42)
+   2k   q88+cr     1.62 times   (PSNR 39.98 against 40.42)
+   4k   cr-only    1.54 times   (PSNR 41.24 against 41.97)
+   4k   q86+cr     1.34 times   (PSNR 42.00 against 41.97)
+   4k   q87+cr     1.36 times   (PSNR 41.89 against 41.97)
+   4k   q88+cr     1.37 times   (PSNR 41.67 against 41.97)
+
+Stage breakdown, one frame under -info, medians in ms
+(-info synchronises between the stages, so the sum is above a real frame time:
+ read shares, not totals)
+
+2k q85
+   Preprocessing time                           0.64 ms   13.6 %
+   DWT time                                     0.35 ms    7.5 %
+   Tier-1 time                                  2.76 ms   58.8 %
+   Buffers gathering time                       0.21 ms    4.4 %
+   GPU->CPU copy time                           0.05 ms    1.1 %
+   Tier-2 time                                  0.69 ms   14.7 %
+
+2k cr-only
+   Preprocessing time                           0.64 ms    9.3 %
+   DWT time                                     0.34 ms    5.1 %
+   Tier-1 time                                  3.47 ms   50.8 %
+   PCRD time                                    1.51 ms   22.2 %
+   Buffers gathering time                       0.20 ms    2.9 %
+   GPU->CPU copy time                           0.05 ms    0.7 %
+   Tier-2 time                                  0.61 ms    8.9 %
+
+2k q86+cr
+   Preprocessing time                           0.61 ms    9.8 %
+   DWT time                                     0.37 ms    5.9 %
+   Tier-1 time                                  2.85 ms   45.6 %
+   PCRD time                                    1.54 ms   24.7 %
+   Buffers gathering time                       0.20 ms    3.1 %
+   GPU->CPU copy time                           0.06 ms    0.9 %
+   Tier-2 time                                  0.62 ms   10.0 %
+
+2k q87+cr
+   Preprocessing time                           0.64 ms   10.2 %
+   DWT time                                     0.33 ms    5.2 %
+   Tier-1 time                                  2.92 ms   46.7 %
+   PCRD time                                    1.49 ms   23.8 %
+   Buffers gathering time                       0.20 ms    3.1 %
+   GPU->CPU copy time                           0.05 ms    0.8 %
+   Tier-2 time                                  0.64 ms   10.2 %
+
+2k q88+cr
+   Preprocessing time                           0.61 ms    9.9 %
+   DWT time                                     0.34 ms    5.5 %
+   Tier-1 time                                  2.90 ms   47.1 %
+   PCRD time                                    1.44 ms   23.5 %
+   Buffers gathering time                       0.19 ms    3.1 %
+   GPU->CPU copy time                           0.06 ms    0.9 %
+   Tier-2 time                                  0.60 ms    9.9 %
+
+4k q85
+   Preprocessing time                           0.72 ms   10.7 %
+   DWT time                                     0.53 ms    7.8 %
+   Tier-1 time                                  3.37 ms   50.1 %
+   Buffers gathering time                       0.23 ms    3.3 %
+   GPU->CPU copy time                           0.11 ms    1.6 %
+   Tier-2 time                                  1.77 ms   26.3 %
+
+4k cr-only
+   Preprocessing time                           0.71 ms    7.7 %
+   DWT time                                     0.51 ms    5.5 %
+   Tier-1 time                                  4.54 ms   49.0 %
+   PCRD time                                    1.67 ms   18.1 %
+   Buffers gathering time                       0.21 ms    2.2 %
+   GPU->CPU copy time                           0.11 ms    1.2 %
+   Tier-2 time                                  1.52 ms   16.3 %
+
+4k q86+cr
+   Preprocessing time                           0.72 ms    8.8 %
+   DWT time                                     0.52 ms    6.3 %
+   Tier-1 time                                  3.51 ms   42.6 %
+   PCRD time                                    1.67 ms   20.2 %
+   Buffers gathering time                       0.20 ms    2.4 %
+   GPU->CPU copy time                           0.11 ms    1.3 %
+   Tier-2 time                                  1.52 ms   18.4 %
+
+4k q87+cr
+   Preprocessing time                           0.71 ms    8.6 %
+   DWT time                                     0.51 ms    6.2 %
+   Tier-1 time                                  3.57 ms   43.1 %
+   PCRD time                                    1.71 ms   20.6 %
+   Buffers gathering time                       0.17 ms    2.1 %
+   GPU->CPU copy time                           0.11 ms    1.3 %
+   Tier-2 time                                  1.49 ms   18.0 %
+
+4k q88+cr
+   Preprocessing time                           0.72 ms    8.6 %
+   DWT time                                     0.52 ms    6.2 %
+   Tier-1 time                                  3.62 ms   42.9 %
+   PCRD time                                    1.77 ms   20.9 %
+   Buffers gathering time                       0.20 ms    2.4 %
+   GPU->CPU copy time                           0.11 ms    1.3 %
+   Tier-2 time                                  1.50 ms   17.7 %
