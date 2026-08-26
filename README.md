@@ -245,7 +245,9 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 
 ## Licences
 
-Three of them, described in `LICENSE-CONTENT.md`.
+Three of them. GitHub shows one MIT badge for the whole repository, because that is the licence
+of the code; the measurement results and the article snapshots have their own, and all three are
+described in `CONTENT-LICENSE.md`.
 
 **The code** — the measurement scripts and the nvJPEG2000 harness — is MIT, see `LICENSE`. Take it,
 change it, publish your own results.

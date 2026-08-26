@@ -26,6 +26,6 @@ This licence covers the source code in this repository only: the benchmark
 script and the nvJPEG2000 measurement harness.
 
 Texts, tables and logs - the article snapshot, README and the contents of
-results/ - are published under CC BY 4.0; see LICENSE-CONTENT.md.
+results/ - are published under CC BY 4.0; see CONTENT-LICENSE.md.
 
 Third-party software is not covered by either licence; see THIRD-PARTY.md.
