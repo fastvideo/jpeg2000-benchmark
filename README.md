@@ -226,7 +226,7 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 - Source image, 2K: <https://www.fastcompression.com/img/test_j2k/2k_wild.ppm>
 - Source image, 4K: <https://www.fastcompression.com/img/test_j2k/4k_wild.ppm>
 - Fastvideo SDK demo:
-  <https://www.fastcompression.com/download/demo/fvSDK-0.22.0.0-Win64-CUDA-12.6-Demo-Exp-2027-04-18.7z>
+  <https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z>
 - nvJPEG2000 downloads: <https://developer.nvidia.com/nvjpeg2000-downloads>
 - This repository: <https://github.com/fastvideo/jpeg2000-benchmark>
 
