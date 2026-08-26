@@ -153,10 +153,11 @@ nvJPEG2000 harness, which the script builds itself.
     python pcrd-cost-03.py --selftest   checks only, measures nothing
 
 **On the Fastvideo side.** Speed is reproducible on the demo build of the SDK, which is a free
-download. The demo is 0.22.0.0 with CUDA 12.6 while the published results are 0.23.1.0 with CUDA
-13.3, so do not mix numbers from the two. The quality check is reproducible on the demo build as
-well: the script takes as its PSNR reference a lossless round trip made by the same build, so a
-watermark, if the build has one, cancels out. Whether it has one is checked by the script itself —
+download and is the same version as the published results — 0.23.1.0 with CUDA 13.3. When a newer
+demo appears, check its version before comparing: numbers from different SDK versions should not be
+mixed. The quality check is reproducible on the demo build as well: the script takes as its PSNR
+reference a lossless round trip made by the same build, so a watermark, if the build has one,
+cancels out. Whether it has one is checked by the script itself —
 two independent lossless round trips must match byte for byte. A build without a watermark is
 needed only if you want to compare the decoded frame with the original file directly; ask through
 the form on the site.
@@ -164,6 +165,16 @@ the form on the site.
 **On the NVIDIA side.** nvJPEG2000 is free: download it from NVIDIA or install the
 `nvidia-nvjpeg2k-cu12` package. The harness is built from the sources in this repository. Nothing
 has to be requested from anyone.
+
+On Windows `bench-04.py` builds the harness itself with the Microsoft compiler. On Linux — a Jetson
+board among others — build it with CMake:
+
+    cmake -B build -DCMAKE_BUILD_TYPE=Release
+    cmake --build build -j
+
+If nvJPEG2000 is not in a standard place, add `-DNVJPEG2K_ROOT=/path/to/nvjpeg2k`. The two
+executables land in `build/`; copy them next to the test frames. `bench/build.sh` does the same
+thing with one `g++` call per executable, for when CMake is unavailable or too old.
 
 `bench/README.md` has the run options and the workflow.
 
@@ -191,6 +202,8 @@ from it; the runs whose logs are in the repository are listed in the next sectio
 | `bench/bench-04.py` | the harness of the 24 August run: the full cycle, both codecs, energy |
 | `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
 | `bench/nvj2k_bench.cpp` | the benchmark harness for nvJPEG2000 |
+| `bench/CMakeLists.txt` | builds that harness on Linux, Jetson included |
+| `bench/build.sh` | the same build without CMake, one `g++` call per executable |
 | `bench/README.md` | run options and workflow |
 | `results/2026-08-19/` | the first full comparison: tables, machine-readable data, 438 logs, and the article of that date |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
