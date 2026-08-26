@@ -1,309 +1,261 @@
 # JPEG2000 benchmark — a reproducible measurement procedure
 
-**README for the `fastvideo/jpeg2000-benchmark` repository. Version of
-19 August 2026.**
-
-The results in "Results" come from a single measurement run made on
-19 August 2026 on an RTX 4090.
-
----
-
-Here is everything needed to measure the speed of JPEG2000 implementations on
-a GPU and get your own numbers: the script, the benchmark harness for
-nvJPEG2000, the results of the latest measurement runs together with the raw
-logs, and an article with a detailed walk-through of the method.
+Version of 26 August 2026. Latest full comparison run: 24 August 2026, on an RTX 4090.
 
 ## The problem
 
-An engineer choosing a JPEG2000 codec has to compare implementations by other
-people's results. Those results are usually not comparable, and here is why.
+Published JPEG2000 numbers are hard to compare with each other.
 
-**Different settings mean different work.** Each implementation has its own
-quality scale: "85" in one and "85" in another produce files of different
-size, which means the codecs do different amounts of work. The comparison has
-to be made at the same result — at a matching output file size — not at the
-same number in a setting.
+- The same quality setting — say 85 — gives files of different sizes in different codecs, and a
+  codec that produced a smaller file did less work.
+- The same "frames per second" means different things depending on the measurement mode.
+- What was inside the measured interval is usually not stated: the copy to the GPU, the assembly on
+  the CPU, the write to disk.
+- Speed on its own is not enough: a codec is only comparable if the decoded frame is checked too.
 
-**The same fps figure means different things.** One codec on one card gives
-values that differ by tens of times, and all of them are true: the difference
-is in which work overlaps with which. A number without a description of the
-mode means nothing.
-
-**What goes into the measured time is usually not stated.** Whether the
-measured time includes copying pixels to the card, assembling the compressed
-file on the CPU, writing to disk — that affects the result more than the codec
-itself does.
-
-**Speed alone is not enough for a comparison.** A decoder that does less work
-than it should looks faster.
-
-Hence the goal of this repository: **not to prove that someone is faster, but
-to give a procedure you can run yourself.** Numbers go stale with every driver
-and library version; the procedure lives longer.
+This repository is not here to prove that someone is faster. It is here to give a procedure you can
+run yourself. Numbers go stale with every driver and library version; the procedure lives longer.
 
 ## What is measured
 
-Four modes, because "codec speed" is not a single number:
+Four measurement modes:
 
-| Mode                           | What it gives                                 |
-|--------------------------------|-----------------------------------------------|
-| Single frame, first run        | a baseline; it includes one-time costs        |
-| Single image mode              | the time to process one frame, a stable value |
-| Multithreaded, threads         | fps, stages of neighbouring frames overlap    |
-| Multithreaded, threads + batch | fps at maximum GPU load                       |
+| Mode | What it gives |
+|---|---|
+| Single frame, first run | the baseline, one-off costs included |
+| Single image mode | the stable processing time of one frame |
+| Multithreaded, threads | frames per second with neighbouring frames overlapping |
+| Multithreaded, threads and batch | frames per second at the highest GPU load |
 
-**Batching is built differently in the two codecs, and you need to know that
-when reading the tables.** The notation 8×2 means eight CPU threads, each with
-two frames in flight on the GPU at the same time. There are exactly eight CPU
-threads at any batch size; what doubles is the number of jobs the GPU works on
-at one moment.
+"8×2" means eight CPU threads with two frames in flight on the GPU in each of them. The two codecs
+reach that differently: fvJPEG2000 has a real batch — one call takes an array of images —
+nvJPEG2000 has no such call, so the same effect is built by hand out of several codec states, CUDA
+streams and asynchronous calls. That is done with the library's own facilities and it does help:
+1.33× on the encoder and 1.17× on the decoder.
 
-In fvJPEG2000 those frames go into the codec in a single call — the batch is
-real. nvJPEG2000 has no such call: no function of the library takes an array
-of images. So the load is built up differently — each thread gets as many
-independent codec states and CUDA streams as the batch size says, and the
-encodes are submitted one after another, without waiting for the result.
+The measured interval runs from the source image in GPU memory to the compressed image in host
+memory for the encoder, and the other way round for the decoder. Everything on the compressed side
+and all the CPU parts of both codecs are inside it; copying the raw pixels between CPU and GPU and
+any disk work are outside it.
 
-The means for this come from the NVIDIA library itself: multiple states, CUDA
-streams, asynchronous calls. The only thing it lacks is a ready-made mode —
-the order of calls has to be laid out by hand, and the NVIDIA samples do not
-do it. The gain is real: 1.33x for the encoder, 1.17x for the decoder; without
-it the gap in the tables would be larger. We take exactly these values as the
-best for nvJPEG2000: the comparison has to be against the maximum the library
-can give.
+Every measurement is followed by a full cycle: encode, decode, compare with the source. Lossless
+must match byte for byte; for lossy, PSNR is computed.
 
-The measured time is the same for all participants, and mirrored:
+**Rate control is measured separately.** fvJPEG2000 has two ways of setting the loss and they
+combine: the quality parameter `-q`, which controls quantization and lets the file size fall where
+it may, and PCRD mode (`-cr`), which is given a compression ratio and discards the least
+significant bits of the code blocks until the frame fits. nvJPEG2000 has no mode that targets a
+file size, so the PCRD runs are one-sided by nature and live in their own results folders.
 
-- **encoder** — from pixels in GPU memory to compressed data in CPU memory;
-- **decoder** — from compressed data in CPU memory to pixels in GPU memory.
-
-Everything that happens on the compressed side is counted, including the CPU
-parts on both sides. Copying pixels between the CPU and the card is not
-counted. Disk is excluded entirely.
-
-Every measurement run ends with a check: encode, decode, compare against the
-source image. Lossless is expected to match byte for byte; for lossy, PSNR is
-computed.
-
-This page has the problem statement and the results. The step-by-step
-walk-through of the method — why there are four modes, where the boundaries
-run, how quality is matched and how the check is computed — is in the
-[article](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=method). It is also
-kept here, next to the results of each run:
-`results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`.
+The full walk-through of the method is the article:
+<https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>
 
 ## Results
 
-The test system and conditions. Every number refers to this configuration and
-to no other.
+### Test system
 
-| Item             | Value                                               |
-|------------------|-----------------------------------------------------|
-| GPU              | NVIDIA GeForce RTX 4090                             |
-| Driver           | 610.88                                              |
-| Fastvideo SDK    | 0.23.1.0, CUDA 13.3                                 |
-| nvJPEG2000       | 0.11.0.51                                           |
-| Operating system | Windows 11, 32 CPU threads, 128 GB RAM              |
-| Images           | 1920×1080 and 3840×2160, 3 channels, 8 bit          |
-| Settings         | code block 32×32, 6 levels, 1 layer, LRCP, no tiles |
-| Measurement date | 19 August 2026                                      |
+| Item | Value |
+|---|---|
+| GPU | NVIDIA GeForce RTX 4090, 24 GB |
+| GPU driver | 610.88 |
+| GPU maximum power | 450 W |
+| CPU | AMD, 32 threads |
+| RAM | 128 GB |
+| Fastvideo JPEG2000 codec (FV) | Fastvideo SDK 0.23.1.0, CUDA 13.3 |
+| nvJPEG2000 library (NV) | version 0.11.0.51 |
+| Operating system | Windows 11 |
+| Bus speed, measured | 25.2 GB/s from CPU to GPU |
+| Images | 1920×1080 and 3840×2160, 3 channels, 8 bit |
+| Settings | code block 32×32, 6 levels, 1 quality layer, LRCP, no tiles |
+| Series per point | 3, the tables show the median |
+| Measurement date | 24 August 2026 |
 
-The compressed file sizes were matched on purpose: nvJPEG2000 quality was
-tuned to the fvJPEG2000 file size to within 0.1%.
+The quality parameter of nvJPEG2000 is tuned by search until its file matches the fvJPEG2000 file
+to better than one tenth of a percent, so both codecs handle the same amount of compressed data.
 
-FV is the JPEG2000 codec from Fastvideo SDK, NV is the nvJPEG2000 library. In
-parentheses — the "thread count × batch size" combination that gave the best
-speed.
+### Encoding, frames per second
 
-**Encoding, fps.**
+| Task | FV single | NV single | FV over NV | FV best | NV best | FV over NV |
+|---|---:|---:|---:|---:|---:|---:|
+| 2K, lossy | 378 | 197 | 1.92× | 1920 (8×2) | 267 (16×2) | 7.19× |
+| 2K, lossless | 328 | 146 | 2.25× | 1173 (8×2) | 179 (16×2) | 6.54× |
+| 4K, lossy | 195 | 127 | 1.53× | 618 (8×1) | 161 (16×2) | 3.84× |
+| 4K, lossless | 140 | 56 | 2.49× | 367 (8×1) | 64 (16×2) | 5.73× |
 
-| Task          | FV single | NV single | FV / NV | FV multithr. | NV multithr. | FV / NV |
-|---------------|----------:|----------:|--------:|-------------:|-------------:|--------:|
-| 2K, lossy     |       371 |       193 |   1.92x |   1913 (8×2) |   267 (16×2) |   7.17x |
-| 2K, lossless  |       327 |       146 |   2.24x |   1134 (8×2) |   180 (16×2) |   6.30x |
-| 4K, lossy     |       191 |       128 |   1.50x |    590 (8×4) |   155 (16×2) |   3.80x |
-| 4K, lossless  |       138 |        56 |   2.44x |    364 (8×1) |    64 (16×2) |   5.66x |
+### Decoding, frames per second
 
-**Decoding, fps.**
+| Task | FV single | NV single | NV over FV | FV best | NV best | NV over FV |
+|---|---:|---:|---:|---:|---:|---:|
+| 2K, lossy | 143 | 296 | 2.07× | 1043 (8×4) | 1593 (8×2) | 1.53× |
+| 2K, lossless | 116 | 236 | 2.04× | 427 (8×4) | 468 (8×2) | 1.10× |
+| 4K, lossy | 96 | 193 | 2.01× | 379 (16×2) | 577 (8×2) | 1.52× |
+| 4K, lossless | 59 | 91 | 1.53× | 137 (16×2) | 145 (8×2) | 1.06× |
 
-| Task          | FV single | NV single | FV / NV | FV multithr. | NV multithr. | FV / NV |
-|---------------|----------:|----------:|--------:|-------------:|-------------:|--------:|
-| 2K, lossy     |       140 |       289 |   0.48x |   1040 (8×4) |   1571 (8×4) |   0.66x |
-| 2K, lossless  |       114 |       237 |   0.48x |   420 (16×2) |   469 (16×2) |   0.90x |
-| 4K, lossy     |        92 |       193 |   0.48x |   371 (16×2) |    576 (8×2) |   0.64x |
-| 4K, lossless  |        58 |        90 |   0.64x |   134 (16×2) |    146 (8×2) |   0.92x |
+**Encoding is faster with fvJPEG2000** — 1.5 to 2.5 times in single image mode and 3.8 to 7.2 times
+at the best combination of threads and batch. The main reason is that the nvJPEG2000 encoder gains
+almost nothing from multithreading: eight threads give it 1.04×, against 4.7× for fvJPEG2000.
 
-The ratio is FV / NV everywhere: above one means fvJPEG2000 is faster, below
-one means nvJPEG2000 is faster.
+**Decoding is faster with nvJPEG2000** — about 2 times in single image mode and 1.5 times at the
+best combination in lossy mode. In lossless mode the difference nearly disappears: 6 % at 4K and
+10 % at 2K.
 
-The short conclusion. **fvJPEG2000 is faster at encoding** — by one and a half
-to two and a half times in single image mode and by 3.8 to 7.2 times in
-multithreaded mode; the latter mainly because the nvJPEG2000 encoder gains
-almost nothing from multithreading. **nvJPEG2000 is faster at decoding** —
-up to twice as fast in single image mode and one and a half times as fast in
-multithreaded mode with lossy compression; with lossless compression the
-difference almost disappears.
+### Quality at an equal file size
 
-**Quality at equal file size.** Lossless compression in both codecs gives an
-exact byte-for-byte match with the source image. With lossy compression, PSNR
-is 40.42 dB against 40.60 for nvJPEG2000 on 2K and 41.97 against 42.23 on 4K,
-that is, a difference within three tenths of a decibel — indistinguishable by
-eye.
+Lossless: both codecs return the frame byte for byte. Lossy, PSNR against the source:
 
-**Energy per frame at the best combination of threads and batch.** On encoding
-2K lossy, 0.125 J for fvJPEG2000 against 0.624 for nvJPEG2000; on 4K lossless,
-0.757 against 4.577. On decoding the gap is small: 0.187 against 0.230 on 2K
-lossy. The full table, together with CPU load, is in `summary.txt`.
+| Image | fvJPEG2000, dB | nvJPEG2000, dB | Difference |
+|---|---:|---:|---:|
+| 2K | 40.42 | 40.60 | 0.18 |
+| 4K | 41.97 | 42.23 | 0.26 |
 
-**Cross-decoding.** Each decoder was given not only its own stream but the
-other one's as well: the difference nowhere exceeded four percent. So the
-comparison of decoders is not quietly replaced by a comparison of what the
-encoders produced.
+Tenths of a decibel — indistinguishable by eye.
 
-What follows from this for a particular task is in the
-[article](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=practice), section "What this means in practice".
+### Energy per frame, at the best combination of threads and batch
 
-The full tables, including every search point, the quality check, energy per
-frame and the stage breakdown, are in `results/<date>/summary.txt`. The same
-data in machine-readable form is in `results.json`. The raw output of every
-single launch, together with its command line, is in `logs.zip` next to them:
-438 files, one per launch, so that any row of any table can be traced back to
-the run that produced it.
+| Frame | Mode | Encoding FV | Encoding NV | Decoding FV | Decoding NV |
+|---|---|---:|---:|---:|---:|
+| 2K | lossy | 0.125 J | 0.571 J | 0.182 J | 0.228 J |
+| 2K | lossless | 0.227 J | 1.396 J | 0.430 J | 0.787 J |
+| 4K | lossy | 0.381 J | 1.205 J | 0.520 J | 0.623 J |
+| 4K | lossless | 0.738 J | 4.189 J | 1.370 J | 2.434 J |
+
+Energy repeats the speed picture on encoding but does not amplify it. On decoding it goes the other
+way: fvJPEG2000 is slower, yet its frame costs 1.2 to 1.8 times less, because its card runs at
+178–184 W against 351–364 W.
+
+### PCRD mode: a fixed file size
+
+At one and the same output size — the size that quality 85 gives — reaching it with rate control
+instead of quantization alone costs speed and a little quality:
+
+| Frame | How the size was reached | Single image mode | Slowdown | PSNR, dB |
+|---|---|---:|---:|---:|
+| 4K | quality 85, no PCRD | 187.2 | — | 41.97 |
+| 4K | quality 90 and PCRD | 134.1 | 1.40× | 41.50 |
+| 4K | quality 100 and PCRD | 120.1 | 1.56× | 41.24 |
+
+In multithreaded mode the gap is larger — up to 2.76× at 2K. A follow-up run found the best point:
+at 4K, quality 86 with PCRD is only 1.34× slower and gives a PSNR of 42.00 dB, no worse than
+quantization alone. The rule that follows: set the base quality one or two units above the value at
+which the frame already comes out at the size you need, and leave PCRD for the fine adjustment.
+
+Full tables, the search points and the raw logs are in the results folders; see below.
 
 ## How to reproduce
 
-You need: an NVIDIA GPU, the CUDA Toolkit, the nvJPEG2000 library (it ships
-separately from the CUDA Toolkit — download it from the NVIDIA site or install
-it as a Python package), Python 3.6 or newer with no third-party libraries,
-and the Microsoft C++ compiler.
+You need an NVIDIA GPU, the CUDA Toolkit, the nvJPEG2000 library (a separate download from NVIDIA),
+Python 3.6 or newer — no third-party Python packages — and the Microsoft C++ compiler for the
+nvJPEG2000 harness, which the script builds itself.
 
-    python bench.py --final
+    python bench-04.py --final          the full cycle, three repeats per point
+    python bench-04.py --budget 300     a five-minute check
+    python pcrd-cost-03.py              the PCRD run, about a minute
+    python pcrd-cost-03.py --selftest   checks only, measures nothing
 
-The script builds the benchmark harness for nvJPEG2000 itself, prepares the
-reference files, matches quality to an equal file size, runs the measurements
-on both sides in four modes, checks quality and writes out finished tables. A
-full measurement run takes about half an hour, three repeats per point. A
-quick check:
+**On the Fastvideo side.** Speed is reproducible on the demo build of the SDK, which is a free
+download. The demo is 0.22.0.0 with CUDA 12.6 while the published results are 0.23.1.0 with CUDA
+13.3, so do not mix numbers from the two. The quality check is reproducible on the demo build as
+well: the script takes as its PSNR reference a lossless round trip made by the same build, so a
+watermark, if the build has one, cancels out. Whether it has one is checked by the script itself —
+two independent lossless round trips must match byte for byte. A build without a watermark is
+needed only if you want to compare the decoded frame with the original file directly; ask through
+the form on the site.
 
-    python bench.py --budget 300
+**On the NVIDIA side.** nvJPEG2000 is free: download it from NVIDIA or install the
+`nvidia-nvjpeg2k-cu12` package. The harness is built from the sources in this repository. Nothing
+has to be requested from anyone.
 
-Other options and the workflow are in `bench/README.md`.
-
-**The Fastvideo side.** The speed reproduces on the demo build of Fastvideo
-SDK. It is freely downloadable:
-<https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z>
-
-The quality check reproduces on the demo version too, even though it puts its
-own watermark on the frame. The technique: the reference for PSNR is not the
-source file but the frame that came back through a **lossless round trip on
-the same build**. The watermark is applied before encoding, lossless mode
-keeps everything bit for bit, so such a reference is exactly what the encoder
-got. PSNR then measures the loss of the encoding itself, not the watermark.
-The script checks this by itself: two independent lossless round trips must
-match byte for byte, and the result of the check is printed in the report.
-
-If you need a build without the watermark, write to us through the
-[form on the site][form-build].
-
-**The NVIDIA side.** Nothing has to be requested: nvJPEG2000 is free, it is
-downloaded from the NVIDIA site or installed as the `nvidia-nvjpeg2k-cu12`
-package. The benchmark harness is built from the sources kept here.
+`bench/README.md` has the run options and the workflow.
 
 ## What is not here
 
-**Kakadu and Comprimato** — the other implementations an engineer looks at
-first. They are not measured: we did not approach their developers and we do
-not take it upon ourselves to interpret their licences for them. The procedure
-is open — anyone who holds a licence can run the measurements and publish the
+**Kakadu and Comprimato are not measured.** We did not approach their developers and we do not
+interpret their licences. Any licence holder is welcome to run this procedure and publish the
 result.
 
-**OpenJPEG** — the open CPU implementation everyone else is usually compared
-against. It makes sense to add it separately: the gap between CPU and GPU is
-orders of magnitude, and in one table with two GPU implementations it would
-hide the very thing the table is made for.
+**OpenJPEG is not here either.** It is an open CPU implementation, and the gap between CPU and GPU
+is large enough to swamp the comparison of two GPU codecs. It deserves its own run.
 
-**Bit depth above eight bits, 8K frames, multi-tile images, Jetson** — not in
-this measurement run. Medical and satellite applications live exactly at 12
-and 16 bits, and that is a separate piece of work.
+**Bit depth above 8 bits, 8K frames, multi-tile images and Jetson are not measured.** These are
+separate application areas — medical, satellite, embedded — and each needs its own measurement
+rather than a line in this table.
+
+**The raw data of the 24 August run is not published here.** The tables above and the article come
+from it; the runs whose logs are in the repository are listed in the next section.
 
 ## What is where
 
-| Path                            | What it is                                         |
-|---------------------------------|----------------------------------------------------|
-| `bench/bench.py`                | the whole cycle: preparation, measurements, tables |
-| `bench/nvj2k_bench.cpp`         | the benchmark harness for nvJPEG2000               |
-| `bench/README.md`               | run options and workflow                           |
-| `results/<date>/`               | tables, machine-readable data, raw logs in `logs.zip` |
-| `results/<date>/<article>.md`   | snapshot of the article these results belong to    |
+| Path | What it is |
+|---|---|
+| `bench/bench.py` | the harness of the 19 August run |
+| `bench/bench-04.py` | the harness of the 24 August run: the full cycle, both codecs, energy |
+| `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
+| `bench/nvj2k_bench.cpp` | the benchmark harness for nvJPEG2000 |
+| `bench/README.md` | run options and workflow |
+| `results/2026-08-19/` | the first full comparison: tables, machine-readable data, 438 logs, and the article of that date |
+| `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
+| `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
 
-The article snapshot is not edited by hand: there is one author's text — the
-article on the site — and here lies a dated copy tied to its own measurement
-run. That way, a year later, it is clear which revision of the method produced
-these results.
+Every results folder holds `summary.txt` with the full tables, `results.json` with the same data in
+machine-readable form, and `logs.zip` with every raw log. Each folder has a `README.md` of its own
+that states what the run was for, on what system it was made and how to repeat it.
+
+An article snapshot in a results folder is never edited by hand. There is one author's text — the
+article on the site — and a dated copy next to the results, so that it is always clear which
+version of the method produced which numbers.
 
 ## Your own frames
 
-The two images in this measurement run are ordinary photographic scenes. For
-your project it is your own material that decides: your sensor, your
-resolution, your bit depth, the compression ratio you need. Send us a few
-frames — we will put them through both codecs and return the results and the
-decoded images, so that the opinion is yours and not ours retold:
-[send frames through the form][form-frames].
+The two test images are ordinary photographic scenes. On your material — noise, text, medical or
+satellite specifics — the ratios will be different. Send a few of your own frames through the form
+on the site: we will run both codecs on them by this same procedure and return the tables and the
+decoded images, so that the opinion is yours and not ours retold.
 
 ## What is measured on the Fastvideo side
 
-This is the JPEG2000 module from Fastvideo SDK — a CUDA library that runs the
-whole camera pipeline on the GPU; it is licensed per platform:
-[fastcompression.com/products/gpu-jpeg2000.htm](https://www.fastcompression.com/products/gpu-jpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=article). nvJPEG2000 is free and ships separately from the CUDA
-Toolkit.
+The JPEG2000 module of the Fastvideo SDK — a CUDA library for a full camera pipeline on the GPU,
+licensed per platform: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
+
+nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 
 ## Links
 
-- Article with the full walk-through of the method:
-  https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm
-- Product page: https://www.fastcompression.com/products/gpu-jpeg2000.htm
-- Source images: https://www.fastcompression.com/img/test_j2k/2k_wild.ppm and
-  https://www.fastcompression.com/img/test_j2k/4k_wild.ppm
-- Fastvideo SDK demo build:
-  https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z
-- nvJPEG2000, separate download from the NVIDIA site: https://developer.nvidia.com/nvjpeg2000-downloads
-- This repository: https://github.com/fastvideo/jpeg2000-benchmark
+- Article, the method in full: <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>
+- The same article in Russian: <https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm>
+- Product page: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
+- Source image, 2K: <https://www.fastcompression.com/img/test_j2k/2k_wild.ppm>
+- Source image, 4K: <https://www.fastcompression.com/img/test_j2k/4k_wild.ppm>
+- Fastvideo SDK demo:
+  <https://www.fastcompression.com/download/demo/fvSDK-0.22.0.0-Win64-CUDA-12.6-Demo-Exp-2027-04-18.7z>
+- nvJPEG2000 downloads: <https://developer.nvidia.com/nvjpeg2000-downloads>
+- This repository: <https://github.com/fastvideo/jpeg2000-benchmark>
 
 ## Licences
 
-There are three different things here under three different licences, see the
-file `LICENSE-CONTENT.md`:
+Three of them, described in `LICENSE-CONTENT.md`.
 
-- **code** — the script and the benchmark harness — MIT, file `LICENSE`. Take
-  it, change it, publish your own results;
-- **the measurement results and this README** — everything under `results/`
-  except the article snapshot, plus the README itself — CC BY 4.0. Move them into your
-  own materials, rebuild them, compute on top of them. The README is here on
-  purpose: the repository exists to be forked, and a fork almost always edits
-  the README for itself;
-- **the article snapshot** — `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md` —
-  CC BY-ND 4.0.
-  Reprinting it in full and quoting it are allowed; rewriting and translating
-  it are by agreement.
+**The code** — the measurement scripts and the nvJPEG2000 harness — is MIT, see `LICENSE`. Take it,
+change it, publish your own results.
 
-Attribution to the source is required in all cases, and we ask that the
-measurement conditions be kept next to the results.
+**The measurement results and this README** — everything under `results/` except the article
+snapshots, plus the README itself — are CC BY 4.0. Move them into your own materials, rebuild them,
+compute on top of them. The repository exists to be forked, and a fork almost always edits the
+README for itself.
 
-Third-party software is not included here and is distributed under its own
-terms: the Fastvideo SDK libraries, nvJPEG2000 and the CUDA Toolkit from
-NVIDIA. Details are in `THIRD-PARTY.md`.
+**The article snapshots** — `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md` and any later
+one — are CC BY-ND 4.0: reprint and quote in full, rewriting and translating by agreement.
+
+In every case, name the source, and carry the measurement conditions along with the numbers.
+
+Third-party software is not included in this repository and is distributed under its own terms: the
+Fastvideo SDK libraries, nvJPEG2000 and the CUDA Toolkit. Details are in `THIRD-PARTY.md`.
 
 ## Comments and errors
 
-Found an error in the procedure — open an issue. An error in the method is
-more useful to find before the next numbers are published than after. Ran it
-yourself and got something different — that is interesting too: tell us which
-card and which versions.
+If you find a mistake in the procedure, open an issue. An error in the method is more useful found
+before the next numbers are published than after.
 
-Everything to do with working with us — your own frames, a build without the
-watermark, licence questions — goes through the
-[form on the site][form-contact].
+If your own numbers come out different, write which card and which versions you used — that alone
+usually explains it.
 
-[form-build]: https://www.fastcompression.com/products/gpu-jpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=build#contact-form
-[form-frames]: https://www.fastcompression.com/products/gpu-jpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=frames#contact-form
-[form-contact]: https://www.fastcompression.com/products/gpu-jpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=contact#contact-form
+Business questions — a build, your frames, licensing — go through the form on the site.
