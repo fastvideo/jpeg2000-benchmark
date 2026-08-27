@@ -191,9 +191,6 @@ is large enough to swamp the comparison of two GPU codecs. It deserves its own r
 separate application areas — medical, satellite, embedded — and each needs its own measurement
 rather than a line in this table.
 
-**The raw data of the 24 August run is not published here.** The tables above and the article come
-from it; the runs whose logs are in the repository are listed in the next section.
-
 ## What is where
 
 | Path | What it is |
@@ -205,6 +202,7 @@ from it; the runs whose logs are in the repository are listed in the next sectio
 | `bench/CMakeLists.txt` | builds that harness on Linux, Jetson included |
 | `bench/build.sh` | the same build without CMake, one `g++` call per executable |
 | `bench/README.md` | run options and workflow |
+| `results/2026-08-24/` | **the current run:** tables, machine-readable data, 470 logs, energy and the stage breakdown |
 | `results/2026-08-19/` | the first full comparison: tables, machine-readable data, 438 logs, and the article of that date |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
