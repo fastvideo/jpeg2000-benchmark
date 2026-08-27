@@ -1,0 +1,352 @@
+JPEG2000 codec comparison
+
+Test system and measurement conditions
+
+  GPU                NVIDIA GeForce RTX 4090
+  Driver             610.88
+  CUDA (driver)      -
+  GPU memory         24564 MiB
+  Power limit        450.00 W
+  CPU                AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD
+  Architecture       -
+  Cores / RAM        32 / 127 GB
+  Operating system   Windows 11
+  Python             3.13.14
+  Bus, measured      25213 MB/s host -> GPU
+  Measurement date   2026-08-24 15:05
+  Repeats per point  3
+  Benchmark script   bench-04.py, version 2026-08-24.2
+  Energy meters      counter + sampling (NVML cumulative energy counter)
+  Fastvideo          0.23.1.0
+  nvJPEG2000         nvJPEG2000-0.11.0.51
+
+  Stream settings: code block 32x32, 6 resolution levels, one quality
+  layer, LRCP progression, tiling off, SOP and EPH markers off.
+  Search grid: 8x1, 8x2, 16x2, 8x4
+  Notation: fv - the Fastvideo codec, nv - nvJPEG2000,
+  E - encoding, D - decoding.
+  The measured time: encoder - from pixels in GPU memory to the
+  compressed stream in host memory; decoder mirrored. Disk excluded.
+
+  2k: 1920 x 1080, 3 components
+  4k: 3840 x 2160, 3 components
+
+------------------------------------------------------------------------------
+Quality ladder, Fastvideo codec, lossy mode
+
+    q    2K, kB    2K ratio       2K bpp     4K, kB    4K ratio       4K bpp
+  --------------------------------------------------------------------------
+   80       429      14.2:1         1.69        878      27.7:1         0.87
+   83       517      11.8:1         2.04       1078      22.5:1         1.06
+   85       588      10.3:1         2.32       1246      19.5:1         1.23
+   87       671       9.1:1         2.65       1449      16.8:1         1.43
+   90       828       7.3:1         3.27       1847      13.2:1         1.82
+
+  The same setting gives different compression on different
+  frames: the knob sets the coarseness of rounding, not the
+  file size.
+
+------------------------------------------------------------------------------
+Reference streams
+
+  codec  frame alg        size, kB    ratio     bit/pixel
+  ----------------------------------------------------------
+  fv     2k    irrev           588   10.3:1          2.32
+  fv     2k    rev            2896    2.1:1         11.44
+  fv     4k    irrev          1246   19.5:1          1.23
+  fv     4k    rev            8754    2.8:1          8.65
+  nv     2k    irrev           587   10.3:1          2.32
+  nv     2k    rev            2896    2.1:1         11.44
+  nv     4k    irrev          1244   19.5:1          1.23
+  nv     4k    rev            8754    2.8:1          8.65
+
+------------------------------------------------------------------------------
+Size matching: nvJPEG2000 quality search for a given file size
+
+  frame target, bytes       q found      actual, bytes     miss
+  --------------------------------------------------------------
+  2k           601703         87.29             601940   0.04 %
+  4k          1275547         87.14            1274517   0.08 %
+
+------------------------------------------------------------------------------
+Check that the two quality scales correspond
+
+  frame    fv quality target, bytes  search [1,100]  search [50,99]      diff
+  ----------------------------------------------------------------------------
+  2k               80        439427         74.8633         74.8828    0.0195
+  2k               85        601703         87.2866         87.2764    0.0102
+  2k               90        847549         94.6343         94.6335    0.0008
+  4k               80        899178         74.7666         74.7393    0.0273
+  4k               85       1275547         87.1658         87.1567    0.0091
+  4k               90       1891115         94.5618         94.5618    0.0000
+
+  The starting interval of the search does not change the result (difference
+  up to 0.027).
+  Quality 80: the values differ by 0.097 - the correspondence between the
+  scales depends on the frame, there is no constant conversion.
+  Quality 85: the values differ by 0.121 - the correspondence between the
+  scales depends on the frame, there is no constant conversion.
+  Quality 90: the values differ by 0.072 - the correspondence between the
+  scales depends on the frame, there is no constant conversion.
+
+  The search tolerance here is 0.05 % by size against 0.10 %
+  in the main run: the search goes deeper, the grid cell gets
+  narrower, and the property of the scales is separated from
+  the trace of the bisection procedure itself.
+
+------------------------------------------------------------------------------
+Encoding, frames per second (median over 3 repeats)
+
+  workload                        single    8x1     8x2    16x2     8x4    best
+  -----------------------------------------------------------------------------
+  2k lossy, Fastvideo                378   1765    1920*   1665    1916    8x2   
+  2k lossy, nvJPEG2000               197    205     249     267*    226    16x2  
+  2k lossless, Fastvideo             328   1117    1173*   1008    1120    8x2   
+  2k lossless, nvJPEG2000            146    158     164     179*    164    16x2  
+  4k lossy, Fastvideo                195    618*    613     612     599    8x1   
+  4k lossy, nvJPEG2000               127    133     143     161*    142    16x2  
+  4k lossless, Fastvideo             140    367*    350     296     333    8x1   
+  4k lossless, nvJPEG2000             56     62      63      64*     63    16x2  
+
+------------------------------------------------------------------------------
+Decoding, frames per second (median over 3 repeats)
+
+  workload                        single    8x1     8x2    16x2     8x4    best
+  -----------------------------------------------------------------------------
+  2k lossy, Fastvideo                143    431     649     892    1043*   8x4   
+  2k lossy, nvJPEG2000               296   1421    1593*   1473    1575    8x2   
+  2k lossless, Fastvideo             116    276     356     425     427*   8x4   
+  2k lossless, nvJPEG2000            236    446     468*    468     468    8x2   
+  4k lossy, Fastvideo                 96    244     351     379*    330    16x2  
+  4k lossy, nvJPEG2000               193    496     577*    573     569    8x2   
+  4k lossless, Fastvideo              59    133     129     137*    120    16x2  
+  4k lossless, nvJPEG2000             91    132     145*    144     144    8x2   
+
+------------------------------------------------------------------------------
+Summary: single image mode and the best combination of threads
+and batch
+
+  dir   frame alg              single, fps           multithreaded, fps
+                                fv      nv ratio  fv          nv          ratio
+  --------------------------------------------------------------------------
+  E     2k    lossy            378     197  1.92    1920 8x2     267 16x2  7.19
+  D     2k    lossy            143     296  0.48    1043 8x4    1593 8x2   0.65
+  E     2k    lossless         328     146  2.25    1173 8x2     179 16x2  6.54
+  D     2k    lossless         116     236  0.49     427 8x4     468 8x2   0.91
+  E     4k    lossy            195     127  1.53     618 8x1     161 16x2  3.84
+  D     4k    lossy             96     193  0.50     379 16x2    577 8x2   0.66
+  E     4k    lossless         140      56  2.49     367 8x1      64 16x2  5.73
+  D     4k    lossless          59      91  0.66     137 16x2    145 8x2   0.95
+
+  E - encoding, D - decoding, ratio = fv / nv.
+  In the tables above a star marks the best value in the row.
+
+------------------------------------------------------------------------------
+Where the speedup comes from: threads and batching
+
+  codec  dir   frame alg       from threads from batch   total
+  --------------------------------------------------------------
+  fv     E     2k    irrev            4.67x      1.09x   5.08x
+  fv     E     2k    rev              3.40x      1.05x   3.57x
+  fv     E     4k    irrev            3.17x      1.00x   3.17x
+  fv     E     4k    rev              2.62x      1.00x   2.62x
+  fv     D     2k    irrev            3.00x      2.42x   7.27x
+  fv     D     2k    rev              2.38x      1.55x   3.69x
+  fv     D     4k    irrev            2.54x      1.55x   3.95x
+  fv     D     4k    rev              2.23x      1.03x   2.31x
+  nv     E     2k    irrev            1.04x      1.30x   1.35x
+  nv     E     2k    rev              1.08x      1.13x   1.23x
+  nv     E     4k    irrev            1.04x      1.21x   1.26x
+  nv     E     4k    rev              1.10x      1.04x   1.14x
+  nv     D     2k    irrev            4.80x      1.12x   5.38x
+  nv     D     2k    rev              1.89x      1.05x   1.98x
+  nv     D     4k    irrev            2.57x      1.16x   2.99x
+  nv     D     4k    rev              1.45x      1.10x   1.60x
+
+  From threads - going from single image mode to 8x1. From batch -
+  from 8x1 to the best combination. The two multiply into 'total'.
+
+------------------------------------------------------------------------------
+Repeatability: spread between repeats of one measurement
+
+  codec  dir      worst spread       mean spread  points
+  ----------------------------------------------------------
+  fv     E              13.6 %             3.2 %      20
+  fv     D               6.3 %             1.9 %      20
+  nv     E              12.1 %             1.3 %      20
+  nv     D               5.7 %             0.5 %      20
+
+------------------------------------------------------------------------------
+Round trip check: encode, decode, compare
+
+  codec  frame alg      result
+  --------------------------------------------------------------------
+  fv     2k    irrev    differences 82.43%, in the rectangle 0,0-1919,1079, PSNR 40.42 dB
+  fv     2k    rev      exact match
+  fv     4k    irrev    differences 77.01%, in the rectangle 0,0-3839,2159, PSNR 41.97 dB
+  fv     4k    rev      exact match
+  nv     2k    irrev    differences 82.49%, in the rectangle 0,0-1919,1079, PSNR 40.60 dB
+  nv     2k    rev      exact match
+  nv     4k    irrev    differences 75.11%, in the rectangle 0,0-3839,2159, PSNR 42.23 dB
+  nv     4k    rev      exact match
+
+  Lossless is expected to be an exact match. A small share of
+  differences collected into one rectangle is the watermark of
+  the demo build, not a defect of the codec.
+
+------------------------------------------------------------------------------
+Watermark on the frame, and what PSNR is measured against
+
+  codec  frame watermark      applied     PSNR reference
+  --------------------------------------------------------------
+  fv     2k           no            -     original
+  fv     4k           no            -     original
+  nv     2k           no            -     original
+  nv     4k           no            -     original
+
+  The demo build draws a watermark on the frame BEFORE encoding.
+  Comparing a decoded frame with the source file would then
+  measure the watermark and not the codec. So the reference is
+  the frame that came back through the LOSSLESS round trip on
+  the same build: it is bit for bit what the encoder was given.
+  The condition: the watermark must be applied the same way
+  every run; that is checked by two independent lossless round
+  trips, which must come out byte for byte identical.
+
+------------------------------------------------------------------------------
+Chroma subsampling, Fastvideo codec only
+
+  frame mode      size, kB    ratio        enc single multithreaded   PSNR
+  --------------------------------------------------------------------------
+  2k    444            588   10.3:1               379          1912   40.4
+  2k    422            508   12.0:1               396          2000   38.6
+  2k    420            457   13.3:1               405          2094   37.3
+  4k    444           1246   19.5:1               195           579   42.0
+  4k    422           1123   21.6:1               211           692   40.8
+  4k    420           1042   23.3:1               224           720   39.9
+
+  PSNR is computed against the original full-colour frame, so
+  it includes the loss from the chroma subsampling as well.
+
+------------------------------------------------------------------------------
+Compression ratio sweep (Fastvideo - rate control,
+nvJPEG2000 quality matched to the same size)
+
+  frame   ratio   fv, kB   nv, kB    nv q   enc fv   enc nv   dec fv   dec nv
+  ----------------------------------------------------------------------------
+  2k        5:1     1213     1209   97.87      197      167      119      245
+  2k       10:1      602      602   88.01      206      196      133      294
+  2k       20:1      295      295   55.91      217      228      140      339
+  4k        5:1     4662     4669   99.46      123       72       60      108
+  4k       10:1     2408     2409   97.12      119      101       84      149
+  4k       20:1     1182     1180   85.69      118      123       91      186
+
+  All numbers are single image mode. Decoding time follows the
+  number of coding passes in the stream, not the size of the
+  file.
+
+------------------------------------------------------------------------------
+Energy per frame: two meters and the differential method
+
+  dir   frame alg      codec   counter  sampling  minus idle   cores   spread
+  --------------------------------------------------------------------------
+  E     2k    irrev    fv        0.125     0.125       0.119     6.8     -0 %
+  E     2k    irrev    nv        0.571     0.584       0.542    15.2     +2 %
+  D     2k    irrev    fv        0.182     0.184       0.172     7.5     +1 %
+  D     2k    irrev    nv        0.228     0.227       0.220     7.4     -0 %
+  E     2k    rev      fv        0.227     0.228       0.219     7.2     +0 %
+  E     2k    rev      nv        1.396     1.417       1.352    15.3     +2 %
+  D     2k    rev      fv        0.430     0.438       0.411     7.7     +2 %
+  D     2k    rev      nv        0.787     0.790       0.765     7.7     +0 %
+  E     4k    irrev    fv        0.381     0.378       0.359     7.4     -1 %
+  E     4k    irrev    nv        1.205     1.246       1.172    14.7     +3 %
+  D     4k    irrev    fv        0.520     0.540       0.507    14.2     +4 %
+  D     4k    irrev    nv        0.623     0.623       0.603     7.6     +0 %
+  E     4k    rev      fv        0.738     0.743       0.712     7.5     +1 %
+  E     4k    rev      nv        4.189     4.392       4.203    14.9     +5 %
+  D     4k    rev      fv        1.370     1.412       1.324    14.5     +3 %
+  D     4k    rev      nv        2.434     2.475       2.396     7.6     +2 %
+
+  Two meters at once. 'counter' is the card's own cumulative
+  energy counter, read through NVML, and the value is the
+  DIFFERENCE between a run on 2N frames and a run on N frames,
+  divided by N: everything that does not depend on the number of
+  frames - process start, buffers, the card's idle draw - falls
+  out of the difference. 'sampling' is the older method: average
+  power over the whole run times its wall time, divided by the
+  frames, so it still carries that fixed cost; 'minus idle' has
+  the card's idle draw taken off it.
+
+  The two meters differ by 1 % on the median point and by
+  5 % at most. The counter is the one to quote: it loses
+  nothing between samples and the difference removes the
+  fixed cost of a run.
+
+------------------------------------------------------------------------------
+Cross-decoding: the other codec's stream instead of its own
+
+  codec  frame alg       own stream  other stream      change
+  --------------------------------------------------------------
+  fv     2k    irrev            143           142        -1 %
+  fv     2k    rev              116           116        +0 %
+  fv     4k    irrev             96            96        -0 %
+  fv     4k    rev               59            59        +0 %
+  nv     2k    irrev            296           296        -0 %
+  nv     2k    rev              236           236        -0 %
+  nv     4k    irrev            193           193        -0 %
+  nv     4k    rev               90            90        -0 %
+
+  A large change means the two streams give the decoder
+  different amounts of work, and a comparison of decoders turns
+  into a comparison of what the encoders produced.
+
+------------------------------------------------------------------------------
+Stage breakdown, one frame, -info key, lossy mode
+
+  Fastvideo, decoding, 2k
+      Tier-2 time                                       1.19 ms   14.0 %
+      CPU->GPU copy time                                0.06 ms    0.7 %
+      Tier-1 time                                       6.42 ms   75.4 %
+      DWT time                                          0.46 ms    5.4 %
+      Postprocessing time                               0.38 ms    4.5 %
+
+  Fastvideo, decoding, 4k
+      Tier-2 time                                       3.59 ms   29.4 %
+      CPU->GPU copy time                                0.14 ms    1.1 %
+      Tier-1 time                                       7.32 ms   59.9 %
+      DWT time                                          0.71 ms    5.8 %
+      Postprocessing time                               0.47 ms    3.8 %
+
+  Fastvideo, encoding, 2k
+      Preprocessing time                                0.64 ms   13.6 %
+      DWT time                                          0.34 ms    7.2 %
+      Tier-1 time                                       2.78 ms   58.9 %
+      Buffers gathering time                            0.20 ms    4.2 %
+      GPU->CPU copy time                                0.05 ms    1.1 %
+      Tier-2 time                                       0.71 ms   15.0 %
+
+  Fastvideo, encoding, 4k
+      Preprocessing time                                0.72 ms   10.7 %
+      DWT time                                          0.53 ms    7.8 %
+      Tier-1 time                                       3.37 ms   49.9 %
+      Buffers gathering time                            0.24 ms    3.6 %
+      GPU->CPU copy time                                0.11 ms    1.6 %
+      Tier-2 time                                       1.79 ms   26.5 %
+
+  The -info key inserts synchronisations between the stages, so
+  the sum of the stages is larger than the real time of one
+  frame. Read the shares only, never add them up.
+
+------------------------------------------------------------------------------
+nvJPEG2000 encoder: the cost of uploading a frame to the GPU
+
+  frame  with upload without upload      diff
+  ------------------------------------------------
+  2k             280            297      +6 %
+  4k             146            173     +19 %
+
+  The check separates the benchmark harness from the library:
+  if the gain is small even without the upload, the flat
+  behaviour of the encoder is a property of the library itself,
+  not a consequence of the harness.
+
