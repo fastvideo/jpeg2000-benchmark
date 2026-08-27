@@ -202,7 +202,7 @@ rather than a line in this table.
 | `bench/CMakeLists.txt` | builds that harness on Linux, Jetson included |
 | `bench/build.sh` | the same build without CMake, one `g++` call per executable |
 | `bench/README.md` | run options and workflow |
-| `results/2026-08-24/` | **the current run:** tables, machine-readable data, 470 logs, energy and the stage breakdown |
+| `results/2026-08-24/` | **the current run:** tables, machine-readable data, 470 logs, energy, the stage breakdown, and the article snapshot |
 | `results/2026-08-19/` | the first full comparison: tables, machine-readable data, 438 logs, and the article of that date |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
