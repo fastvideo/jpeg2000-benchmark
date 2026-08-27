@@ -833,13 +833,13 @@ decoder, so in the table this is a single row with numbers on both sides.
 **Buffers gathering** is the collection of the finished code-blocks into one
 contiguous buffer before the transfer to the CPU.
 
-In the table below the shares are rounded to whole percent, which is why one
-column adds up to 101%. The bottom row is the time of a single frame in single
+In the table below the shares are rounded to whole percent, so a column may
+add up to 99 or 101. The bottom row is the time of a single frame in single
 image mode from sections 6 and 7, for comparison with the sum of the stages.
 
 | Stage                           | Where | Encoding 2K | Encoding 4K | Decoding 2K | Decoding 4K |
 |---------------------------------|-------|------------:|------------:|------------:|------------:|
-| Color transform and level shift | GPU   |         14% |         11% |          5% |          4% |
+| Color transform and level shift | GPU   |         14% |         11% |          4% |          4% |
 | Wavelet transform               | GPU   |          7% |          8% |          5% |          6% |
 | EBCOT Tier-1                    | GPU   |         59% |         50% |         75% |         60% |
 | Buffers gathering               | GPU   |          4% |          4% |           — |           — |
