@@ -1,6 +1,13 @@
 # JPEG2000 benchmark — a reproducible measurement procedure
 
-Version of 26 August 2026. Latest full comparison run: 24 August 2026, on an RTX 4090.
+Version of 28 August 2026. Latest full comparison run: 28 August 2026, on an RTX 4090.
+
+> **The decoding figures changed on 28 August 2026.** Our own harness for nvJPEG2000 stopped
+> the clock with the decoded pixels still in GPU memory, while the Fastvideo sample returned
+> them to host memory — so the two sides were not measuring the same path. The harness is
+> fixed and the run of 28 August measures both codecs from host to host. Encoding is
+> unaffected. The details are in `results/2026-08-28/README.md`; the earlier run and its logs
+> stay in `results/2026-08-24/` so the two can be compared line by line.
 
 ## The problem
 
@@ -31,12 +38,17 @@ Four measurement modes:
 reach that differently: fvJPEG2000 has a real batch — one call takes an array of images —
 nvJPEG2000 has no such call, so the same effect is built by hand out of several codec states, CUDA
 streams and asynchronous calls. That is done with the library's own facilities and it does help:
-1.33× on the encoder and 1.17× on the decoder.
+1.03 to 1.35 times on the encoder and 1.20 to 3.36 times on the decoder.
 
-The measured interval runs from the source image in GPU memory to the compressed image in host
-memory for the encoder, and the other way round for the decoder. Everything on the compressed side
-and all the CPU parts of both codecs are inside it; copying the raw pixels between CPU and GPU and
-any disk work are outside it.
+The measured interval runs from host memory to host memory: for the encoder, from the raw frame in
+CPU memory to the compressed image in CPU memory; for the decoder, the other way round. The copy of
+the raw pixels between CPU and GPU is inside it in both directions, and so is every CPU part of both
+codecs. Only disk work is outside.
+
+That boundary is the one a working system pays for. Frames arrive in a stream, several are in flight
+at once, and a decoded frame has to end up where the rest of the pipeline expects it — in host
+memory. The transfer is not small: 6.2 MB per 2K frame and 24.9 MB per 4K frame, which is 0.25 ms
+and 0.99 ms at the 25.2 GB/s measured on this machine.
 
 Every measurement is followed by a full cycle: encode, decode, compare with the source. Lossless
 must match byte for byte; for lossy, PSNR is computed.
@@ -68,7 +80,7 @@ The full walk-through of the method is the article:
 | Images | 1920×1080 and 3840×2160, 3 channels, 8 bit |
 | Settings | code block 32×32, 6 levels, 1 quality layer, LRCP, no tiles |
 | Series per point | 3, the tables show the median |
-| Measurement date | 24 August 2026 |
+| Measurement date | 28 August 2026 |
 
 The quality parameter of nvJPEG2000 is tuned by search until its file matches the fvJPEG2000 file
 to better than one tenth of a percent, so both codecs handle the same amount of compressed data.
@@ -77,27 +89,30 @@ to better than one tenth of a percent, so both codecs handle the same amount of 
 
 | Task | FV single | NV single | FV over NV | FV best | NV best | FV over NV |
 |---|---:|---:|---:|---:|---:|---:|
-| 2K, lossy | 378 | 197 | 1.92× | 1920 (8×2) | 267 (16×2) | 7.19× |
-| 2K, lossless | 328 | 146 | 2.25× | 1173 (8×2) | 179 (16×2) | 6.54× |
-| 4K, lossy | 195 | 127 | 1.53× | 618 (8×1) | 161 (16×2) | 3.84× |
-| 4K, lossless | 140 | 56 | 2.49× | 367 (8×1) | 64 (16×2) | 5.73× |
+| 2K, lossy | 380 | 197 | 1.93× | 1916 (8×2) | 277 (16×2) | 6.91× |
+| 2K, lossless | 330 | 145 | 2.27× | 1175 (8×2) | 180 (16×2) | 6.53× |
+| 4K, lossy | 196 | 128 | 1.53× | 628 (8×2) | 158 (16×2) | 3.99× |
+| 4K, lossless | 140 | 56 | 2.49× | 372 (8×1) | 64 (16×2) | 5.82× |
 
 ### Decoding, frames per second
 
-| Task | FV single | NV single | NV over FV | FV best | NV best | NV over FV |
+| Task | FV single | NV single | NV over FV | FV best | NV best | Difference |
 |---|---:|---:|---:|---:|---:|---:|
-| 2K, lossy | 143 | 296 | 2.07× | 1043 (8×4) | 1593 (8×2) | 1.53× |
-| 2K, lossless | 116 | 236 | 2.04× | 427 (8×4) | 468 (8×2) | 1.10× |
-| 4K, lossy | 96 | 193 | 2.01× | 379 (16×2) | 577 (8×2) | 1.52× |
-| 4K, lossless | 59 | 91 | 1.53× | 137 (16×2) | 145 (8×2) | 1.06× |
+| 2K, lossy | 144 | 274 | 1.90× | 1029 (8×4) | 1045 (8×4) | NV +2 % |
+| 2K, lossless | 116 | 223 | 1.93× | 427 (8×4) | 436 (8×4) | NV +2 % |
+| 4K, lossy | 96 | 163 | 1.69× | 381 (16×2) | 424 (8×4) | NV +11 % |
+| 4K, lossless | 59 | 83 | 1.40× | 139 (16×2) | 134 (8×4) | FV +4 % |
 
-**Encoding is faster with fvJPEG2000** — 1.5 to 2.5 times in single image mode and 3.8 to 7.2 times
+**Encoding is faster with fvJPEG2000** — 1.5 to 2.5 times in single image mode and 4.0 to 6.9 times
 at the best combination of threads and batch. The main reason is that the nvJPEG2000 encoder gains
-almost nothing from multithreading: eight threads give it 1.04×, against 4.7× for fvJPEG2000.
+almost nothing from multithreading: eight threads give it 1.04 to 1.10 times, against 2.7 to 4.7
+times for fvJPEG2000.
 
-**Decoding is faster with nvJPEG2000** — about 2 times in single image mode and 1.5 times at the
-best combination in lossy mode. In lossless mode the difference nearly disappears: 6 % at 4K and
-10 % at 2K.
+**On decoding the single frame and the loaded pipeline say different things.** In single image mode
+nvJPEG2000 is ahead by 1.4 to 1.9 times, and where the time of one frame is what matters, that is
+the number that counts. At the best combination of threads and batch the gap closes: in three cases
+out of four the two decoders are within two per cent of each other and the lead changes hands, and
+only at 4K lossy does nvJPEG2000 stay ahead, by 11 %.
 
 ### Quality at an equal file size
 
@@ -114,14 +129,14 @@ Tenths of a decibel — indistinguishable by eye.
 
 | Frame | Mode | Encoding FV | Encoding NV | Decoding FV | Decoding NV |
 |---|---|---:|---:|---:|---:|
-| 2K | lossy | 0.125 J | 0.571 J | 0.182 J | 0.228 J |
-| 2K | lossless | 0.227 J | 1.396 J | 0.430 J | 0.787 J |
-| 4K | lossy | 0.381 J | 1.205 J | 0.520 J | 0.623 J |
-| 4K | lossless | 0.738 J | 4.189 J | 1.370 J | 2.434 J |
+| 2K | lossy | 0.123 J | 0.534 J | 0.183 J | 0.250 J |
+| 2K | lossless | 0.229 J | 1.391 J | 0.428 J | 0.799 J |
+| 4K | lossy | 0.392 J | 1.167 J | 0.521 J | 0.647 J |
+| 4K | lossless | 0.733 J | 4.189 J | 1.354 J | 2.476 J |
 
-Energy repeats the speed picture on encoding but does not amplify it. On decoding it goes the other
-way: fvJPEG2000 is slower, yet its frame costs 1.2 to 1.8 times less, because its card runs at
-178–184 W against 351–364 W.
+Energy repeats the speed picture on encoding but does not amplify it. On decoding the two codecs run
+at nearly the same speed, and the frame still costs 1.2 to 1.8 times less with fvJPEG2000, because
+its card draws 183–202 W against 258–350 W.
 
 ### PCRD mode: a fixed file size
 
@@ -198,11 +213,13 @@ rather than a line in this table.
 | `bench/bench.py` | the harness of the 19 August run |
 | `bench/bench-04.py` | the harness of the 24 August run: the full cycle, both codecs, energy |
 | `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
-| `bench/nvj2k_bench.cpp` | the benchmark harness for nvJPEG2000 |
+| `bench/nvj2k_bench.cpp` | the benchmark harness for nvJPEG2000, our own code |
+| `bench/make_charts.py` | draws the charts of the article from a results folder |
 | `bench/CMakeLists.txt` | builds that harness on Linux, Jetson included |
 | `bench/build.sh` | the same build without CMake, one `g++` call per executable |
 | `bench/README.md` | run options and workflow |
-| `results/2026-08-24/` | **the current run:** tables, machine-readable data, 470 logs, energy, the stage breakdown, and the article snapshot |
+| `results/2026-08-28/` | **the current run:** tables, machine-readable data, every log, energy and the stage breakdown; the first run with the corrected decoder measurement |
+| `results/2026-08-24/` | the previous run, kept for comparison: its decoding figures were measured along a shorter path on the nvJPEG2000 side |
 | `results/2026-08-19/` | the first full comparison: tables, machine-readable data, 438 logs, and the article of that date |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |

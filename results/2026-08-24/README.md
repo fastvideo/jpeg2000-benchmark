@@ -1,8 +1,14 @@
 # Full comparison run — 24 August 2026
 
-The run behind the current tables in the root `README.md` and behind the article. Both codecs, both
-frames, both modes, on an RTX 4090: speed in four measurement modes, a full encode-decode-compare
-cycle, energy per frame and the stage breakdown of a single frame.
+> **Superseded on 28 August 2026 — the decoding figures below are wrong.** Our own harness for
+> nvJPEG2000 stopped the clock with the decoded pixels still in GPU memory, while the Fastvideo
+> sample returned them to host memory, so the decoding halves of this run were not measuring the
+> same path. The encoding figures are unaffected and the run of 28 August reproduces them. This
+> folder is kept, with every log, so that the two runs can be compared line by line; the current
+> numbers are in `results/2026-08-28/`, which also explains what the error was.
+
+Both codecs, both frames, both modes, on an RTX 4090: speed in four measurement modes, a full
+encode-decode-compare cycle, energy per frame and the stage breakdown of a single frame.
 
 It replaces the run of 19 August as the current one. The earlier run is kept in
 `results/2026-08-19/` — it was made with the previous harness, and its energy figures were computed

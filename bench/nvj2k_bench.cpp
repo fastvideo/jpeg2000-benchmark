@@ -9,12 +9,15 @@
 //   nvj2kEncoderSample.exe   (default)
 //   nvj2kDecoderSample.exe   (compile with /DBUILD_DECODER)
 //
-// Measurement boundaries, identical to the Fastvideo samples:
-//   encoder: pixels already in GPU memory  ->  compressed stream in host memory
-//   decoder: compressed stream in host memory -> pixels in GPU memory
-// The transfer of the pixel side is performed but excluded from the reported
-// figure in synchronous mode, and included in asynchronous mode - exactly as
-// the Fastvideo samples label it.
+// Measurement boundaries, meant to mirror the Fastvideo samples:
+//   encoder: pixels in host memory -> compressed stream in host memory
+//   decoder: compressed stream in host memory -> pixels in host memory
+// Both directions therefore include the pixel-side transfer, which is what
+// "including all transfers" claims. Until 28 August 2026 the decoder stopped
+// at pixels in GPU memory while still printing that line: the two halves of
+// the comparison were not mirror images, and the decoder looked faster than
+// it is. -noupload and -nodownload switch the respective transfer off, for
+// diagnostics only.
 // ---------------------------------------------------------------------------
 
 #include <nvjpeg2k.h>
@@ -131,7 +134,15 @@ static Image readImage(const std::string& path) {
     std::fgetc(f);                     // single whitespace after maxval
 
     im.bytesPerSample = (maxval > 255) ? 2 : 1;
-    im.precision = (maxval > 255) ? 16 : 8;
+    // Precision is the number of bits the samples actually use, taken from
+    // maxval - not the width of the container. A 12-bit frame has maxval 4095
+    // and must be declared as 12 bits: declaring 16 makes the encoder code
+    // four extra bit planes. They are empty, so the file barely grows, but the
+    // work is real and the comparison stops being like for like.
+    im.precision = 1;
+    while (((1 << im.precision) - 1) < maxval && im.precision < 16)
+        ++im.precision;
+    if (im.precision < 8) im.precision = 8;
 
     const size_t pixels = (size_t)im.width * im.height;
     const size_t interleavedBytes = pixels * im.comps * im.bytesPerSample;
@@ -207,6 +218,7 @@ struct Args {
     double qlo = 1.0;               // calibration: lower end of the search
     double qhi = 100.0;             // calibration: upper end of the search
     bool noupload = false;          // diagnostic: no per-frame host->device copy
+    bool nodownload = false;        // diagnostic: no per-frame device->host copy
     bool decode = false;
 };
 
@@ -240,15 +252,24 @@ static Args parseArgs(int argc, char** argv) {
         else if (eq(k, "-showFrames")) a.showFrames = true;
         else if (eq(k, "-decode")) a.decode = true;
         else if (eq(k, "-noupload")) a.noupload = true;
-        else if (eq(k, "-threadR") || eq(k, "-threadW") ||
-                 eq(k, "-s") || eq(k, "-cr") || eq(k, "-maxWidth") ||
-                 eq(k, "-maxHeight") || eq(k, "-outputBitdepth") ||
-                 eq(k, "-overwriteSourceBitdepth") || eq(k, "-log") ||
-                 eq(k, "-repeatTime")) {
-            ++i;                       // accepted and ignored, for compatibility
+        else if (eq(k, "-nodownload")) a.nodownload = true;
+        // Options that would change what is encoded are refused outright.
+        // Swallowing them silently is how a run ends up comparing two
+        // different things while both command lines look the same.
+        else if (eq(k, "-cr") || eq(k, "-s") || eq(k, "-outputBitdepth") ||
+                 eq(k, "-overwriteSourceBitdepth") || eq(k, "-noMCT") ||
+                 eq(k, "-noHeader")) {
+            std::fprintf(stderr,
+                         "ERROR: option %s changes the encoding and is not "
+                         "implemented in this harness. Refusing to run: the "
+                         "result would not be comparable.\n", k);
+            std::exit(2);
         }
-        else if (eq(k, "-noMCT") || eq(k, "-noHeader")) {
-            // accepted and ignored
+        // Options that only affect host-side plumbing are accepted and ignored.
+        else if (eq(k, "-threadR") || eq(k, "-threadW") ||
+                 eq(k, "-maxWidth") || eq(k, "-maxHeight") ||
+                 eq(k, "-log") || eq(k, "-repeatTime")) {
+            ++i;
         }
     }
     if (a.threads < 1) a.threads = 1;
@@ -446,6 +467,12 @@ struct DecSlot {
     std::vector<void*> dplane;
     std::vector<size_t> pitch;
     nvjpeg2kImage_t img;
+    // Pinned host buffers for the decoded planes. Without them the decoder
+    // measures only as far as pixels in GPU memory, while the encoder
+    // measures all the way from pixels in host memory - and the two halves
+    // of the comparison stop being mirror images of each other.
+    std::vector<void*> hplane;
+    size_t planeBytes = 0;
 };
 
 struct DecContext {
@@ -652,8 +679,11 @@ static void benchEncode(const Args& a, const Image& im) {
     std::printf("- GPU pipeline including all transfers for %d images "
                 "per %d thread%s = %.1f ms; %.1f FPS;\n",
                 total, T, (T == 1 ? "" : "s"), wall, total * 1000.0 / wall);
-    std::printf("- GPU and CPU pipelines including image reader and writer "
-                "threads: %.1f ms\n", wall);
+    // The harness has no separate reader and writer threads, so there is no
+    // second measurement to report. Saying so is better than printing the
+    // same number twice under a different name.
+    std::printf("- no separate reader and writer threads in this harness; "
+                "the figure above is the only measurement\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -678,6 +708,20 @@ static void decoderSlotInit(DecSlot& s, nvjpeg2kHandle_t handle,
     s.img.pitch_in_bytes = &s.pitch[0];
     s.img.pixel_type = (bytesPerSample == 1) ? NVJPEG2K_UINT8 : NVJPEG2K_UINT16;
     s.img.num_components = (uint32_t)comps;
+    s.planeBytes = planeBytes;
+    s.hplane.resize((size_t)comps);
+    for (int c = 0; c < comps; ++c)
+        CHECK_CUDA(cudaHostAlloc(&s.hplane[c], planeBytes,
+                                 cudaHostAllocDefault));
+}
+
+
+// Copy the decoded planes back to host memory on the slot's own stream.
+// Queued, not synchronised: the caller synchronises once per frame.
+static void decoderDownload(DecSlot& s) {
+    for (size_t c = 0; c < s.hplane.size(); ++c)
+        CHECK_CUDA(cudaMemcpyAsync(s.hplane[c], s.dplane[c], s.planeBytes,
+                                   cudaMemcpyDeviceToHost, s.stream));
 }
 
 static void benchDecode(const Args& a) {
@@ -730,14 +774,16 @@ static void benchDecode(const Args& a) {
                                           bitstream.size(), 0, 0, s.jstream));
             CHECK_NVJ(nvjpeg2kDecodeImage(ctx.handle, s.state, s.jstream,
                                           nullptr, &s.img, s.stream));
+            if (!a.nodownload) decoderDownload(s);
             CHECK_CUDA(cudaStreamSynchronize(s.stream));
             double frame = msSince(t1);
             ms += frame;
             if (a.showFrames)
                 std::printf("  %6.2f ms Total time\n", frame);
         }
-        std::printf("Total decode time excluding device-to-host transfer "
+        std::printf("Total decode time %s device-to-host transfer "
                     "for %d images = %.1f ms; %.1f FPS;\n",
+                    a.nodownload ? "excluding" : "including",
                     a.repeat, ms, a.repeat * 1000.0 / ms);
 
         // Writing the result is outside the measured region, exactly as the
@@ -827,6 +873,9 @@ static void benchDecode(const Args& a) {
                                                   slots[t][b].jstream, nullptr,
                                                   &slots[t][b].img,
                                                   slots[t][b].stream));
+                if (!a.nodownload)
+                    for (int b = 0; b < n; ++b)
+                        decoderDownload(slots[t][b]);
                 for (int b = 0; b < n; ++b)
                     CHECK_CUDA(cudaStreamSynchronize(slots[t][b].stream));
             }
@@ -836,11 +885,13 @@ static void benchDecode(const Args& a) {
     double wall = msSince(t0);
 
     std::printf("Total J2K Decode time:\n");
-    std::printf("- GPU pipeline including all transfers for %d images "
+    std::printf("- GPU pipeline %s for %d images "
                 "per %d thread%s = %.1f ms; %.1f FPS;\n",
+                a.nodownload ? "excluding the device-to-host transfer"
+                             : "including all transfers",
                 total, T, (T == 1 ? "" : "s"), wall, total * 1000.0 / wall);
-    std::printf("- GPU and CPU pipelines including image reader and writer "
-                "threads: %.1f ms\n", wall);
+    std::printf("- no separate reader and writer threads in this harness; "
+                "the figure above is the only measurement\n");
 }
 
 // ---------------------------------------------------------------------------
