@@ -125,10 +125,12 @@ are ordinary photographic scenes with a wide range of detail: both smooth
 areas and fine texture. Such material matters because the compression ratio at
 a given quality is determined entirely by the content of the frame.
 
-| File          |  Resolution | Channels | Bit depth | Size, MB |
-|---------------|------------:|---------:|-----------|---------:|
-| `2k_wild.ppm` | 1920 × 1080 |        3 | 8 bit     |     5.93 |
-| `4k_wild.ppm` | 3840 × 2160 |        3 | 8 bit     |    23.73 |
+| File       | `2k_wild.ppm` | `4k_wild.ppm` |
+|------------|---------------|---------------|
+| Resolution | 1920 × 1080   | 3840 × 2160   |
+| Channels   | 3             | 3             |
+| Bit depth  | 8 bit         | 8 bit         |
+| Size, MB   | 5.93          | 23.73         |
 
 The PPM format was chosen deliberately: it is an uncompressed file with a
 minimal header — format, dimensions, maximum sample value (in effect, the bit
@@ -319,10 +321,12 @@ one tenth of a percent.
 
 The result of the search:
 
-| Image    | Target, bytes | Q found | Result, bytes | Deviation |
-|----------|--------------:|--------:|--------------:|----------:|
-| 2K lossy |       601,703 |   87.29 |       601,940 |     0.04% |
-| 4K lossy |     1,275,547 |   87.14 |     1,274,517 |     0.08% |
+| Image         | 2K lossy |  4K lossy |
+|---------------|---------:|----------:|
+| Target, bytes |  601,703 | 1,275,547 |
+| Q found       |    87.29 |     87.14 |
+| Result, bytes |  601,940 | 1,274,517 |
+| Deviation     |    0.04% |     0.08% |
 
 The sizes are matched to better than one tenth of a percent — the codecs have
 an equal amount of work.
@@ -757,17 +761,21 @@ batch is taken; the ratio to 8×1 shows what the move to it added. The last
 column is the product of the first two, that is, the total speedup relative to
 single image mode.
 
-In the table below the first three columns are frames per second, taken
-directly from the table in section 6. The last three are ratios of those
-numbers; they are rounded, but computed from the unrounded frames per second.
+In the table below the first three rows are frames per second, taken directly
+from the table in section 6. The last three are ratios of those numbers; they
+are rounded, but computed from the unrounded frames per second.
 
-| Encoder    | Single image mode |  8×1 | Optimum    | What multithreading gave | What the move to the optimum gave | Total speedup |
-|------------|------------------:|-----:|------------|-------------------------:|----------------------------------:|--------------:|
-| fvJPEG2000 |               378 | 1765 | 1920 (8×2) |                     4.7x |                              1.1x |          5.1x |
-| nvJPEG2000 |               197 |  205 | 267 (16×2) |                     1.0x |                              1.3x |          1.4x |
+| Encoder                           | fvJPEG2000 | nvJPEG2000 |
+|-----------------------------------|------------|------------|
+| Single image mode                 | 378        | 197        |
+| 8×1                               | 1765       | 205        |
+| Optimum                           | 1920 (8×2) | 267 (16×2) |
+| What multithreading gave          | 4.7x       | 1.0x       |
+| What the move to the optimum gave | 1.1x       | 1.3x       |
+| Total speedup                     | 5.1x       | 1.4x       |
 
-**The column "what the move to the optimum gave" means different things for
-the two encoders**, and that has to be said directly. For fvJPEG2000 the best
+**The row "what the move to the optimum gave" means different things for the
+two encoders**, and that has to be said directly. For fvJPEG2000 the best
 combination turned out to be 8×2: the same number of threads, only batching
 was added — so 1.1x here is the contribution of batching in its pure form. For
 nvJPEG2000 the best one turned out to be 16×2: twice as many threads and two
@@ -786,13 +794,17 @@ exactly where the gap comes from that reaches seven times in section 6.
 For the decoders the picture is different, and the gap there is much smaller.
 
 In the table below the speeds are taken from the table in section 7. For both
-decoders the best combination is eight threads, the same as in the 8×1 column:
+decoders the best combination is eight threads, the same as in the 8×1 row:
 only the number of frames in flight inside a thread changes.
 
-| Decoder    | Single image mode |  8×1 | Optimum    | What multithreading gave | What the move to the optimum gave | Total speedup |
-|------------|------------------:|-----:|------------|-------------------------:|----------------------------------:|--------------:|
-| fvJPEG2000 |               143 |  431 | 1043 (8×4) |                     3.0x |                              2.4x |          7.3x |
-| nvJPEG2000 |               296 | 1421 | 1593 (8×2) |                     4.8x |                              1.1x |          5.4x |
+| Decoder                           | fvJPEG2000 | nvJPEG2000 |
+|-----------------------------------|------------|------------|
+| Single image mode                 | 143        | 296        |
+| 8×1                               | 431        | 1421       |
+| Optimum                           | 1043 (8×4) | 1593 (8×2) |
+| What multithreading gave          | 3.0x       | 4.8x       |
+| What the move to the optimum gave | 2.4x       | 1.1x       |
+| Total speedup                     | 7.3x       | 5.4x       |
 
 This reads as follows: multithreading makes the fvJPEG2000 decoder three times
 faster, and a batch of four frames adds another 2.4 times, together 7.3 times
