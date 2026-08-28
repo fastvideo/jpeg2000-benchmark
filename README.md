@@ -40,15 +40,24 @@ nvJPEG2000 has no such call, so the same effect is built by hand out of several 
 streams and asynchronous calls. That is done with the library's own facilities and it does help:
 1.03 to 1.35 times on the encoder and 1.20 to 3.36 times on the decoder.
 
-The measured interval runs from host memory to host memory: for the encoder, from the raw frame in
-CPU memory to the compressed image in CPU memory; for the decoder, the other way round. The copy of
-the raw pixels between CPU and GPU is inside it in both directions, and so is every CPU part of both
-codecs. Only disk work is outside.
+**The boundary is not the same in the two modes, and that is deliberate.** Each harness mirrors the
+Fastvideo sample it is compared against.
 
-That boundary is the one a working system pays for. Frames arrive in a stream, several are in flight
-at once, and a decoded frame has to end up where the rest of the pipeline expects it — in host
-memory. The transfer is not small: 6.2 MB per 2K frame and 24.9 MB per 4K frame, which is 0.25 ms
-and 0.99 ms at the 25.2 GB/s measured on this machine.
+In the multithreaded modes — the "best" columns of the tables, and the energy figures — the interval
+runs from host memory to host memory: for the encoder, from the raw frame in CPU memory to the
+compressed image in CPU memory; for the decoder, the other way round. The copy of the raw pixels
+between CPU and GPU is inside it in both directions, and so is every CPU part of both codecs. Only
+disk work is outside. That boundary is the one a working system pays for: frames arrive in a stream,
+several are in flight at once, and a decoded frame has to end up where the rest of the pipeline
+expects it. The transfer is not small — 6.2 MB per 2K frame and 24.9 MB per 4K frame, 0.25 ms and
+0.99 ms at the 25.2 GB/s measured on this machine.
+
+In single image mode the samples time the codec alone: the encoder starts with the pixels already on
+the card, the decoder stops with them still there. That mode answers a different question — how long
+one frame takes inside the codec — and the pixel-side transfer is left out of it on both sides.
+
+Which boundary a given measurement used is recorded per row in `results.csv`, in the `boundary`
+column: `all`, `no_h2d` or `no_d2h`.
 
 Every measurement is followed by a full cycle: encode, decode, compare with the source. Lossless
 must match byte for byte; for lossy, PSNR is computed.
@@ -102,6 +111,16 @@ to better than one tenth of a percent, so both codecs handle the same amount of 
 | 2K, lossless | 116 | 223 | 1.93× | 427 (8×4) | 436 (8×4) | NV +2 % |
 | 4K, lossy | 96 | 163 | 1.69× | 381 (16×2) | 424 (8×4) | NV +11 % |
 | 4K, lossless | 59 | 83 | 1.40× | 139 (16×2) | 134 (8×4) | FV +4 % |
+
+> **The "NV single" column of this table is understated and will be measured again.** In the run of
+> 28 August the nvJPEG2000 harness kept the copy of the decoded frame to host memory inside the
+> timed region in single image mode as well, while the Fastvideo sample leaves it out — so the two
+> sides of that column were not measuring the same path. Subtracting the transfer gives about 293,
+> 235, 192 and 90 frames per second, within one per cent of the figures of 24 August, which were
+> measured on equal terms. The harness now follows the mode, and the column will be replaced by
+> measurement rather than by arithmetic. Everything else in these tables is unaffected: the "best"
+> columns, the encoding table and the energy figures were measured from host to host on both
+> sides.
 
 **Encoding is faster with fvJPEG2000** — 1.5 to 2.5 times in single image mode and 4.0 to 6.9 times
 at the best combination of threads and batch. The main reason is that the nvJPEG2000 encoder gains

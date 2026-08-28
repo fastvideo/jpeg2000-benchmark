@@ -18,6 +18,13 @@
 // the comparison were not mirror images, and the decoder looked faster than
 // it is. -noupload and -nodownload switch the respective transfer off, for
 // diagnostics only.
+//
+// The synchronous mode is a different measurement and mirrors a different
+// sample. There the Fastvideo samples time the codec alone: the encoder
+// starts with the pixels already on the card and the decoder stops with them
+// still there. So in synchronous mode this harness leaves the pixel-side
+// transfer out as well, and says so in its summary line. -download and
+// -nodownload force it on or off in either mode.
 // ---------------------------------------------------------------------------
 
 #include <nvjpeg2k.h>
@@ -218,7 +225,10 @@ struct Args {
     double qlo = 1.0;               // calibration: lower end of the search
     double qhi = 100.0;             // calibration: upper end of the search
     bool noupload = false;          // diagnostic: no per-frame host->device copy
-    bool nodownload = false;        // diagnostic: no per-frame device->host copy
+    // -1 = follow the mode: on in the asynchronous mode, off in the
+    // synchronous one, so that each mirrors the Fastvideo sample it is
+    // compared against.  0 and 1 are the explicit -nodownload and -download.
+    int download = -1;
     bool decode = false;
 };
 
@@ -252,7 +262,8 @@ static Args parseArgs(int argc, char** argv) {
         else if (eq(k, "-showFrames")) a.showFrames = true;
         else if (eq(k, "-decode")) a.decode = true;
         else if (eq(k, "-noupload")) a.noupload = true;
-        else if (eq(k, "-nodownload")) a.nodownload = true;
+        else if (eq(k, "-nodownload")) a.download = 0;
+        else if (eq(k, "-download")) a.download = 1;
         // Options that would change what is encoded are refused outright.
         // Swallowing them silently is how a run ends up comparing two
         // different things while both command lines look the same.
@@ -767,6 +778,9 @@ static void benchDecode(const Args& a) {
                                       &s.img, s.stream));
         CHECK_CUDA(cudaStreamSynchronize(s.stream));
 
+        // Synchronous mode: no device-to-host copy unless it is asked for.
+        const bool dl = (a.download == 1);
+
         double ms = 0.0;
         for (int i = 0; i < a.repeat; ++i) {
             Clock::time_point t1 = Clock::now();
@@ -774,7 +788,7 @@ static void benchDecode(const Args& a) {
                                           bitstream.size(), 0, 0, s.jstream));
             CHECK_NVJ(nvjpeg2kDecodeImage(ctx.handle, s.state, s.jstream,
                                           nullptr, &s.img, s.stream));
-            if (!a.nodownload) decoderDownload(s);
+            if (dl) decoderDownload(s);
             CHECK_CUDA(cudaStreamSynchronize(s.stream));
             double frame = msSince(t1);
             ms += frame;
@@ -783,7 +797,7 @@ static void benchDecode(const Args& a) {
         }
         std::printf("Total decode time %s device-to-host transfer "
                     "for %d images = %.1f ms; %.1f FPS;\n",
-                    a.nodownload ? "excluding" : "including",
+                    dl ? "including" : "excluding",
                     a.repeat, ms, a.repeat * 1000.0 / ms);
 
         // Writing the result is outside the measured region, exactly as the
@@ -853,6 +867,9 @@ static void benchDecode(const Args& a) {
 
     std::atomic<int> next(0);
     const int total = a.repeat;
+    // Asynchronous mode: the frame goes back to host memory unless that is
+    // switched off, because the Fastvideo sample returns it there too.
+    const bool dl = (a.download != 0);
 
     Clock::time_point t0 = Clock::now();
     std::vector<std::thread> workers;
@@ -873,7 +890,7 @@ static void benchDecode(const Args& a) {
                                                   slots[t][b].jstream, nullptr,
                                                   &slots[t][b].img,
                                                   slots[t][b].stream));
-                if (!a.nodownload)
+                if (dl)
                     for (int b = 0; b < n; ++b)
                         decoderDownload(slots[t][b]);
                 for (int b = 0; b < n; ++b)
@@ -887,8 +904,8 @@ static void benchDecode(const Args& a) {
     std::printf("Total J2K Decode time:\n");
     std::printf("- GPU pipeline %s for %d images "
                 "per %d thread%s = %.1f ms; %.1f FPS;\n",
-                a.nodownload ? "excluding the device-to-host transfer"
-                             : "including all transfers",
+                dl ? "including all transfers"
+                   : "excluding the device-to-host transfer",
                 total, T, (T == 1 ? "" : "s"), wall, total * 1000.0 / wall);
     std::printf("- no separate reader and writer threads in this harness; "
                 "the figure above is the only measurement\n");
