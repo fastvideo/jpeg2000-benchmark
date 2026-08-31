@@ -44,15 +44,24 @@ Disk is excluded everywhere: nothing is written, `-discard`.
 
 ## Building
 
-Not settled in this folder yet. On the machine these results come from, the file
-is built inside the Fastvideo SDK sample tree, next to `J2kEncoderSample` and
-`J2kDecoderSample`, and lands in `bin/x64/Release`. A standalone `CMakeLists.txt`
-and `build.sh` are worth adding so that the harness can be built without the
-SDK — it needs only nvJPEG2000 and CUDA — but they have not been written and
-tested yet, and an untested build file in a repository is worse than none.
+This folder is the whole build set: the source, `CMakeLists.txt`, `build.sh` and
+this README. That is deliberate — with the build files one level up, a new source
+could be built with an old build file and nobody would notice.
+
+On Windows `bench-06.py` builds the harness itself with the Microsoft compiler,
+and on the machine these results come from it lands in `bin/x64/Release` next to
+the Fastvideo samples. On Linux, a Jetson board among others:
+
+    cmake -B build -DCMAKE_BUILD_TYPE=Release
+    cmake --build build -j
+
+If nvJPEG2000 is not in a standard place, add `-DNVJPEG2K_ROOT=/path/to/nvjpeg2k`.
+The two executables land in `build/`; copy them next to the test frames.
+`build.sh` does the same with one `g++` call per executable, for when CMake is
+unavailable or too old.
 
 What the source needs: CUDA, the nvJPEG2000 library (free, downloaded separately
-from NVIDIA), and a C++14 compiler.
+from NVIDIA), and a C++11 compiler.
 
 ## Version 01
 
