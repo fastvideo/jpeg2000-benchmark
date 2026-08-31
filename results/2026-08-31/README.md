@@ -1,8 +1,7 @@
 # Run of 31 August 2026 — RTX 4090
 
-One run for everything: encoding, decoding, energy and the quality checks. The
-three previous series had been made on different days and could not be put in
-one table; this one can.
+One run for everything: encoding, decoding, energy and the quality checks — so
+any row here can be divided by any other.
 
     python bench-05.py --no-build --final
 
@@ -18,18 +17,15 @@ one table; this one can.
 | Repeats per point | 3, median in the tables; a point whose repeats disagreed by more than 7 % was measured up to 2 more times |
 | Search grid | 8×1, 8×2, 16×2, 8×4, 32×1, 32×2 |
 
-**The script that made this run is not in the repository.** Right after the run `bench-05.py`
-was superseded by `bench-06.py`, and the older copy was not kept: a harness sitting next to the
-current one under a different number is how a run gets repeated with the wrong script. Three
-things changed between the two, and each of them would change what a repeat produces, so
-`bench-06.py` reproduces the method rather than this exact grid:
+**The script that made this run is not in the repository.** `bench-06.py` is there instead, and
+it reproduces the method rather than this exact grid — three things differ, and each of them
+changes what a repeat produces:
 
-- a grid point that does not fit in card memory is now skipped for **both** codecs, decided once
-  for the whole grid before measuring, instead of leaving a cell filled on one side only;
-- the energy figure from the differential method now reaches `results.csv`, not only
+- in `bench-06.py` a grid point that does not fit in card memory is skipped for **both** codecs,
+  decided once for the whole grid before measuring;
+- the energy figure from the differential method reaches `results.csv` there, not only
   `results.json`;
-- the best thread and batch combination for the no-upload phase is taken per frame size instead
-  of once for the whole run.
+- the best thread and batch combination for the no-upload phase is taken per frame size.
 
 The numbers in this folder are what `bench-05.py` version `2026-08-31.3` printed. Every launch it
 made is in `logs.zip`, and `results.csv` and `results.jsonl` carry the exact command line of each
@@ -40,23 +36,16 @@ LRCP progression, tiling off, SOP and EPH markers off, 4:4:4. The nvJPEG2000
 quality factor is matched to the file size our encoder produces at q = 85, to
 better than 0.1 %.
 
-## What is new in this run
+## How the measurement is set up
 
-**Two things that were wrong before are fixed here.**
+**Single image mode is measured with `-nodownload`.** The Fastvideo sample
+started with `-discard` never copies the decoded frame back to host memory and
+says so; the nvJPEG2000 harness is started so that it does not either. Neither
+side pays for a transfer the other does not.
 
-1. **The single-frame decoding boundary is now mirrored.** The Fastvideo sample
-   started with `-discard` never copies the decoded frame back to host memory
-   and says so; our nvJPEG2000 harness copied it back by default. Measured that
-   way the two halves were not mirror images and nvJPEG2000 came out slower than
-   it is. In single frame mode the harness is now started with `-nodownload`.
-   nvJPEG2000 single-frame decoding rises from 276 / 223 / 162 / 83 to
-   298 / 237 / 193 / 91 frames per second.
-
-2. **The grid was too short.** It had no point with many threads and one frame
-   per thread, so it had never been checked what the library does when it is
-   simply given more CPU threads. 32×1 and 32×2 were added. The answer: on
-   encoding nvJPEG2000 gains about 5 % on 2K and nothing on 4K, and our own
-   encoder gets *slower* with 32 threads.
+**The search grid includes 32×1 and 32×2.** These answer what the library does
+when it is simply given more CPU threads: on encoding nvJPEG2000 gains about
+5 % on 2K and nothing on 4K, and our own encoder gets *slower* with 32 threads.
 
 **A combination that does not fit in card memory for one codec is left out for
 both.** 4K at 32×2 does not fit for our encoder; the corresponding cells are
