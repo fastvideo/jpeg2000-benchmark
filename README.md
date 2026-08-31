@@ -2,22 +2,6 @@
 
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
-> **Everything comes from one run, and only that run is kept.** Until 31 August the tables here
-> were assembled from three separate series — encoding from one day, decoding from another,
-> energy from a third — and rows from different series could not be divided by each other. The
-> run of 31 August measures all of it at once, on an extended search grid, and it also corrects
-> the single-frame decoding column: our harness used to copy the decoded frame back to host
-> memory while the Fastvideo sample does not, so nvJPEG2000 came out slower than it is there.
-> Details in `results/2026-08-31/README.md`.
->
-> The earlier full runs — 19, 24 and 28 August — **have been removed from the working tree**,
-> together with the harnesses that made them. Each of them contained figures we later found to
-> be wrong, and keeping a corrected run next to three superseded ones only invites someone to
-> quote the wrong table. They are in the repository history if anyone needs them:
-> `git log --diff-filter=D -- results/` finds the commit that removed a file and
-> `git show <commit>^:<path>` brings it back. The two PCRD runs stay: they measure a different
-> thing and nothing in them was superseded.
-
 ## The problem
 
 Published JPEG2000 numbers are hard to compare with each other.
