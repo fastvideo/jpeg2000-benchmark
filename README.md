@@ -2,13 +2,21 @@
 
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
-> **Everything now comes from one run.** Until 31 August the tables here were assembled from
-> three separate series — encoding from one day, decoding from another, energy from a third —
-> and rows from different series could not honestly be divided by each other. The run of
-> 31 August measures all of it at once, on an extended search grid, and it also corrects the
-> single-frame decoding column: our harness used to copy the decoded frame back to host memory
-> while the Fastvideo sample does not, so nvJPEG2000 came out slower than it is there. Details
-> in `results/2026-08-31/README.md`; the earlier runs and their logs stay where they were.
+> **Everything comes from one run, and only that run is kept.** Until 31 August the tables here
+> were assembled from three separate series — encoding from one day, decoding from another,
+> energy from a third — and rows from different series could not be divided by each other. The
+> run of 31 August measures all of it at once, on an extended search grid, and it also corrects
+> the single-frame decoding column: our harness used to copy the decoded frame back to host
+> memory while the Fastvideo sample does not, so nvJPEG2000 came out slower than it is there.
+> Details in `results/2026-08-31/README.md`.
+>
+> The earlier full runs — 19, 24 and 28 August — **have been removed from the working tree**,
+> together with the harnesses that made them. Each of them contained figures we later found to
+> be wrong, and keeping a corrected run next to three superseded ones only invites someone to
+> quote the wrong table. They are in the repository history if anyone needs them:
+> `git log --diff-filter=D -- results/` finds the commit that removed a file and
+> `git show <commit>^:<path>` brings it back. The two PCRD runs stay: they measure a different
+> thing and nothing in them was superseded.
 
 ## The problem
 
@@ -228,10 +236,9 @@ If nvJPEG2000 is not in a standard place, add `-DNVJPEG2K_ROOT=/path/to/nvjpeg2k
 executables land in `build/`; copy them next to the test frames. `build.sh` in the same folder does
 the same thing with one `g++` call per executable, for when CMake is unavailable or too old.
 
-Each harness version is a complete build set in its own folder — source, `CMakeLists.txt`,
-`build.sh` and a `README.md` — so that a new source cannot be built with an old build file by
-accident. `bench/nvj2k_bench-01/` rebuilds the runs up to 28 August; `bench/nvj2k_bench-02/` is the
-current one.
+The harness is a complete build set in its own folder — source, `CMakeLists.txt`, `build.sh` and
+a `README.md` — so that a new source cannot be built with an old build file by accident.
+`bench/nvj2k_bench-02/` is the version that made the run of 31 August, and the only one kept.
 
 `bench/README.md` has the run options and the workflow.
 
@@ -253,19 +260,14 @@ rather than a line in this table.
 | Path | What it is |
 |---|---|
 | `bench/bench-06.py` | the harness of the 31 August run: the full cycle, both codecs, energy |
-| `bench/bench-04.py` | the harness of the 24 and 28 August runs |
 | `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
-| `bench/nvj2k_bench-02/` | the current nvJPEG2000 harness: source, CMake, build script, README |
-| `bench/nvj2k_bench-01/` | the previous one, for rebuilding the runs up to 28 August |
+| `bench/nvj2k_bench-02/` | the nvJPEG2000 harness: source, CMake, build script, README |
 | `bench/make_charts-03.py` | draws the charts of the article from a results folder |
 | `bench/j2k-nv-threads-and-states-02.py` | what the library gives on its own and what our way of driving it adds |
 | `bench/j2k-point-repeat-02.py` | one point, many launches: one cluster of values or two |
 | `bench/get-nvidia-sample-02.py` | downloads NVIDIA's own sample programs |
 | `bench/README.md` | run options and workflow |
-| `results/2026-08-31/` | **the current run:** everything in one series, the extended grid, CPU load, and the twenty-launch re-measurement in `point-repeat/` |
-| `results/2026-08-28/` | the previous run: the first with the corrected multithreaded decoder measurement; its single-frame decoding column was measured on unequal terms |
-| `results/2026-08-24/` | tables, machine-readable data, every log |
-| `results/2026-08-19/` | the first full comparison: 438 logs and the article of that date |
+| `results/2026-08-31/` | **the only full run kept:** everything in one series, the extended grid, CPU load, and the twenty-launch re-measurement in `point-repeat/` |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
 
@@ -273,11 +275,12 @@ Every results folder holds `summary.txt` with the full tables, `results.json` wi
 machine-readable form, and `logs.zip` with every raw log. Each folder has a `README.md` of its own
 that states what the run was for, on what system it was made and how to repeat it.
 
-The working tree carries only the current scripts. The harness that made the run of 19 August,
-`bench.py`, and the other files that used to sit here without a version number in their name are in
-the repository history: `git log --diff-filter=D -- bench/` finds the commit that removed one, and
+The working tree carries only what the current run needs. Superseded harnesses — `bench.py`,
+`bench-04.py`, `bench-05.py`, `nvj2k_bench-01/` — and the results folders they made are in the
+repository history: `git log --diff-filter=D -- bench/` finds the commit that removed a file and
 `git show <commit>^:<path>` brings it back. Keeping stale copies next to current ones is how a run
-ends up being repeated with the wrong script.
+ends up being repeated with the wrong script, and keeping superseded tables next to corrected ones
+is how a wrong number gets quoted.
 
 Every long-lived file carries its version in its name, and the version inside the file has to match
 it. Where the name cannot change — as with the C++ harness, whose file has to stay byte-identical to
@@ -328,8 +331,8 @@ snapshots, plus the README itself — are CC BY 4.0. Move them into your own mat
 compute on top of them. The repository exists to be forked, and a fork almost always edits the
 README for itself.
 
-**The article snapshots** — `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`,
-`results/2026-08-31/fastvideo-vs-nvjpeg2000-rtx4090.md` and any later one — are CC BY-ND 4.0:
+**The article snapshots** — `results/2026-08-31/fastvideo-vs-nvjpeg2000-rtx4090.md` and any later
+one — are CC BY-ND 4.0:
 reprint and quote in full, rewriting and translating by agreement.
 
 In every case, name the source, and carry the measurement conditions along with the numbers.

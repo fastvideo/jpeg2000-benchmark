@@ -1,0 +1,231 @@
+{
+  "measured_by": "Fastvideo",
+  "first_party": true,
+  "reproducible": true,
+  "repo": "https://github.com/fastvideo/jpeg2000-benchmark",
+  "date": "2026-08-31",
+  "article": "https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm",
+  "test_system": {
+    "GPU": "NVIDIA GeForce RTX 4090, 24 GB",
+    "GPU driver": "610.88",
+    "GPU maximum power": "450 W",
+    "CPU": "AMD, 32 threads",
+    "RAM": "128 GB",
+    "Fastvideo JPEG2000 codec (FV)": "Fastvideo SDK 0.23.1.0, CUDA 13.3",
+    "nvJPEG2000 library (NV)": "version 0.11.0.51",
+    "Operating system": "Windows 11",
+    "Bus speed, measured": "25.2 GB/s from CPU to GPU",
+    "Measurement series per point": "3, the tables show the median",
+    "Measurement date": "31 August 2026"
+  },
+  "benchmarks": [
+    {
+      "task": "jpeg2000_encode_lossy_2k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "1920×1080, 8-bit, 4:4:4",
+      "compression_ratio": "10.3:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 381.0,
+        "nvJPEG2000": 198.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 1914.0,
+        "nvJPEG2000": 292.0
+      },
+      "best_point": {
+        "fvJPEG2000": "8×2",
+        "nvJPEG2000": "32×2"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.122,
+        "nvJPEG2000": 0.523
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 7.0,
+        "nvJPEG2000": 29.5
+      }
+    },
+    {
+      "task": "jpeg2000_encode_lossless_2k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "1920×1080, 8-bit, 4:4:4",
+      "compression_ratio": "2.1:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 329.0,
+        "nvJPEG2000": 146.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 1179.0,
+        "nvJPEG2000": 187.0
+      },
+      "best_point": {
+        "fvJPEG2000": "8×2",
+        "nvJPEG2000": "32×2"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.224,
+        "nvJPEG2000": 1.373
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 7.2,
+        "nvJPEG2000": 29.8
+      }
+    },
+    {
+      "task": "jpeg2000_encode_lossy_4k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "3840×2160, 8-bit, 4:4:4",
+      "compression_ratio": "19.5:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 195.0,
+        "nvJPEG2000": 128.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 616.0,
+        "nvJPEG2000": 160.0
+      },
+      "best_point": {
+        "fvJPEG2000": "8×1",
+        "nvJPEG2000": "16×2"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.355,
+        "nvJPEG2000": 1.199
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 7.5,
+        "nvJPEG2000": 14.7
+      }
+    },
+    {
+      "task": "jpeg2000_encode_lossless_4k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "3840×2160, 8-bit, 4:4:4",
+      "compression_ratio": "2.8:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 140.0,
+        "nvJPEG2000": 56.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 371.0,
+        "nvJPEG2000": 64.0
+      },
+      "best_point": {
+        "fvJPEG2000": "8×1",
+        "nvJPEG2000": "16×2"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.729,
+        "nvJPEG2000": 4.195
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 7.6,
+        "nvJPEG2000": 14.8
+      }
+    },
+    {
+      "task": "jpeg2000_decode_lossy_2k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "1920×1080, 8-bit, 4:4:4",
+      "compression_ratio": "10.3:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 144.0,
+        "nvJPEG2000": 298.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 1024.0,
+        "nvJPEG2000": 1033.0
+      },
+      "best_point": {
+        "fvJPEG2000": "8×4",
+        "nvJPEG2000": "8×4"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.178,
+        "nvJPEG2000": 0.254
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 7.6,
+        "nvJPEG2000": 4.1
+      }
+    },
+    {
+      "task": "jpeg2000_decode_lossless_2k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "1920×1080, 8-bit, 4:4:4",
+      "compression_ratio": "2.1:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 116.0,
+        "nvJPEG2000": 237.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 436.0,
+        "nvJPEG2000": 438.0
+      },
+      "best_point": {
+        "fvJPEG2000": "32×2",
+        "nvJPEG2000": "8×4"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.435,
+        "nvJPEG2000": 0.794
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 28.6,
+        "nvJPEG2000": 3.5
+      }
+    },
+    {
+      "task": "jpeg2000_decode_lossy_4k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "3840×2160, 8-bit, 4:4:4",
+      "compression_ratio": "19.5:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 96.0,
+        "nvJPEG2000": 193.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 394.0,
+        "nvJPEG2000": 428.0
+      },
+      "best_point": {
+        "fvJPEG2000": "32×2",
+        "nvJPEG2000": "8×4"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 0.517,
+        "nvJPEG2000": 0.653
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 25.9,
+        "nvJPEG2000": 4.8
+      }
+    },
+    {
+      "task": "jpeg2000_decode_lossless_4k",
+      "gpu": "NVIDIA GeForce RTX 4090, 24 GB",
+      "image": "3840×2160, 8-bit, 4:4:4",
+      "compression_ratio": "2.8:1",
+      "single_frame_fps": {
+        "fvJPEG2000": 59.0,
+        "nvJPEG2000": 91.0
+      },
+      "best_point_fps": {
+        "fvJPEG2000": 145.0,
+        "nvJPEG2000": 134.0
+      },
+      "best_point": {
+        "fvJPEG2000": "32×1",
+        "nvJPEG2000": "8×4"
+      },
+      "energy_j_per_frame": {
+        "fvJPEG2000": 1.384,
+        "nvJPEG2000": 2.471
+      },
+      "cpu_cores_busy": {
+        "fvJPEG2000": 27.8,
+        "nvJPEG2000": 3.4
+      }
+    }
+  ]
+}

@@ -4,7 +4,7 @@ One run for everything: encoding, decoding, energy and the quality checks. The
 three previous series had been made on different days and could not be put in
 one table; this one can.
 
-    python bench-06.py --no-build --final
+    python bench-05.py --no-build --final
 
 | | |
 |---|---|
@@ -17,6 +17,23 @@ one table; this one can.
 | nvJPEG2000 harness | `nvj2k_bench-02.cpp`, version 02 |
 | Repeats per point | 3, median in the tables; a point whose repeats disagreed by more than 7 % was measured up to 2 more times |
 | Search grid | 8×1, 8×2, 16×2, 8×4, 32×1, 32×2 |
+
+**The script that made this run is not in the repository.** Right after the run `bench-05.py`
+was superseded by `bench-06.py`, and the older copy was not kept: a harness sitting next to the
+current one under a different number is how a run gets repeated with the wrong script. Three
+things changed between the two, and each of them would change what a repeat produces, so
+`bench-06.py` reproduces the method rather than this exact grid:
+
+- a grid point that does not fit in card memory is now skipped for **both** codecs, decided once
+  for the whole grid before measuring, instead of leaving a cell filled on one side only;
+- the energy figure from the differential method now reaches `results.csv`, not only
+  `results.json`;
+- the best thread and batch combination for the no-upload phase is taken per frame size instead
+  of once for the whole run.
+
+The numbers in this folder are what `bench-05.py` version `2026-08-31.3` printed. Every launch it
+made is in `logs.zip`, and `results.csv` and `results.jsonl` carry the exact command line of each
+one, so nothing here has to be taken on trust.
 
 Stream settings: code block 32×32, six resolution levels, one quality layer,
 LRCP progression, tiling off, SOP and EPH markers off, 4:4:4. The nvJPEG2000
