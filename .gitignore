@@ -1,0 +1,44 @@
+# Run folders: bench-NN.py makes one per run and they are large.
+# A finished run goes into results/<date>/ by hand, with its logs zipped.
+cmp_*/
+point_repeat_*/
+logs/
+logs-stock*/
+logs-scan/
+
+# Working files left next to the executables
+results.jsonl
+results-stock*.jsonl
+frames-scan.jsonl
+runs.jsonl
+summary-stock*.txt
+prep-stock.json
+probe-stock.json
+tmp.ppm
+tmp.jp2
+*_ref_*.jp2
+nvsample-in/
+nvsample-out/
+
+# Reference frames: they are published on the site, not kept here
+*.ppm
+
+# Build output
+*.exe
+*.obj
+*.pdb
+*.lib
+*.exp
+build/
+x64/
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors and systems
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
