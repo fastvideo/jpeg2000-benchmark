@@ -132,9 +132,19 @@ per cent — 23 points out of 24.
 | `results.json` | the same, machine readable, plus the environment |
 | `results.csv` | one row per measurement |
 | `results.jsonl` | one line per measurement, written as it was made |
+| `benchmarks.json` | the headline figures in one flat, machine-readable file |
 | `logs.zip` | the output of every single launch, 580 files |
 | `img/` | the five charts of the article, English, 1200 px |
 | `point-repeat/` | the twenty-launch re-measurement of the disputed point |
+
+`benchmarks.json` is a convenience file, not a new measurement. It carries eight
+records — encoding and decoding, 2K and 4K, lossy and lossless — each with the
+single-frame and best-point frame rates of both codecs, the energy per frame, the
+CPU cores busy, the best thread and batch combination, and the compression ratio.
+It is built from the published article by `_scripts/site-llms-j2k-04.py --json=`,
+so it cannot drift away from the tables a reader sees. Everything in it is also in
+`results.json`, which stays the primary record: `benchmarks.json` exists because a
+machine reading `llms.txt` should be able to reach the numbers in one hop.
 
 The article that goes with these numbers:
 [fastcompression.com](https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm)
