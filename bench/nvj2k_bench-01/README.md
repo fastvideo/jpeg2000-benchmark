@@ -1,29 +1,39 @@
-# bench version 01
+# nvj2k_bench version 01
 
-The harness the results dated **19 August 2026** were made with. Kept here so
-that run can be repeated; for current measurements use `../bench-06.py`.
+The harness the results dated **28 August 2026** were made with. Kept here
+untouched so that run can be reproduced; for current measurements use
+`../nvj2k_bench-02/`.
 
-    python bench.py --final
+**The file inside is not renamed.** It carries no version line of its own, and
+adding one would change the bytes that produced those results. So the version is
+carried by the folder name instead, and the folder holds the whole set rather
+than one changed part — otherwise a mixture could be built: a new source with an
+old build file.
 
-**The file inside is not renamed.** It carries no version number of its own, and
-`results/2026-08-19/` was made with it under exactly this name. Renaming it would
-make the folder of results describe a file that no longer exists. So the version
-is carried by the folder instead — the same arrangement as `nvj2k_bench-01/`.
+    nvj2k_bench.cpp   38264 bytes, md5 5a20d3e8512ee64edb29c0baa432cdca
 
-    bench.py   91880 bytes, md5 c87ca26919de0aa3b68dbed949ed4919
+`CMakeLists.txt` and `build.sh` are here too, unchanged, so this version can be
+rebuilt without borrowing build files from the current one. They used to live one
+level up, in `bench/`; they moved down here together with the source so that a
+source and a build file of different versions cannot meet by accident.
 
-## What it does not do
+## Why it was replaced
 
-Everything the later versions learned to do is missing here, and that is the
-point of keeping it: the run of 19 August must be repeatable as it was, not
-improved after the fact.
+Two errors and one cosmetic fix, all of them described in
+`../nvj2k_bench-02/README.md`:
 
-- the search grid has four points, not six;
-- the decoding boundary is the one corrected on 28 August: the nvJPEG2000 side
-  stopped the clock with the decoded frame still on the card;
-- the single-frame decoding boundary is the one corrected on 31 August;
-- results are written at the end of a run, not as each measurement is made;
-- there is no `-version` check against the C++ harness, no repeat of points whose
-  repeats disagree, no energy phase with two meters.
+1. **Single frame decoding was not mirrored.** This harness copied the decoded
+   frame back to host memory even though the Fastvideo sample it is compared
+   against does not. Measured that way nvJPEG2000 came out slower than it is —
+   that is the error in the single-frame decoding column of
+   `results/2026-08-28/`.
+2. **The asynchronous encoder printed "including all transfers" whatever was
+   asked for**, so the label was not evidence of anything.
+3. There was no way to ask a built executable which source it came from.
 
-For what replaced each of these, see `../README.md` and the results folders.
+Version 02 answers `-version`, honours `-nodownload` and prints a label that
+follows the flag.
+
+**No timer and no measurement boundary was changed between 01 and 02.** The
+difference in the numbers comes from the copy that is no longer made, not from a
+different way of counting.
