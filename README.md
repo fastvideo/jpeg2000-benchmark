@@ -254,7 +254,6 @@ rather than a line in this table.
 |---|---|
 | `bench/bench-06.py` | the harness of the 31 August run: the full cycle, both codecs, energy |
 | `bench/bench-04.py` | the harness of the 24 and 28 August runs |
-| `bench/bench-01/` | the harness of the 19 August run, kept so that run can be redone |
 | `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
 | `bench/nvj2k_bench-02/` | the current nvJPEG2000 harness: source, CMake, build script, README |
 | `bench/nvj2k_bench-01/` | the previous one, for rebuilding the runs up to 28 August |
@@ -274,13 +273,11 @@ Every results folder holds `summary.txt` with the full tables, `results.json` wi
 machine-readable form, and `logs.zip` with every raw log. Each folder has a `README.md` of its own
 that states what the run was for, on what system it was made and how to repeat it.
 
-Every script in `bench/` carries a version number, either in its own name or in the name of the
-folder around it. `bench.py` keeps its name because that is the name the run of 19 August was made
-with, so it sits in `bench/bench-01/` instead — the folder carries the version, the file stays as it
-was. Files that used to sit here without any version marker at all are in the repository history:
-`git log --diff-filter=D -- bench/` finds the commit that removed one, and `git show <commit>^:<path>`
-brings it back. Keeping unversioned copies next to current ones is how a run ends up being repeated
-with the wrong script.
+The working tree carries only the current scripts. The harness that made the run of 19 August,
+`bench.py`, and the other files that used to sit here without a version number in their name are in
+the repository history: `git log --diff-filter=D -- bench/` finds the commit that removed one, and
+`git show <commit>^:<path>` brings it back. Keeping stale copies next to current ones is how a run
+ends up being repeated with the wrong script.
 
 Every long-lived file carries its version in its name, and the version inside the file has to match
 it. Where the name cannot change — as with the C++ harness, whose file has to stay byte-identical to
