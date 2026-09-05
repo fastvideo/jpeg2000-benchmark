@@ -1,4 +1,4 @@
-# JPEG2000 benchmark — a reproducible measurement procedure
+# GPU JPEG2000 benchmark on RTX 4090: fvJPEG2000 vs nvJPEG2000
 
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
