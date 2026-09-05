@@ -4,7 +4,7 @@ Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX
 
 ![JPEG2000 lossy: encoding and decoding, fvJPEG2000 and nvJPEG2000 on an RTX 4090](results/2026-08-31/summary-rtx-4090.webp)
 
-*Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left fvJPEG2000 encoder is 3.9 to 6.6 times faster, on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article
+*Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left fvJPEG2000 encoder is 3.9 to 6.6 times faster, on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article: 
 <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>*
 
 > **Everything now comes from one run.** Until 31 August the tables here were assembled from
