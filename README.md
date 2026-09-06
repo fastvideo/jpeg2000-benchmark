@@ -7,14 +7,6 @@ Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX
 *Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left fvJPEG2000 encoder is 3.9 to 6.6 times faster, on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article: 
 <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>*
 
-> **Everything now comes from one run.** Until 31 August the tables here were assembled from
-> three separate series — encoding from one day, decoding from another, energy from a third —
-> and rows from different series could not honestly be divided by each other. The run of
-> 31 August measures all of it at once, on an extended search grid, and it also corrects the
-> single-frame decoding column: our harness used to copy the decoded frame back to host memory
-> while the Fastvideo sample does not, so nvJPEG2000 came out slower than it is there. Details
-> in `results/2026-08-31/README.md`; the earlier runs and their logs stay where they were.
-
 ## The problem
 
 Published JPEG2000 numbers are hard to compare with each other.
