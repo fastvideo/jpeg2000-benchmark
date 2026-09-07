@@ -114,17 +114,17 @@ to better than one tenth of a percent, so both codecs handle the same amount of 
 | 4K, lossy | 96 | 193 | 2.01× | 394 (32×2) | 428 (8×4) | NV +8 % |
 | 4K, lossless | 59 | 91 | 1.53× | 145 (32×1) | 134 (8×4) | FV +8 % |
 
-**Encoding is faster with fvJPEG2000** — 1.5 to 2.5 times in single image mode and 3.9 to 6.6 times
-at the best combination of threads and batch. The main reason is that the nvJPEG2000 encoder gains
-almost nothing from multithreading: eight threads give it 1.035 times, against 2.7 to 4.7 times for
-fvJPEG2000. Thirty-two threads do not change that — on 2K they buy it about 5 %, which is inside
-the scatter of its own repeats, and on 4K nothing at all.
+**Encoding is faster with fvJPEG2000** — 3.9 to 6.6 times at the best combination of threads and
+batch, and 1.5 to 2.5 times in single image mode. The main reason is that the nvJPEG2000 encoder
+gains almost nothing from multithreading: eight threads give it 1.035 times, against 2.7 to 4.7
+times for fvJPEG2000. Thirty-two threads do not change that — on 2K they buy it about 5 %, which is
+inside the scatter of its own repeats, and on 4K nothing at all.
 
-**On decoding the single frame and the loaded pipeline say different things.** In single image mode
-nvJPEG2000 is ahead by 1.5 to 2.1 times — on three tasks out of four exactly twice — and where the
-time of one frame is what matters, that is the number that counts. At the best combination of
-threads and batch the gap closes: on 2K the two decoders are within a percent of each other and the
-lead changes hands, on 4K the gap is about eight percent and it also goes both ways.
+**At decoding both codecs have the same performance.** At the best combination of threads and batch
+the two are within a percent of each other on 2K, both times in favour of nvJPEG2000, and about
+eight percent apart on 4K, where the lead changes hands: lossy goes to nvJPEG2000, lossless to
+fvJPEG2000. In single image mode, where what matters is the time of one frame rather than
+throughput, nvJPEG2000 is ahead by 1.5 to 2.1 times — on three tasks out of four exactly twice.
 
 **CPU cores are part of the price.** At its optimum the fvJPEG2000 encoder occupies 7.0 to 7.6
 cores against 14.7 to 29.8 for nvJPEG2000. At decoding it is the other way round: nvJPEG2000 gets
