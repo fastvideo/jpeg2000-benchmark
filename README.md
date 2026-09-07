@@ -1,4 +1,4 @@
-# GPU JPEG2000 benchmark on RTX 4090: fvJPEG2000 vs nvJPEG2000
+# GPU JPEG2000 (J2K) benchmark on RTX 4090: fvJPEG2000 vs nvJPEG2000
 
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
@@ -9,7 +9,9 @@ Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX
 
 ## The problem
 
-Published JPEG2000 numbers are hard to compare with each other.
+Published JPEG2000 numbers are hard to compare with each other. The format goes by two names —
+JPEG2000 in the standard, J2K in most tools and file extensions — and the numbers published under
+both are equally hard to line up.
 
 - The same quality setting — say 85 — gives files of different sizes in different codecs, and a
   codec that produced a smaller file did less work.
@@ -98,21 +100,21 @@ to better than one tenth of a percent, so both codecs handle the same amount of 
 
 ### Encoding, frames per second
 
-| Task | FV best | NV best | FV over NV | FV single | NV single | FV over NV |
+| Task | FV single | NV single | FV over NV | FV best | NV best | FV over NV |
 |---|---:|---:|---:|---:|---:|---:|
-| 2K, lossy | 1914 (8×2) | 292 (32×2) | 6.55× | 381 | 198 | 1.93× |
-| 2K, lossless | 1179 (8×2) | 187 (32×2) | 6.31× | 329 | 146 | 2.25× |
-| 4K, lossy | 616 (8×1) | 160 (16×2) | 3.86× | 195 | 128 | 1.53× |
-| 4K, lossless | 371 (8×1) | 64 (16×2) | 5.77× | 140 | 56 | 2.49× |
+| 2K, lossy | 381 | 198 | 1.93× | 1914 (8×2) | 292 (32×2) | 6.55× |
+| 2K, lossless | 329 | 146 | 2.25× | 1179 (8×2) | 187 (32×2) | 6.31× |
+| 4K, lossy | 195 | 128 | 1.53× | 616 (8×1) | 160 (16×2) | 3.86× |
+| 4K, lossless | 140 | 56 | 2.49× | 371 (8×1) | 64 (16×2) | 5.77× |
 
 ### Decoding, frames per second
 
-| Task | FV best | NV best | Difference | FV single | NV single | NV over FV |
+| Task | FV single | NV single | NV over FV | FV best | NV best | Difference |
 |---|---:|---:|---:|---:|---:|---:|
-| 2K, lossy | 1024 (8×4) | 1033 (8×4) | NV +0.8 % | 144 | 298 | 2.07× |
-| 2K, lossless | 436 (32×2) | 438 (8×4) | NV +0.3 % | 116 | 237 | 2.04× |
-| 4K, lossy | 394 (32×2) | 428 (8×4) | NV +8 % | 96 | 193 | 2.01× |
-| 4K, lossless | 145 (32×1) | 134 (8×4) | FV +8 % | 59 | 91 | 1.53× |
+| 2K, lossy | 144 | 298 | 2.07× | 1024 (8×4) | 1033 (8×4) | NV +0.8 % |
+| 2K, lossless | 116 | 237 | 2.04× | 436 (32×2) | 438 (8×4) | NV +0.3 % |
+| 4K, lossy | 96 | 193 | 2.01× | 394 (32×2) | 428 (8×4) | NV +8 % |
+| 4K, lossless | 59 | 91 | 1.53× | 145 (32×1) | 134 (8×4) | FV +8 % |
 
 **Encoding is faster with fvJPEG2000** — 3.9 to 6.6 times at the best combination of threads and
 batch, and 1.5 to 2.5 times in single image mode. The main reason is that the nvJPEG2000 encoder
@@ -238,8 +240,8 @@ current one.
 interpret their licences. Any licence holder is welcome to run this procedure and publish the
 result.
 
-**OpenJPEG is not here either.** It is an open CPU implementation, and the gap between CPU and GPU
-is large enough to swamp the comparison of two GPU codecs. It deserves its own run.
+**OpenJPEG is not here either.** It is an open CPU J2K implementation, and the gap between CPU and
+GPU is large enough to swamp the comparison of two GPU codecs. It deserves its own run.
 
 **Bit depth above 8 bits, 8K frames, multi-tile images and Jetson are not measured.** These are
 separate application areas — medical, satellite, embedded — and each needs its own measurement
@@ -294,8 +296,8 @@ decoded images, so that the opinion is yours and not ours retold.
 
 ## What is measured on the Fastvideo side
 
-The JPEG2000 module of the Fastvideo SDK — a CUDA library for a full camera pipeline on the GPU,
-licensed per platform: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
+The JPEG2000 (J2K) module of the Fastvideo SDK — a CUDA library for a full camera pipeline on the
+GPU, licensed per platform: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
 
 nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 
@@ -303,7 +305,7 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 
 - Article, the method in full: <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>
 - The same article in Russian: <https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm>
-- Product page: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
+- Product page, the J2K codec on GPU: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
 - Source image, 2K: <https://www.fastcompression.com/img/test_j2k/2k_wild.ppm>
 - Source image, 4K: <https://www.fastcompression.com/img/test_j2k/4k_wild.ppm>
 - Fastvideo SDK demo:
