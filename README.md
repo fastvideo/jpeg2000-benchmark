@@ -45,7 +45,7 @@ library this way is what the numbers below are measured on. Against the same lib
 eight threads with one frame each — the best combination we found gives 1.04 to 1.43 times more at
 encoding and 1.22 to 2.05 times more at decoding. Part of that comes from the frames in flight and
 part from the thread count: at one and the same number of threads, going from one frame in flight
-to two or four gives the encoder 1.02 to 1.20 times and the decoder 1.12 to 2.06. On decoding, 2K
+to two or four gives the encoder 1.02 to 1.20 times and the decoder 1.12 to 2.06. At decoding, 2K
 lossy is left out of both ranges — its 8×1 point is the unsettled cell described below.
 
 **The measured interval follows the mode, and that is stated on purpose.**
@@ -160,7 +160,7 @@ Tenths of a decibel — indistinguishable by eye.
 | 4K | lossy | 0.355 J | 1.199 J | 0.517 J | 0.653 J |
 | 4K | lossless | 0.729 J | 4.195 J | 1.384 J | 2.471 J |
 
-Energy repeats the speed picture on encoding but does not amplify it. On decoding the two codecs run
+Energy repeats the speed picture at encoding but does not amplify it. At decoding the two codecs run
 at nearly the same speed, and the frame still costs 1.3 to 1.8 times less with fvJPEG2000, because
 its card draws 176–182 W against 255–343 W.
 
