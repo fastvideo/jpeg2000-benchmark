@@ -4,7 +4,7 @@ Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX
 
 ![JPEG2000 lossy: encoding and decoding, fvJPEG2000 and nvJPEG2000 on an RTX 4090](results/2026-08-31/summary-rtx-4090.webp)
 
-*Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left fvJPEG2000 encoder is 3.9 to 6.6 times faster, on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article: 
+*Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left the fvJPEG2000 encoder is 3.9 to 6.6 times faster; on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article: 
 <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>*
 
 ## The problem
@@ -34,13 +34,19 @@ Two measurement modes:
 
 The multithreaded mode is swept over six combinations, all of them published: 8×1, 8×2, 16×2, 8×4,
 32×1 and 32×2. The last two were added in this run to answer a direct question — is it enough to
-give the library more CPU threads? On a 32-core machine, 32 threads is the whole machine.
+give the library more CPU threads? The CPU has 16 cores and 32 logical cores, so 32 threads is the
+whole machine.
 
 "8×2" means eight CPU threads with two frames in flight on the GPU in each of them. The two codecs
 reach that differently: fvJPEG2000 has a real batch — one call takes an array of images —
 nvJPEG2000 has no such call, so the same effect is built by hand out of several codec states, CUDA
-streams and asynchronous calls. That is done with the library's own facilities and it does help:
-1.04 to 1.43 times on the encoder and 1.22 to 2.05 times on the decoder.
+streams and asynchronous calls. That is done with the library's own facilities, and driving the
+library this way is what the numbers below are measured on. Against the same library at 8×1 —
+eight threads with one frame each — the best combination we found gives 1.04 to 1.43 times more at
+encoding and 1.22 to 2.05 times more at decoding. Part of that comes from the frames in flight and
+part from the thread count: at one and the same number of threads, going from one frame in flight
+to two or four gives the encoder 1.02 to 1.20 times and the decoder 1.12 to 2.06. On decoding, 2K
+lossy is left out of both ranges — its 8×1 point is the unsettled cell described below.
 
 **The measured interval follows the mode, and that is stated on purpose.**
 
@@ -83,7 +89,7 @@ The full walk-through of the method is the article:
 | GPU | NVIDIA GeForce RTX 4090, 24 GB |
 | GPU driver | 610.88 |
 | GPU maximum power | 450 W |
-| CPU | AMD, 32 threads |
+| CPU | AMD Ryzen 9 7950X, 16 cores, 32 logical cores |
 | RAM | 128 GB |
 | Fastvideo JPEG2000 codec (FV) | Fastvideo SDK 0.23.1.0, CUDA 13.3 |
 | nvJPEG2000 library (NV) | version 0.11.0.51 |
@@ -128,10 +134,11 @@ eight percent apart on 4K, where the lead changes hands: lossy goes to nvJPEG200
 fvJPEG2000. In single image mode, where what matters is the time of one frame rather than
 throughput, nvJPEG2000 is ahead by 1.5 to 2.1 times — on three tasks out of four exactly twice.
 
-**CPU cores are part of the price.** At its optimum the fvJPEG2000 encoder occupies 7.0 to 7.6
-cores against 14.7 to 29.8 for nvJPEG2000. At decoding it is the other way round: nvJPEG2000 gets
-by on 3.4 to 4.8 cores, while fvJPEG2000 occupies 26 to 29 on three tasks out of four, because its
-optimum there landed on thirty-two threads and buys only a few percent of speed for it.
+**Logical CPU cores are part of the price.** At its optimum the fvJPEG2000 encoder occupies 7.0 to
+7.6 logical cores against 14.7 to 29.8 for nvJPEG2000. At decoding it is the other way round:
+nvJPEG2000 gets by on 3.4 to 4.8 logical cores, while fvJPEG2000 occupies 26 to 29 on three tasks
+out of four, because its optimum there landed on thirty-two threads and buys only a few percent of
+speed for it.
 
 ### Quality at an equal file size
 
@@ -229,19 +236,22 @@ the same thing with one `g++` call per executable, for when CMake is unavailable
 
 Each harness version is a complete build set in its own folder — source, `CMakeLists.txt`,
 `build.sh` and a `README.md` — so that a new source cannot be built with an old build file by
-accident. `bench/nvj2k_bench-01/` rebuilds the runs up to 28 August; `bench/nvj2k_bench-02/` is the
-current one.
+accident. The current one is `bench/nvj2k_bench-02/`; the earlier versions are in the repository
+history.
 
 `bench/README.md` has the run options and the workflow.
 
 ## What is not here
 
 **Kakadu and Comprimato are not measured.** We did not approach their developers and we do not
-interpret their licences. Any licence holder is welcome to run this procedure and publish the
+interpret their licenses. Any license holder is welcome to run this procedure and publish the
 result.
 
 **OpenJPEG is not here either.** It is an open CPU J2K implementation, and the gap between CPU and
-GPU is large enough to swamp the comparison of two GPU codecs. It deserves its own run.
+GPU is large enough to swamp the comparison of two GPU codecs. Measured on the same images, at the
+same compressed file size and with all 32 logical cores of the test machine busy, OpenJPEG is 19 to
+43 times slower than fvJPEG2000 at encoding and 5 to 13 times slower at decoding. It deserves its
+own run; the full tables will be a separate article.
 
 **Bit depth above 8 bits, 8K frames, multi-tile images and Jetson are not measured.** These are
 separate application areas — medical, satellite, embedded — and each needs its own measurement
@@ -252,19 +262,14 @@ rather than a line in this table.
 | Path | What it is |
 |---|---|
 | `bench/bench-06.py` | the harness of the 31 August run: the full cycle, both codecs, energy |
-| `bench/bench-04.py` | the harness of the 24 and 28 August runs |
 | `bench/pcrd-cost-03.py` | the PCRD run: one output size reached in several ways |
 | `bench/nvj2k_bench-02/` | the current nvJPEG2000 harness: source, CMake, build script, README |
-| `bench/nvj2k_bench-01/` | the previous one, for rebuilding the runs up to 28 August |
 | `bench/make_charts-03.py` | draws the charts of the article from a results folder |
 | `bench/j2k-nv-threads-and-states-02.py` | what the library gives on its own and what our way of driving it adds |
 | `bench/j2k-point-repeat-02.py` | one point, many launches: one cluster of values or two |
 | `bench/get-nvidia-sample-02.py` | downloads NVIDIA's own sample programs |
 | `bench/README.md` | run options and workflow |
 | `results/2026-08-31/` | **the current run:** everything in one series, the extended grid, CPU load, and the twenty-launch re-measurement in `point-repeat/` |
-| `results/2026-08-28/` | the previous run: the first with the corrected multithreaded decoder measurement; its single-frame decoding column was measured on unequal terms |
-| `results/2026-08-24/` | tables, machine-readable data, every log |
-| `results/2026-08-19/` | the first full comparison: 438 logs and the article of that date |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
 
@@ -272,11 +277,11 @@ Every results folder holds `summary.txt` with the full tables, `results.json` wi
 machine-readable form, and `logs.zip` with every raw log. Each folder has a `README.md` of its own
 that states what the run was for, on what system it was made and how to repeat it.
 
-The working tree carries only the current scripts. The harness that made the run of 19 August,
-`bench.py`, and the other files that used to sit here without a version number in their name are in
-the repository history: `git log --diff-filter=D -- bench/` finds the commit that removed one, and
-`git show <commit>^:<path>` brings it back. Keeping stale copies next to current ones is how a run
-ends up being repeated with the wrong script.
+The working tree carries only what the current run needs. The earlier runs — 19, 24 and 28 August —
+and the harnesses that made them were removed on 31 August: a run we have since found an error in,
+sitting next to the corrected one, is an invitation to quote the wrong table. They are in the
+repository history: `git log --diff-filter=D -- results/` finds the commit that removed one, and
+`git show <commit>^:<path>` brings it back.
 
 Every long-lived file carries its version in its name, and the version inside the file has to match
 it. Where the name cannot change — as with the C++ harness, whose file has to stay byte-identical to
@@ -313,9 +318,9 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 - nvJPEG2000 downloads: <https://developer.nvidia.com/nvjpeg2000-downloads>
 - This repository: <https://github.com/fastvideo/jpeg2000-benchmark>
 
-## Licences
+## Licenses
 
-Three of them. GitHub shows one MIT badge for the whole repository, because that is the licence
+Three of them. GitHub shows one MIT badge for the whole repository, because that is the license
 of the code; the measurement results and the article snapshots have their own, and all three are
 described in `CONTENT-LICENSE.md`.
 
@@ -327,9 +332,8 @@ snapshots, plus the README itself — are CC BY 4.0. Move them into your own mat
 compute on top of them. The repository exists to be forked, and a fork almost always edits the
 README for itself.
 
-**The article snapshots** — `results/2026-08-19/jpeg2000-gpu-benchmark-rtx4090.md`,
-`results/2026-08-31/fastvideo-vs-nvjpeg2000-rtx4090.md` and any later one — are CC BY-ND 4.0:
-reprint and quote in full, rewriting and translating by agreement.
+**The article snapshot** — `results/2026-08-31/fastvideo-vs-nvjpeg2000-rtx4090.md` and any later
+one — is CC BY-ND 4.0: reprint and quote in full, rewriting and translating by agreement.
 
 In every case, name the source, and carry the measurement conditions along with the numbers.
 
