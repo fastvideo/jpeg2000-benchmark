@@ -61,7 +61,7 @@ Every CPU part of both codecs is inside the interval in both modes. Only disk wo
 The reason the two differ: in single image mode frames go one at a time and the codec reports the
 time of its own stages, so the boundary can be an internal one. In multithreaded mode several
 frames are on the card at once and the time of one stage of one frame cannot be separated from the
-work on its neighbours — only external boundaries are observable.
+work on its neighbors — only external boundaries are observable.
 
 For the multithreaded mode that boundary is the one a working system pays for. Frames arrive in a
 stream, several are in flight at once, and a decoded frame has to end up where the rest of the
@@ -129,7 +129,7 @@ times for fvJPEG2000. Thirty-two threads do not change that — on 2K they buy i
 inside the scatter of its own repeats, and on 4K nothing at all.
 
 **At decoding both codecs have the same performance.** At the best combination of threads and batch
-the two are within a percent of each other on 2K, both times in favour of nvJPEG2000, and about
+the two are within a percent of each other on 2K, both times in favor of nvJPEG2000, and about
 eight percent apart on 4K, where the lead changes hands: lossy goes to nvJPEG2000, lossless to
 fvJPEG2000. In single image mode, where what matters is the time of one frame rather than
 throughput, nvJPEG2000 is ahead by 1.5 to 2.1 times — on three tasks out of four exactly twice.
@@ -173,7 +173,7 @@ GPU clock and temperature are the same in both states and a control point measur
 evenly. The slow state spends 45 % more CPU time per frame. The cause is on the CPU side and is not
 established.
 
-The table above carries the median of the run, 310. The neighbouring cells argue for 539 — on every
+The table above gives the median of the run, 310. The neighboring cells argue for 539 — on every
 other nvJPEG2000 decoding task, 32 threads with one frame each give what 8 threads with one frame
 each give, and only this cell would be an exception. We publish what was measured and say so.
 The twenty launches, with clock, temperature, power and CPU load for each, are in
