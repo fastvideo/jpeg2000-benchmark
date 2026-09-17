@@ -1,6 +1,6 @@
 # GPU JPEG2000 (J2K) benchmark on RTX 4090: fvJPEG2000 vs nvJPEG2000
 
-[![DOI](https://zenodo.org/badge/1339992286.svg)](https://doi.org/10.5281/zenodo.22811904)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22811904-blue)](https://doi.org/10.5281/zenodo.22811904)
 
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
