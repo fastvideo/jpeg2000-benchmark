@@ -3,6 +3,7 @@ message: "If you use these measurements or this procedure, please cite it as bel
 type: software
 title: "jpeg2000-benchmark: a reproducible procedure for measuring GPU JPEG 2000 codecs (fvJPEG2000 and nvJPEG2000 on an NVIDIA RTX 4090)"
 version: "2026.09"
+doi: 10.5281/zenodo.22811905
 license: MIT
 repository-code: "https://github.com/fastvideo/jpeg2000-benchmark"
 url: "https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm"

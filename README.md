@@ -1,5 +1,7 @@
 # GPU JPEG2000 (J2K) benchmark on RTX 4090: fvJPEG2000 vs nvJPEG2000
 
+[![DOI](https://zenodo.org/badge/1339992286.svg)](https://doi.org/10.5281/zenodo.22811904)
+
 Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX 4090.
 
 ![JPEG2000 lossy: encoding and decoding, fvJPEG2000 and nvJPEG2000 on an RTX 4090](results/2026-08-31/summary-rtx-4090.webp)
@@ -317,6 +319,19 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
   <https://www.fastcompression.com/download/demo/fvSDK-0.23.1.0-Win64-CUDA-13.3-Demo-Exp-2027-08-18.7z>
 - nvJPEG2000 downloads: <https://developer.nvidia.com/nvjpeg2000-downloads>
 - This repository: <https://github.com/fastvideo/jpeg2000-benchmark>
+
+## How to cite
+
+Serzhenko, F. (2026). *jpeg2000-benchmark: a reproducible procedure for measuring GPU JPEG 2000
+codecs (fvJPEG2000 and nvJPEG2000 on an NVIDIA RTX 4090)*, version 2026.09. Fastvideo. Zenodo.
+https://doi.org/10.5281/zenodo.22811905
+
+This DOI points to exactly this release — the run of 31 August 2026. To cite the procedure in
+general rather than this exact version, use the DOI that always resolves to the latest release:
+https://doi.org/10.5281/zenodo.22811904
+
+GitHub also offers the same citation in APA and BibTeX form: "Cite this repository" in the
+right-hand column.
 
 ## Licenses
 
