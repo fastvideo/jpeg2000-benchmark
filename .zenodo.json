@@ -1,1 +1,38 @@
 
+{
+  "upload_type": "software",
+  "title": "jpeg2000-benchmark: a reproducible procedure for measuring GPU JPEG 2000 codecs (fvJPEG2000 and nvJPEG2000 on an NVIDIA RTX 4090)",
+  "version": "2026.09",
+  "description": "<p>Scripts, a measurement harness for NVIDIA nvJPEG2000 and raw logs for comparing two GPU JPEG 2000 codecs at the same compressed file size: fvJPEG2000 from Fastvideo SDK and nvJPEG2000 from NVIDIA, on an RTX 4090.</p><p>The procedure covers four measurement modes (single image, multithreaded, with and without several frames in flight), states what is inside the measured time in each mode, matches compressed file size to within 0.1 %, verifies every decoded frame against the source, and records GPU energy per frame.</p><p>Results of the run of 31 August 2026: at encoding fvJPEG2000 is 3.9 to 6.6 times faster; at decoding the two codecs are at the same level at the best combination of threads and batch, and in single image mode nvJPEG2000 decodes 1.5 to 2.1 times faster.</p><p>Licences: source code under MIT; measurement results, tables, logs and README under CC BY 4.0; article snapshots under CC BY-ND 4.0 (see CONTENT-LICENSE.md). Third-party software is not included.</p><p>Affiliation: the author works at Fastvideo, the developer of fvJPEG2000.</p>",
+  "creators": [
+    {
+      "name": "Serzhenko, Fyodor",
+      "affiliation": "Fastvideo"
+    }
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "JPEG 2000",
+    "J2K",
+    "GPU",
+    "CUDA",
+    "nvJPEG2000",
+    "benchmark",
+    "reproducibility",
+    "RTX 4090",
+    "energy per frame",
+    "EBCOT"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm",
+      "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "https://www.fastcompression.com/white-papers/fastvideo-jpeg2000-benchmarks-rtx-4090-2026-09.pdf",
+      "relation": "isSupplementTo"
+    }
+  ]
+}
