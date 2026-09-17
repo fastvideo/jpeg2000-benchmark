@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use these measurements or this procedure, please cite it as below."
+type: software
+title: "jpeg2000-benchmark: a reproducible procedure for measuring GPU JPEG 2000 codecs (fvJPEG2000 and nvJPEG2000 on an NVIDIA RTX 4090)"
+version: "2026.09"
+license: MIT
+repository-code: "https://github.com/fastvideo/jpeg2000-benchmark"
+url: "https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm"
+abstract: >-
+  Scripts, a measurement harness for NVIDIA nvJPEG2000 and raw logs for
+  comparing two GPU JPEG 2000 codecs at the same compressed file size:
+  fvJPEG2000 from Fastvideo SDK and nvJPEG2000 from NVIDIA, on an RTX 4090.
+  Source code under MIT; measurement results and logs under CC BY 4.0;
+  article snapshots under CC BY-ND 4.0.
+authors:
+  - given-names: Fyodor
+    family-names: Serzhenko
+    affiliation: Fastvideo
+keywords:
+  - JPEG 2000
+  - J2K
+  - GPU
+  - CUDA
+  - nvJPEG2000
+  - benchmark
+  - reproducibility
+  - RTX 4090

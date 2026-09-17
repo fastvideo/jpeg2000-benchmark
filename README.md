@@ -5,7 +5,7 @@ Version of 31 August 2026. Latest full comparison run: 31 August 2026, on an RTX
 ![JPEG2000 lossy: encoding and decoding, fvJPEG2000 and nvJPEG2000 on an RTX 4090](results/2026-08-31/summary-rtx-4090.webp)
 
 *Encoding and decoding of JPEG2000 on an RTX 4090, lossy mode. On the left the fvJPEG2000 encoder is 3.9 to 6.6 times faster; on the right both decoders have the same performance. Every number in this picture is reproduced by the procedure below; the full write-up is the article: 
-<https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>*
+<https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=readme>*
 
 ## The problem
 
@@ -78,7 +78,7 @@ significant bits of the code blocks until the frame fits. nvJPEG2000 has no mode
 file size, so the PCRD runs are one-sided by nature and live in their own results folders.
 
 The full walk-through of the method is the article:
-<https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>
+<https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=readme>
 
 ## Results
 
@@ -308,7 +308,7 @@ nvJPEG2000 is free and ships separately from the CUDA Toolkit.
 
 ## Links
 
-- Article, the method in full: <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm>
+- Article, the method in full: <https://www.fastcompression.com/blog/fastvideo-vs-nvjpeg2000.htm?utm_source=github&utm_medium=referral&utm_campaign=j2k-benchmark&utm_content=readme>
 - The same article in Russian: <https://www.fastvideo.ru/blog/jpeg2000-benchmarks.htm>
 - Product page, the J2K codec on GPU: <https://www.fastcompression.com/products/gpu-jpeg2000.htm>
 - Source image, 2K: <https://www.fastcompression.com/img/test_j2k/2k_wild.ppm>
