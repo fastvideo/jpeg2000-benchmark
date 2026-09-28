@@ -270,14 +270,18 @@ rather than a line in this table.
 | `bench/j2k-nv-threads-and-states-02.py` | what the library gives on its own and what our way of driving it adds |
 | `bench/j2k-point-repeat-02.py` | one point, many launches: one cluster of values or two |
 | `bench/get-nvidia-sample-02.py` | downloads NVIDIA's own sample programs |
+| `bench/opj-run-05.py` | the OpenJPEG run of 14 September: speed grid, energy with AMD uProf, thread curve, 4K memory, the `/arch:AVX2` build |
+| `bench/opj_bench-03/` | the OpenJPEG harness: source, CMake, build script, README |
 | `bench/README.md` | run options and workflow |
 | `results/2026-08-31/` | **the current run:** everything in one series, the extended grid, CPU load, and the twenty-launch re-measurement in `point-repeat/` |
 | `results/2026-08-25-pcrd/` | PCRD, first run: 970 logs, quality ladder up to 120 |
 | `results/2026-08-26-pcrd/` | PCRD, follow-up: quality 86, 87, 88 — the best point |
+| `results/2026-09-14/` | OpenJPEG on the CPU, AMD Ryzen 9 7950X: speed, busy cores, energy per frame, the `/arch:AVX2` build |
 
-Every results folder holds `summary.txt` with the full tables, `results.json` with the same data in
-machine-readable form, and `logs.zip` with every raw log. Each folder has a `README.md` of its own
-that states what the run was for, on what system it was made and how to repeat it.
+Every results folder holds `summary.txt` with the full tables, the same data in machine-readable
+form (`results.json`, or `results.jsonl` and `results.csv`), and `logs.zip` with every raw log. Each
+folder has a `README.md` of its own that states what the run was for, on what system it was made and
+how to repeat it.
 
 The working tree carries only what the current run needs. The earlier runs — 19, 24 and 28 August —
 and the harnesses that made them were removed on 31 August: a run we have since found an error in,
