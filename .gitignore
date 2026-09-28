@@ -42,3 +42,6 @@ __pycache__/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# ...but a finished run in results/ keeps its results.jsonl
+!/results/*/results.jsonl
